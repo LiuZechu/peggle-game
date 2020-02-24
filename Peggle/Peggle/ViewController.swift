@@ -32,7 +32,7 @@ class ViewController: UIViewController, Renderer {
                                       lowerBoudary: Double(self.view.frame.maxY))
         gameEngine.addRenderer(renderer: self)
         addDefaultPegImages()
-        enableBackgroundTapForLaunch()
+        //enableBackgroundTapForLaunch() // change to dragging cannon
         gameEngine.setBallYPosition(yPosition: Double(cannonImageView.center.y))
         addBallToScreen()
         addBucketToScreen()
@@ -78,41 +78,36 @@ class ViewController: UIViewController, Renderer {
         }
         
         let cannonLocation = cannonImageView.center
+        var touchLocation = recognizer.location(in: nil)
         
         if recognizer.state == .began {
-            let touchLocation = recognizer.location(in: nil)
+            touchLocation = recognizer.location(in: nil)
             let angleOfRotation = calculateAngleOfRotation(cannonLocation: cannonLocation,
                                                            touchLocation: touchLocation)
             cannonImageView.transform = CGAffineTransform(rotationAngle: angleOfRotation)
             
         } else if recognizer.state == .ended {
-//            let touchLocation = recognizer.location(in: nil)
-//            let angleOfRotation = calculateAngleOfRotation(cannonLocation: cannonLocation,
-//                                                           touchLocation: touchLocation)
-//            cannonImageView.transform = CGAffineTransform(rotationAngle: angleOfRotation)
-            
-            let tapLocation = recognizer.location(in: nil)
-            let ballLocation = gameEngine.getBallLocation()
-            let xDifference = tapLocation.x - ballLocation.x
-            let yDifference = tapLocation.y - ballLocation.y
+
+            let xDifference = touchLocation.x - cannonLocation.x
+            let yDifference = touchLocation.y - cannonLocation.y
             
             var launchAngle = Double(atan(yDifference / xDifference))
             
             if yDifference < 0 {
                 if xDifference > 0 {
-                    launchAngle = -Double.pi / 2
+                    launchAngle = -Double.pi
                 } else {
-                    launchAngle = Double.pi / 2
+                    launchAngle = Double.pi
                 }
             }
             
             // launch the ball
+            print(launchAngle)
             gameEngine.launchCannonBall(angle: launchAngle, initialSpeed: PeggleGameEngine.initialBallSpeed)
             isLaunchable = false
             isRestarted = false
         }
 
-        let touchLocation = recognizer.location(in: nil)
         let angleOfRotation = calculateAngleOfRotation(cannonLocation: cannonLocation,
                                                        touchLocation: touchLocation)
         cannonImageView.transform = CGAffineTransform(rotationAngle: angleOfRotation)
