@@ -40,7 +40,6 @@ opt_in_rules:
   - nslocalizedstring_key
   - nslocalizedstring_require_bundle
   - number_separator
-  - object_literal
   - operator_usage_whitespace
   - overridden_super_call
   - override_in_extension

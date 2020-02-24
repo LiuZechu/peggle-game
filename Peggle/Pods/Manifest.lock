@@ -1,0 +1,16 @@
+PODS:
+  - physics-engine-pod (1.0.2)
+
+DEPENDENCIES:
+  - physics-engine-pod (~> 1.0.2)
+
+SPEC REPOS:
+  https://github.com/LiuZechu/physics-engine-specs:
+    - physics-engine-pod
+
+SPEC CHECKSUMS:
+  physics-engine-pod: c6e63330de57b1d198a39a78365731e59154434b
+
+PODFILE CHECKSUM: 9631db360cdcf895c32c566560435addce5e3820
+
+COCOAPODS: 1.8.4
