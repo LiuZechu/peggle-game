@@ -20,10 +20,14 @@ struct CannonBall {
     }
     let physicsBody: PhysicsBody
     
-    init(xPosition: Double) {
+    init(xPosition: Double, yPosition: Double = 100) {
         physicsBody = PhysicsBody(isMovable: true, radius: CannonBall.radius,
-                                  initialPosition: Position(xComponent: xPosition, yComponent: 100),
+                                  initialPosition: Position(xComponent: xPosition, yComponent: yPosition),
                                   initialVelocity: Vector(xComponent: 0, yComponent: 0),
                                   elasticity: 0.95)
+    }
+    
+    func setYLocation(yPosition: Double) {
+        physicsBody.position.yComponent = yPosition
     }
 }

@@ -8,11 +8,13 @@
 
 import Foundation
 import struct CoreGraphics.CGPoint
+import struct CoreGraphics.CGFloat
 
-struct Bucket {
+class Bucket {
     let upperBoundary: Double // location of the rim of the bucket
     let width: Double
-    let bottomCenterLocation: CGPoint
+    var bottomCenterLocation: CGPoint
+    private var speed: Double = 1
     
     func isInBucket(ballLocation: CGPoint, ballRadius: Double) -> Bool {
         let ballLocationX = Double(ballLocation.x)
@@ -32,4 +34,21 @@ struct Bucket {
         self.bottomCenterLocation = bottomCenterLocation
     }
     
+    // positive means moving to the right
+    // moves the bucket to the right by `speed`
+    func move() {
+        bottomCenterLocation.x += CGFloat(speed)
+    }
+    
+    func toggleDirection() {
+        speed *= -1
+    }
+    
+    func hitsLeftBoundary(leftBoundary: Double) -> Bool {
+        return Double(bottomCenterLocation.x) - width / 2 <= leftBoundary
+    }
+    
+    func hitsRightBoundary(rightBoundary: Double) -> Bool {
+        return Double(bottomCenterLocation.x) + width / 2 >= rightBoundary
+    }
 }

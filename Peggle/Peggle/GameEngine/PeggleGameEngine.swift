@@ -16,6 +16,12 @@ class PeggleGameEngine {
     private let gameboard: GameBoard
     private var cannonBall: CannonBall
     private let cannonBallInitialXPosition: Double!
+    private var cannonBallInitialYPosition: Double!
+    private let bucket: Bucket
+    
+    private let leftBoundary: Double
+    private let rightBoundary: Double
+    
     private var displayLink: CADisplayLink!
     private var renderer: Renderer!
     
@@ -30,6 +36,8 @@ class PeggleGameEngine {
         return gameboard.getNumberOfPegsOfColor(color: .orange)
     }
     
+    private var hasBallEntered: Bool = false
+    
     private var isGameLoopStopped: Bool = true
 
     init(leftBoundary: Double, rightBoundary: Double, upperBoundary: Double, lowerBoudary: Double) {
@@ -40,9 +48,22 @@ class PeggleGameEngine {
         gameboard = GameBoard(name: "default level")
         cannonBallInitialXPosition = (rightBoundary - leftBoundary) / 2
         cannonBall = CannonBall(xPosition: cannonBallInitialXPosition)
+       
+        // ARBITRARY FOR NOW
+        bucket = Bucket(upperBoundary: lowerBoudary - 150, width: 150,
+                        bottomCenterLocation: CGPoint(x: rightBoundary / 2,
+                                                      y: lowerBoudary))
+        
+        self.leftBoundary = leftBoundary
+        self.rightBoundary = rightBoundary
         
         addDefaultPegs()
         _ = physicsEngine.addPhysicsBody(cannonBall.physicsBody)
+    }
+    
+    func setBallYPosition(yPosition: Double) {
+        cannonBall.setYLocation(yPosition: yPosition)
+        cannonBallInitialYPosition = yPosition
     }
     
     private func startGameLoop() {
@@ -68,10 +89,18 @@ class PeggleGameEngine {
         stopGameLoop()
         _ = physicsEngine.removePhysicsBody(cannonBall.physicsBody)
         cannonBall = CannonBall(xPosition: cannonBallInitialXPosition)
+        cannonBall.physicsBody.position.yComponent = cannonBallInitialYPosition
         _ = physicsEngine.addPhysicsBody(cannonBall.physicsBody)
         
         // when a ball is replenished, decrement the number of balls left
         numberOfBallsLeft -= 1
+        
+        hasBallEntered = false
+        
+        // when there's no more balls, increase back to 10
+        if numberOfBallsLeft == 0 {
+            numberOfBallsLeft = PeggleGameEngine.totalNumberOfBalls
+        }
     }
     
     func addRenderer(renderer: Renderer) {
@@ -81,6 +110,28 @@ class PeggleGameEngine {
     @objc func update(updater: CADisplayLink) {
         physicsEngine.update()
         renderer.render()
+        
+        // move the bucket
+        if bucket.hitsLeftBoundary(leftBoundary: leftBoundary)
+            || bucket.hitsRightBoundary(rightBoundary: rightBoundary) {
+            bucket.toggleDirection()
+        }
+        bucket.move()
+        
+        // check whether the cannon ball is in the bucket
+        if isBallInsideBucket() {
+            print("the ball is inside the bucket!")
+            // so that the count is not incremented repeatedly
+            if hasBallEntered == false {
+                incrementBallCount()
+            }
+            hasBallEntered = true
+        }
+    }
+    
+    // called when the ball enters the bucket
+    private func incrementBallCount() {
+        numberOfBallsLeft += 1
     }
     
     func getAllPegs() -> Set<Peg> {
@@ -91,8 +142,16 @@ class PeggleGameEngine {
         return cannonBall.location
     }
     
+    func getBucketBottomCenterLocation() -> CGPoint {
+        return bucket.bottomCenterLocation
+    }
+    
     func isBallOutOfBounds() -> Bool {
         return physicsEngine.bodyOutOfLowerBound(body: cannonBall.physicsBody)
+    }
+    
+    func isBallInsideBucket() -> Bool {
+        return bucket.isInBucket(ballLocation: cannonBall.location, ballRadius: CannonBall.radius)
     }
     
     func getPegsHit() -> Set<Peg> {

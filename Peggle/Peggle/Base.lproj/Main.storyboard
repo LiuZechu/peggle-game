@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="ipad12_9rounded" orientation="portrait" layout="fullscreen" appearance="light"/>
+    <device id="ipad10_2" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -12,14 +12,14 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Peggle" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <rect key="frame" x="0.0" y="0.0" width="810" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="uCh-ex-ydv">
-                                <rect key="frame" x="0.0" y="0.0" width="1024" height="1346"/>
+                                <rect key="frame" x="0.0" y="0.0" width="810" height="1080"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ballsNumberLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GSM-Pb-0ef">
-                                <rect key="frame" x="874" y="0.0" width="150" height="80"/>
+                                <rect key="frame" x="660" y="0.0" width="150" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="150" id="8DI-qN-DCk"/>
                                     <constraint firstAttribute="height" constant="80" id="Bht-be-TF2"/>
@@ -28,12 +28,21 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cannon" translatesAutoresizingMaskIntoConstraints="NO" id="Kds-e3-phd">
+                                <rect key="frame" x="305" y="0.0" width="200" height="106.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="Kds-e3-phd" secondAttribute="height" multiplier="239:127" id="Ety-xh-H9Z"/>
+                                    <constraint firstAttribute="width" constant="200" id="yKD-GL-jcJ"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="uCh-ex-ydv" secondAttribute="bottom" id="1JM-5f-8jg"/>
                             <constraint firstItem="uCh-ex-ydv" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="CJ0-nD-4Uy"/>
                             <constraint firstItem="uCh-ex-ydv" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="D85-uE-gxb"/>
+                            <constraint firstItem="Kds-e3-phd" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="J81-kh-khP"/>
+                            <constraint firstItem="Kds-e3-phd" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="KXC-X9-bRr"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="GSM-Pb-0ef" secondAttribute="trailing" id="MaN-To-ble"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="uCh-ex-ydv" secondAttribute="trailing" id="h7M-6x-n3O"/>
                             <constraint firstItem="GSM-Pb-0ef" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="yFM-8t-HVU"/>
@@ -43,14 +52,16 @@
                     <connections>
                         <outlet property="background" destination="uCh-ex-ydv" id="h1A-9s-m8Y"/>
                         <outlet property="ballsNumberLabel" destination="GSM-Pb-0ef" id="Avv-3J-J05"/>
+                        <outlet property="cannonImageView" destination="Kds-e3-phd" id="XWS-Za-jQe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="139" y="116"/>
+            <point key="canvasLocation" x="138.5185185185185" y="115.55555555555556"/>
         </scene>
     </scenes>
     <resources>
         <image name="background" width="4000" height="3000"/>
+        <image name="cannon" width="499" height="509"/>
     </resources>
 </document>
