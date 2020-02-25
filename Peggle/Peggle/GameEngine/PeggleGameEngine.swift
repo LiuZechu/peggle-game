@@ -279,7 +279,7 @@ class PeggleGameEngine {
         let originalX = cannonBall.location.x
 //        let newY = originalY - CGFloat(verticalDistance)
         let newX = originalX
-        let newY = 0 - Peg.radius
+        let newY = 0 - Peg.defaultRadius
         let newLocation = CGPoint(x: newX, y: newY)
         
         cannonBall.location = newLocation
@@ -288,8 +288,8 @@ class PeggleGameEngine {
     
     private func findPegFromLocation(at point: CGPoint) -> Peg? {
         let pegSet = gameboard.pegs.filter {
-            let isXWithinRange = abs($0.location.x - point.x) < Peg.radius
-            let isYWithinRange = abs($0.location.y - point.y) < Peg.radius
+            let isXWithinRange = abs($0.location.x - point.x) < Peg.defaultRadius
+            let isYWithinRange = abs($0.location.y - point.y) < Peg.defaultRadius
             return isXWithinRange && isYWithinRange
         }
         

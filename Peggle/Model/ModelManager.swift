@@ -26,8 +26,8 @@ class ModelManager: Model {
         currentGameBoard = newGameBoard
     }
     
-    func addPegToCurrentGameBoard(color: PegColor, location: CGPoint) -> Bool {
-        let peg = Peg(color: color, location: location)
+    func addPegToCurrentGameBoard(color: PegColor, location: CGPoint, shape: Shape) -> Bool {
+        let peg = Peg(color: color, location: location, shape: shape)
         return currentGameBoard.addPeg(toAdd: peg)
     }
     
@@ -60,8 +60,8 @@ class ModelManager: Model {
     
     private func findPegFromLocation(at point: CGPoint) -> Peg? {
         let pegSet = currentGameBoard.pegs.filter {
-            let isXWithinRange = abs($0.location.x - point.x) < Peg.radius
-            let isYWithinRange = abs($0.location.y - point.y) < Peg.radius
+            let isXWithinRange = abs($0.location.x - point.x) < Peg.defaultRadius
+            let isYWithinRange = abs($0.location.y - point.y) < Peg.defaultRadius
             return isXWithinRange && isYWithinRange
         }
         

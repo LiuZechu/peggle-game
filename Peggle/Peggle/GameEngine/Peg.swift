@@ -11,11 +11,14 @@ import struct CoreGraphics.CGPoint
 import struct CoreGraphics.CGFloat
 
 class Peg: Hashable {
-    static let radius: CGFloat = 20
+    static let defaultRadius: CGFloat = 20
     
     var powerup: Powerup?
     
     let color: PegColor
+    let shape: Shape
+    var radius: CGFloat
+    
     var location: CGPoint {
         get {
             let xComponent = physicsBody.position.xComponent
@@ -44,22 +47,27 @@ class Peg: Hashable {
     }
     private var hasPowerupBeenActivated = false
     
-    init(color: PegColor, location: CGPoint) {
+    init(color: PegColor, location: CGPoint, shape: Shape, radius: CGFloat = Peg.defaultRadius) {
         self.color = color
-        self.physicsBody = PhysicsBody(isMovable: false, radius: Double(Peg.radius),
+        self.shape = shape
+        self.radius = radius
+        self.physicsBody = PhysicsBody(isMovable: false, radius: Double(radius),
                                        initialPosition: location.toPosition())
     }
     
-    init(color: PegColor, location: CGPoint, powerup: Powerup) {
+    init(color: PegColor, location: CGPoint,
+         shape: Shape, radius: CGFloat = Peg.defaultRadius, powerup: Powerup) {
         self.color = color
-        self.physicsBody = PhysicsBody(isMovable: false, radius: Double(Peg.radius),
+        self.shape = shape
+        self.radius = radius
+        self.physicsBody = PhysicsBody(isMovable: false, radius: Double(radius),
                                        initialPosition: location.toPosition())
         self.powerup = powerup
     }
     
     func isOverlapping(with peg: Peg) -> Bool {
         let distance = getDistanceFrom(otherPeg: peg)
-        return distance < Double(Peg.radius * 2)
+        return distance < Double(self.radius + peg.radius)
     }
     
     func getDistanceFrom(otherPeg: Peg) -> Double {

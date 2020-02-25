@@ -8,19 +8,15 @@
 
 import UIKit
 
-protocol GetGameBoardDelegate {
-    func getGameBoard() -> GameBoard
-}
-
 class GameViewController: UIViewController, Renderer {
     
-    var delegate: GetGameBoardDelegate?
+    weak var delegate: GetGameBoardDelegate?
     private var gameEngine: PeggleGameEngine!
     
     private var isLaunchable: Bool = true // indicates whether the cannon ball is ready to be launched now
     private var isRestarted = false // indicates whether the previous game loop has ended and a new ball replenished
     
-    @IBOutlet var background: UIImageView!
+    @IBOutlet private var background: UIImageView!
     @IBOutlet private var ballsNumberLabel: UILabel!
     @IBOutlet private var cannonImageView: UIImageView!
     private var ballImageView: UIImageView!
@@ -39,7 +35,7 @@ class GameViewController: UIViewController, Renderer {
                                       lowerBoundary: Double(self.view.frame.maxY),
                                       gameboard: gameboard)
         gameEngine.addRenderer(renderer: self)
-        addDefaultPegImages()
+        addInitialPegImages()
         //enableBackgroundTapForLaunch() // change to dragging cannon
         gameEngine.setBallYPosition(yPosition: Double(cannonImageView.center.y))
         addBallToScreen()
@@ -71,7 +67,7 @@ class GameViewController: UIViewController, Renderer {
                            width: CGFloat(CannonBall.radius) * 2,
                            height: CGFloat(CannonBall.radius) * 2)
         let ballViewToAdd = UIImageView(frame: frame)
-        ballViewToAdd.layer.cornerRadius = Peg.radius
+        ballViewToAdd.layer.cornerRadius = Peg.defaultRadius
         ballViewToAdd.contentMode = .scaleAspectFit
         ballViewToAdd.image = ballImage
         self.view.addSubview(ballViewToAdd)
@@ -212,36 +208,55 @@ class GameViewController: UIViewController, Renderer {
         }
     }
 
-    private func addDefaultPegImages() {
+    private func addInitialPegImages() {
         let pegs = gameEngine.getAllPegs()
         for peg in pegs {
-            let pegImage = createPegImageView(at: peg.location, color: peg.color, isGlow: false)
+            let pegImage = createPegImageView(at: peg.location, color: peg.color,
+                                              shape: peg.shape, isGlow: false, radius: peg.radius)
             self.view.addSubview(pegImage)
             pegImages.append(pegImage)
         }
     }
     
     /// Creates a peg's image at corresponding location on the screen, with the specified color.
-    func createPegImageView(at location: CGPoint, color: PegColor, isGlow: Bool) -> UIImageView {
-        let frame = CGRect(x: location.x - Peg.radius, y: location.y - Peg.radius,
-                           width: Peg.radius * 2, height: Peg.radius * 2)
+    func createPegImageView(at location: CGPoint, color: PegColor, shape: Shape, isGlow: Bool,
+                            radius: CGFloat = Peg.defaultRadius) -> UIImageView {
+        let frame = CGRect(x: location.x - radius, y: location.y - radius,
+                           width: radius * 2, height: radius * 2)
         let imageToAdd = UIImageView(frame: frame)
-        imageToAdd.layer.cornerRadius = frame.height / 2
-        imageToAdd.layer.masksToBounds = true
+        if shape == .circle {
+            imageToAdd.layer.cornerRadius = frame.height / 2
+            imageToAdd.layer.masksToBounds = true
+        }
         imageToAdd.contentMode = .scaleAspectFit
         
         switch color {
         case .blue:
-            imageToAdd.image = isGlow ? UIImage(named: "peg-blue-glow") : UIImage(named: "peg-blue")
+            if shape == .circle {
+                imageToAdd.image = isGlow ? UIImage(named: "peg-blue-glow") : UIImage(named: "peg-blue")
+            } else {
+                imageToAdd.image = isGlow ? UIImage(named: "peg-blue-glow-triangle")
+                    : UIImage(named: "peg-blue-triangle")
+            }
         case .orange:
-            imageToAdd.image = isGlow ? UIImage(named: "peg-orange-glow") : UIImage(named: "peg-orange")
+            if shape == .circle {
+                imageToAdd.image = isGlow ? UIImage(named: "peg-orange-glow") : UIImage(named: "peg-orange")
+            } else {
+                imageToAdd.image = isGlow ? UIImage(named: "peg-orange-glow-triangle")
+                    : UIImage(named: "peg-orange-triangle")
+            }
         case .green:
-            imageToAdd.image = isGlow ? UIImage(named: "peg-green-glow") : UIImage(named: "peg-green")
+            if shape == .circle {
+                imageToAdd.image = isGlow ? UIImage(named: "peg-green-glow") : UIImage(named: "peg-green")
+            } else {
+                imageToAdd.image = isGlow ? UIImage(named: "peg-green-glow-triangle")
+                    : UIImage(named: "peg-green-triangle")
+            }
         }
-
+        
         return imageToAdd
     }
-    
+
     private func deleteAllGlowingPegs() {
         for image in glowPegImages {
             animateRemovalOfPeg(pegImage: image)
@@ -295,10 +310,11 @@ class GameViewController: UIViewController, Renderer {
         
         // light up pegs hit
         for peg in gameEngine.getPegsHit() {
-            for image in pegImages where image.containsLocation(location: peg.location, circleRadius: Peg.radius) {
+            for image in pegImages where image.containsLocation(location: peg.location,
+                                                                circleRadius: Peg.defaultRadius) {
                 let center = image.center
                 image.removeFromSuperview()
-                let glowImage = createPegImageView(at: center, color: peg.color, isGlow: true)
+                let glowImage = createPegImageView(at: center, color: peg.color, shape: peg.shape, isGlow: true)
                 self.view.addSubview(glowImage)
                 glowPegImages.append(glowImage)
             }
@@ -323,9 +339,9 @@ class GameViewController: UIViewController, Renderer {
     
     private func showInitialPopUp() {
         let alertTitle = "Start Game"
-        let alertMessage = "Drag on screen to rotate the Cannon" +
+        let alertMessage = "Drag on screen to rotate the Cannon " +
             "and release to launch the ball in that direction. " +
-            "Clear all orange pegs with at most 10 balls to win." +
+            "Clear all orange pegs with at most 10 balls to win. " +
             "Choose a Powerup below!"
         
         let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
@@ -342,7 +358,8 @@ class GameViewController: UIViewController, Renderer {
     // called after all the pegs are removed
     private func showFinalPopUp() {
         let hasWon = gameEngine.hasWon()
-        let alertTitle = hasWon ? "You won! You've cleared all the orange pegs" : "You lost! You've run out of balls."
+        let alertTitle = hasWon ? "You won! You've cleared all the orange pegs"
+            : "You lost! You've run out of balls."
         let alertMessage = ""
         
         let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)

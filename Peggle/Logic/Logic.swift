@@ -17,7 +17,7 @@ protocol Logic {
     
     func nameCurrentGameBoard(name: String)
     
-    func addPegToCurrentGameBoard(color: PegColor, location: CGPoint) -> Bool
+    func addPegToCurrentGameBoard(color: PegColor, location: CGPoint, shape: Shape) -> Bool
     
     func removePegFromCurrentGameBoard(at location: CGPoint) -> Bool
     
@@ -38,7 +38,8 @@ protocol Logic {
     
     func fetchGameBoardByName(name: String) -> GameBoard?
     
-    func getColorsAndLocationsOfAllPegs(gameBoardName: String) -> [(PegColor, CGPoint)]
+    //func getColorsAndLocationsOfAllPegs(gameBoardName: String) -> [(PegColor, CGPoint)]
+    func getAllPegsInGameBoard(gameBoardName: String) -> Set<Peg>
     
     func isFirstGameBoard() -> Bool
 }

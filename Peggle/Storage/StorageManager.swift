@@ -115,17 +115,28 @@ class StorageManager: Storage {
         var pegs = [Peg]()
         
         for pegMO in pegMOs {
-            let pegColorBool = (pegMO as AnyObject).value(forKeyPath: "color") as? Int
-            var pegColor: PegColor
-            if pegColorBool == 1 {
-                pegColor = PegColor.blue
+            let pegColorString = (pegMO as AnyObject).value(forKeyPath: "color") as? String
+            let pegColor: PegColor
+            if pegColorString == "blue" {
+                pegColor = .blue
+            } else if pegColorString == "orange" {
+                pegColor = .orange
             } else {
-                pegColor = PegColor.orange
+                pegColor = .green
             }
+            let pegShapeString = (pegMO as AnyObject).value(forKeyPath: "shape") as? String
+            let pegShape: Shape
+            if pegShapeString == "circle" {
+                pegShape = .circle
+            } else {
+                pegShape = .equilateralTriangle
+            }
+            let radius = (pegMO as AnyObject).value(forKeyPath: "radius") as? Double ?? Double(Peg.defaultRadius)
             let xLocation = (pegMO as AnyObject).value(forKeyPath: "xPosition") as? Double ?? 0.0
             let yLocation = (pegMO as AnyObject).value(forKeyPath: "yPosition") as? Double ?? 0.0
             
-            let peg = Peg(color: pegColor, location: CGPoint(x: xLocation, y: yLocation))
+            let peg = Peg(color: pegColor, location: CGPoint(x: xLocation, y: yLocation),
+                          shape: pegShape, radius: CGFloat(radius))
             pegs.append(peg)
         }
         
@@ -145,13 +156,31 @@ class StorageManager: Storage {
         for peg in gameBoard.pegs {
             let entity = NSEntityDescription.entity(forEntityName: "Peg", in: managedContext)!
             let pegMO = NSManagedObject(entity: entity, insertInto: managedContext)
-            let pegColorBoolean = peg.color == .blue
+            let pegColorString: String
+            switch peg.color {
+            case .blue:
+                pegColorString = "blue"
+            case .orange:
+                pegColorString = "orange"
+            case .green:
+                pegColorString = "green"
+            }
+            let pegShapeString: String
+            switch peg.shape {
+            case .circle:
+                pegShapeString = "circle"
+            case .equilateralTriangle:
+                pegShapeString = "equilateralTriangle"
+            }
             let pegXPosition = Double(peg.location.x)
             let pegYPosition = Double(peg.location.y)
+            let pegRadius = Double(peg.radius)
             
-            pegMO.setValue(pegColorBoolean, forKeyPath: "color")
+            pegMO.setValue(pegColorString, forKeyPath: "color")
             pegMO.setValue(pegXPosition, forKeyPath: "xPosition")
             pegMO.setValue(pegYPosition, forKeyPath: "yPosition")
+            pegMO.setValue(pegShapeString, forKey: "shape")
+            pegMO.setValue(pegRadius, forKey: "radius")
 
             pegMOs.append(pegMO)
         }

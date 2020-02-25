@@ -45,6 +45,9 @@
 		F3161F742404E5D80016D088 /* LogicManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F682404E5D80016D088 /* LogicManager.swift */; };
 		F344688D24050E1B00E5B9E0 /* MenuScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F344688C24050E1B00E5B9E0 /* MenuScreenViewController.swift */; };
 		F344688F24052D8500E5B9E0 /* LoadGameBoardDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F344688E24052D8500E5B9E0 /* LoadGameBoardDelegate.swift */; };
+		F3BAA46024055BAB0061E9A3 /* GetGameBoardDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BAA45F24055BAB0061E9A3 /* GetGameBoardDelegate.swift */; };
+		F3BAA462240562D10061E9A3 /* LevelDesignerAlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BAA461240562D10061E9A3 /* LevelDesignerAlertManager.swift */; };
+		F3BAA46424056C110061E9A3 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BAA46324056C110061E9A3 /* Button.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +118,9 @@
 		F3161F682404E5D80016D088 /* LogicManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogicManager.swift; sourceTree = "<group>"; };
 		F344688C24050E1B00E5B9E0 /* MenuScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScreenViewController.swift; sourceTree = "<group>"; };
 		F344688E24052D8500E5B9E0 /* LoadGameBoardDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadGameBoardDelegate.swift; sourceTree = "<group>"; };
+		F3BAA45F24055BAB0061E9A3 /* GetGameBoardDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetGameBoardDelegate.swift; sourceTree = "<group>"; };
+		F3BAA461240562D10061E9A3 /* LevelDesignerAlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelDesignerAlertManager.swift; sourceTree = "<group>"; };
+		F3BAA46324056C110061E9A3 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -266,6 +272,9 @@
 				F3161F5C2404E5D70016D088 /* LevelTableViewController.swift */,
 				F344688C24050E1B00E5B9E0 /* MenuScreenViewController.swift */,
 				F344688E24052D8500E5B9E0 /* LoadGameBoardDelegate.swift */,
+				F3BAA45F24055BAB0061E9A3 /* GetGameBoardDelegate.swift */,
+				F3BAA461240562D10061E9A3 /* LevelDesignerAlertManager.swift */,
+				F3BAA46324056C110061E9A3 /* Button.swift */,
 			);
 			path = UI;
 			sourceTree = SOURCE_ROOT;
@@ -532,6 +541,7 @@
 				F3161EFA240270A20016D088 /* SceneDelegate.swift in Sources */,
 				F3161F4E240373280016D088 /* CannonBall.swift in Sources */,
 				F344688F24052D8500E5B9E0 /* LoadGameBoardDelegate.swift in Sources */,
+				F3BAA46024055BAB0061E9A3 /* GetGameBoardDelegate.swift in Sources */,
 				F3161F3D240372720016D088 /* Renderer.swift in Sources */,
 				F3161F692404E5D80016D088 /* LevelDesignerViewController.swift in Sources */,
 				F3161F50240373280016D088 /* PeggleGameEngine.swift in Sources */,
@@ -539,6 +549,7 @@
 				F3161F6B2404E5D80016D088 /* LevelTableViewController.swift in Sources */,
 				F3161F54240381160016D088 /* Bucket.swift in Sources */,
 				F3161F6C2404E5D80016D088 /* Model.swift in Sources */,
+				F3BAA462240562D10061E9A3 /* LevelDesignerAlertManager.swift in Sources */,
 				F3161F02240270A20016D088 /* Peggle.xcdatamodeld in Sources */,
 				F3161F52240373280016D088 /* GameBoard.swift in Sources */,
 				F3161F562404BE9B0016D088 /* Powerup.swift in Sources */,
@@ -547,6 +558,7 @@
 				F3161F6A2404E5D80016D088 /* LevelTableViewCell.swift in Sources */,
 				F3161F4F240373280016D088 /* Peg.swift in Sources */,
 				F3161F582404D38D0016D088 /* Shape.swift in Sources */,
+				F3BAA46424056C110061E9A3 /* Button.swift in Sources */,
 				F3161F44240373200016D088 /* PhysicsEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

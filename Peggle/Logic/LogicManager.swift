@@ -27,8 +27,8 @@ class LogicManager: Logic {
         return storage.isFirstGameBoard()
     }
     
-    func addPegToCurrentGameBoard(color: PegColor, location: CGPoint) -> Bool {
-        return model.addPegToCurrentGameBoard(color: color, location: location)
+    func addPegToCurrentGameBoard(color: PegColor, location: CGPoint, shape: Shape) -> Bool {
+        return model.addPegToCurrentGameBoard(color: color, location: location, shape: shape)
     }
     
     func removePegFromCurrentGameBoard(at location: CGPoint) -> Bool {
@@ -72,15 +72,20 @@ class LogicManager: Logic {
         }
     }
     
-    func getColorsAndLocationsOfAllPegs(gameBoardName: String) -> [(PegColor, CGPoint)] {
+//    func getColorsAndLocationsOfAllPegs(gameBoardName: String) -> [(PegColor, CGPoint)] {
+//        let gameBoard = fetchGameBoardByName(name: gameBoardName)
+//        var pegColorsAndLocations = [(PegColor, CGPoint)]()
+//        for peg in gameBoard?.pegs ?? [] {
+//            let color = peg.color
+//            let location = peg.location
+//            pegColorsAndLocations.append((color, location))
+//        }
+//        
+//        return pegColorsAndLocations
+//    }
+    
+    func getAllPegsInGameBoard(gameBoardName: String) -> Set<Peg> {
         let gameBoard = fetchGameBoardByName(name: gameBoardName)
-        var pegColorsAndLocations = [(PegColor, CGPoint)]()
-        for peg in gameBoard?.pegs ?? [] {
-            let color = peg.color
-            let location = peg.location
-            pegColorsAndLocations.append((color, location))
-        }
-        
-        return pegColorsAndLocations
+        return gameBoard?.pegs ?? Set<Peg>()
     }
 }

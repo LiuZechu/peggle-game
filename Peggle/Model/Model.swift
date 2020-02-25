@@ -16,7 +16,7 @@ protocol Model {
     
     func changeCurrentGameBoard(newGameBoard: GameBoard)
     
-    func addPegToCurrentGameBoard(color: PegColor, location: CGPoint) -> Bool
+    func addPegToCurrentGameBoard(color: PegColor, location: CGPoint, shape: Shape) -> Bool
     
     func removePegFromCurrentGameBoard(at location: CGPoint) -> Bool
     
