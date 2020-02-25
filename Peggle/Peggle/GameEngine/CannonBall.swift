@@ -13,10 +13,19 @@ struct CannonBall {
     static let radius = 20.0
     
     var location: CGPoint {
-        let xCoord = physicsBody.position.xComponent
-        let yCoord = physicsBody.position.yComponent
+        
+        get {
+            let xCoord = physicsBody.position.xComponent
+            let yCoord = physicsBody.position.yComponent
 
-        return CGPoint(x: xCoord, y: yCoord)
+            return CGPoint(x: xCoord, y: yCoord)
+        }
+        
+        set {
+            let xCoord = Double(newValue.x)
+            let yCoord = Double(newValue.y)
+            physicsBody.position = Position(xComponent: xCoord, yComponent: yCoord)
+        }
     }
     let physicsBody: PhysicsBody
     

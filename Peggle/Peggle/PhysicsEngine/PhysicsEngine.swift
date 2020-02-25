@@ -100,15 +100,15 @@ class PhysicsEngine {
                 resolveVerticalReflectionFromWall(movableBody: body)
             }
 
-            // anything out of the lower bound will be removed
-            if bodyOutOfLowerBound(body: body) {
-                movableBodies.remove(body)
-            }
+//            // anything out of the lower bound will be removed
+//            if bodyOutOfLowerBound(body: body) {
+//                movableBodies.remove(body)
+//            }
         }
     }
     
     /// Determines whether the specified body exceeds the lower boundary of this physics space.
-    func bodyOutOfLowerBound(body: PhysicsBody) -> Bool {
+    func isBodyOutOfLowerBound(body: PhysicsBody) -> Bool {
         return (body.position.yComponent - body.radius) > lowerBoundary
     }
     

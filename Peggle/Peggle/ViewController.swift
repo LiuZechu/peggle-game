@@ -29,7 +29,7 @@ class ViewController: UIViewController, Renderer {
         gameEngine = PeggleGameEngine(leftBoundary: Double(self.view.frame.minX),
                                       rightBoundary: Double(self.view.frame.maxX),
                                       upperBoundary: Double(self.view.frame.minY),
-                                      lowerBoudary: Double(self.view.frame.maxY))
+                                      lowerBoundary: Double(self.view.frame.maxY))
         gameEngine.addRenderer(renderer: self)
         addDefaultPegImages()
         //enableBackgroundTapForLaunch() // change to dragging cannon
@@ -222,18 +222,13 @@ class ViewController: UIViewController, Renderer {
         imageToAdd.layer.masksToBounds = true
         imageToAdd.contentMode = .scaleAspectFit
         
-        if color == .blue {
-            if isGlow {
-                imageToAdd.image = UIImage(named: "peg-blue-glow")
-            } else {
-                imageToAdd.image = UIImage(named: "peg-blue")
-            }
-        } else {
-            if isGlow {
-                imageToAdd.image = UIImage(named: "peg-orange-glow")
-            } else {
-                imageToAdd.image = UIImage(named: "peg-orange")
-            }
+        switch color {
+        case .blue:
+            imageToAdd.image = isGlow ? UIImage(named: "peg-blue-glow") : UIImage(named: "peg-blue")
+        case .orange:
+            imageToAdd.image = isGlow ? UIImage(named: "peg-orange-glow") : UIImage(named: "peg-orange")
+        case .green:
+            imageToAdd.image = isGlow ? UIImage(named: "peg-green-glow") : UIImage(named: "peg-green")
         }
 
         return imageToAdd
@@ -302,7 +297,7 @@ class ViewController: UIViewController, Renderer {
         }
         
         // delete pegs when ball flies out
-        if gameEngine.isBallOutOfBounds() && !isRestarted {
+        if gameEngine.isBallOutOfBounds() && !isRestarted && !gameEngine.isSpookyBallTriggered {
             deleteAllGlowingPegs()
             isRestarted = true
         }

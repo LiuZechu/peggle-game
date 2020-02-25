@@ -7,5 +7,5 @@
 //
 
 enum PegColor {
-    case blue, orange
+    case blue, orange, green
 }

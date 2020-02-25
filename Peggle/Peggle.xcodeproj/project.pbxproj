@@ -32,6 +32,7 @@
 		F3161F51240373280016D088 /* PegColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F4C240373280016D088 /* PegColor.swift */; };
 		F3161F52240373280016D088 /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F4D240373280016D088 /* GameBoard.swift */; };
 		F3161F54240381160016D088 /* Bucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F53240381160016D088 /* Bucket.swift */; };
+		F3161F562404BE9B0016D088 /* Powerup.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F552404BE9B0016D088 /* Powerup.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		F3161F4C240373280016D088 /* PegColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PegColor.swift; sourceTree = "<group>"; };
 		F3161F4D240373280016D088 /* GameBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
 		F3161F53240381160016D088 /* Bucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bucket.swift; sourceTree = "<group>"; };
+		F3161F552404BE9B0016D088 /* Powerup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Powerup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,6 +224,7 @@
 				F3161F4C240373280016D088 /* PegColor.swift */,
 				F3161F4D240373280016D088 /* GameBoard.swift */,
 				F3161F53240381160016D088 /* Bucket.swift */,
+				F3161F552404BE9B0016D088 /* Powerup.swift */,
 			);
 			path = GameEngine;
 			sourceTree = "<group>";
@@ -461,6 +464,7 @@
 				F3161F54240381160016D088 /* Bucket.swift in Sources */,
 				F3161F02240270A20016D088 /* Peggle.xcdatamodeld in Sources */,
 				F3161F52240373280016D088 /* GameBoard.swift in Sources */,
+				F3161F562404BE9B0016D088 /* Powerup.swift in Sources */,
 				F3161F45240373200016D088 /* Vector.swift in Sources */,
 				F3161F4F240373280016D088 /* Peg.swift in Sources */,
 				F3161F44240373200016D088 /* PhysicsEngine.swift in Sources */,

@@ -10,7 +10,8 @@ import Foundation
 import UIKit
 
 class PeggleGameEngine {
-    static let initialBallSpeed: Double = 200
+    static let initialBallSpeed: Double = 300
+    static let spaceBlastRadius: Double = 100
 
     private let physicsEngine: PhysicsEngine
     private let gameboard: GameBoard
@@ -21,6 +22,8 @@ class PeggleGameEngine {
     
     private let leftBoundary: Double
     private let rightBoundary: Double
+    private let upperBoundary: Double
+    private let lowerBoundary: Double
     
     private var displayLink: CADisplayLink!
     private var renderer: Renderer!
@@ -37,25 +40,27 @@ class PeggleGameEngine {
     }
     
     private var hasBallEntered: Bool = false
-    
     private var isGameLoopStopped: Bool = true
+    var isSpookyBallTriggered: Bool = false
 
-    init(leftBoundary: Double, rightBoundary: Double, upperBoundary: Double, lowerBoudary: Double) {
+    init(leftBoundary: Double, rightBoundary: Double, upperBoundary: Double, lowerBoundary: Double) {
         physicsEngine = PhysicsEngine(leftBoundary: leftBoundary,
                                       rightBoundary: rightBoundary,
                                       upperBoundary: upperBoundary,
-                                      lowerBoundary: lowerBoudary)
+                                      lowerBoundary: lowerBoundary)
         gameboard = GameBoard(name: "default level")
         cannonBallInitialXPosition = (rightBoundary - leftBoundary) / 2
         cannonBall = CannonBall(xPosition: cannonBallInitialXPosition)
        
         // ARBITRARY FOR NOW
-        bucket = Bucket(upperBoundary: lowerBoudary - 150, width: 150,
+        bucket = Bucket(upperBoundary: lowerBoundary - 150, width: 150,
                         bottomCenterLocation: CGPoint(x: rightBoundary / 2,
-                                                      y: lowerBoudary))
+                                                      y: lowerBoundary))
         
         self.leftBoundary = leftBoundary
         self.rightBoundary = rightBoundary
+        self.upperBoundary = upperBoundary
+        self.lowerBoundary = lowerBoundary
         
         addDefaultPegs()
         _ = physicsEngine.addPhysicsBody(cannonBall.physicsBody)
@@ -98,7 +103,7 @@ class PeggleGameEngine {
         hasBallEntered = false
         
         // when there's no more balls, increase back to 10
-        if numberOfBallsLeft == 0 {
+        if hasWon() || hasLost() {
             numberOfBallsLeft = PeggleGameEngine.totalNumberOfBalls
         }
     }
@@ -110,6 +115,15 @@ class PeggleGameEngine {
     @objc func update(updater: CADisplayLink) {
         physicsEngine.update()
         renderer.render()
+        
+        // if the ball is out of bounds, remove it
+        if physicsEngine.isBodyOutOfLowerBound(body: cannonBall.physicsBody) {
+            if isSpookyBallTriggered {
+                teleportBallToCeiling()
+            } else {
+                _ = physicsEngine.removePhysicsBody(cannonBall.physicsBody)
+            }
+        }
         
         // move the bucket
         if bucket.hitsLeftBoundary(leftBoundary: leftBoundary)
@@ -126,6 +140,15 @@ class PeggleGameEngine {
                 incrementBallCount()
             }
             hasBallEntered = true
+        }
+        
+        // trigger powerups
+        for peg in getAllPegs() where peg.isPowerupActivated() {
+            if peg.powerup == Powerup.spaceBlast {
+                triggerSpaceBlast(centerPeg: peg)
+            } else if peg.powerup == Powerup.spookyBall {
+                triggerSpookyBall()
+            }
         }
     }
     
@@ -147,7 +170,7 @@ class PeggleGameEngine {
     }
     
     func isBallOutOfBounds() -> Bool {
-        return physicsEngine.bodyOutOfLowerBound(body: cannonBall.physicsBody)
+        return physicsEngine.isBodyOutOfLowerBound(body: cannonBall.physicsBody)
     }
     
     func isBallInsideBucket() -> Bool {
@@ -171,13 +194,20 @@ class PeggleGameEngine {
     
     // add default pegs to game board and physics engine
     func addDefaultPegs() {
-        for row in 1...4 {
-            for col in 1...3 {
-                let xCoord = col * 200
-                let yCoord = row * 200
+        for row in 2...6 {
+            for col in 1...5 {
+                let xCoord = col * 100
+                let yCoord = row * 100
                 let location = CGPoint(x: xCoord, y: yCoord)
-                let color = (row + col) % 2 == 0 ? PegColor.blue : PegColor.orange
+                //let color = (row + col) % 2 == 0 ? PegColor.blue : PegColor.orange
+                let color = (row + col) % 3 == 0 ?
+                    PegColor.blue : (row + col) % 3 == 1 ? PegColor.orange : PegColor.green
+                
                 let pegToAdd = Peg(color: color, location: location)
+                // TEMPORARY
+                if color == .green {
+                    pegToAdd.powerup = .spookyBall
+                }
                 
                 _ = gameboard.addPeg(toAdd: pegToAdd)
                 _ = physicsEngine.addPhysicsBody(pegToAdd.physicsBody)
@@ -202,6 +232,35 @@ class PeggleGameEngine {
     
     func hasLost() -> Bool {
         return numberOfOrangePegsLeft != 0 && numberOfBallsLeft <= 0
+    }
+    
+    // POWERUPS
+    func triggerSpaceBlast(centerPeg: Peg) {
+        let affectedPegs = getAllPegs().filter {
+            $0.getDistanceFrom(otherPeg: centerPeg) <= PeggleGameEngine.spaceBlastRadius
+        }
+        
+        for peg in affectedPegs {
+            print("here")
+            peg.isHit = true
+        }
+    }
+    
+    func triggerSpookyBall() {
+        isSpookyBallTriggered = true
+    }
+    
+    func teleportBallToCeiling() {
+//        let verticalDistance = lowerBoundary - upperBoundary
+//        let originalY = cannonBall.location.y
+        let originalX = cannonBall.location.x
+//        let newY = originalY - CGFloat(verticalDistance)
+        let newX = originalX
+        let newY = 0 - Peg.radius
+        let newLocation = CGPoint(x: newX, y: newY)
+        
+        cannonBall.location = newLocation
+        isSpookyBallTriggered = false
     }
     
     private func findPegFromLocation(at point: CGPoint) -> Peg? {

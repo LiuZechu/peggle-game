@@ -13,6 +13,8 @@ import struct CoreGraphics.CGFloat
 class Peg: Hashable {
     static let radius: CGFloat = 20
     
+    var powerup: Powerup?
+    
     let color: PegColor
     var location: CGPoint {
         get {
@@ -30,7 +32,17 @@ class Peg: Hashable {
     }
     
     let physicsBody: PhysicsBody
-    var isHit = false
+    //var isHit = false
+    var isHit: Bool {
+        get {
+            return physicsBody.isHit
+        }
+        
+        set {
+            physicsBody.isHit = newValue
+        }
+    }
+    private var hasPowerupBeenActivated = false
     
     init(color: PegColor, location: CGPoint) {
         self.color = color
@@ -38,9 +50,21 @@ class Peg: Hashable {
                                        initialPosition: location.toPosition())
     }
     
+    init(color: PegColor, location: CGPoint, powerup: Powerup) {
+        self.color = color
+        self.physicsBody = PhysicsBody(isMovable: false, radius: Double(Peg.radius),
+                                       initialPosition: location.toPosition())
+        self.powerup = powerup
+    }
+    
     func isOverlapping(with peg: Peg) -> Bool {
+        let distance = getDistanceFrom(otherPeg: peg)
+        return distance < Double(Peg.radius * 2)
+    }
+    
+    func getDistanceFrom(otherPeg: Peg) -> Double {
         let thisLocation = location
-        let otherLocation = peg.location
+        let otherLocation = otherPeg.location
         
         let xDiff = Double(abs(thisLocation.x - otherLocation.x))
         let yDiff = Double(abs(thisLocation.y - otherLocation.y))
@@ -49,7 +73,15 @@ class Peg: Hashable {
         let yDiffSquared = pow(yDiff, 2.0)
         let distance = (xDiffSquared + yDiffSquared).squareRoot()
         
-        return distance < Double(Peg.radius * 2)
+        return distance
+    }
+    
+    func isPowerupActivated() -> Bool {
+        let result = color == .green && isHit == true && hasPowerupBeenActivated == false
+        if result {
+            hasPowerupBeenActivated = true
+        }
+        return result
     }
     
     func hash(into hasher: inout Hasher) {
