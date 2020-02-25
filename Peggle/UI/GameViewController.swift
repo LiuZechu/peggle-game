@@ -8,8 +8,13 @@
 
 import UIKit
 
+protocol GetGameBoardDelegate {
+    func getGameBoard() -> GameBoard
+}
+
 class GameViewController: UIViewController, Renderer {
     
+    var delegate: GetGameBoardDelegate?
     private var gameEngine: PeggleGameEngine!
     
     private var isLaunchable: Bool = true // indicates whether the cannon ball is ready to be launched now
@@ -26,10 +31,13 @@ class GameViewController: UIViewController, Renderer {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let gameboard = delegate?.getGameBoard() ?? GameBoard(name: "default gameboard")
+        
         gameEngine = PeggleGameEngine(leftBoundary: Double(self.view.frame.minX),
                                       rightBoundary: Double(self.view.frame.maxX),
                                       upperBoundary: Double(self.view.frame.minY),
-                                      lowerBoundary: Double(self.view.frame.maxY))
+                                      lowerBoundary: Double(self.view.frame.maxY),
+                                      gameboard: gameboard)
         gameEngine.addRenderer(renderer: self)
         addDefaultPegImages()
         //enableBackgroundTapForLaunch() // change to dragging cannon
@@ -315,10 +323,18 @@ class GameViewController: UIViewController, Renderer {
     
     private func showInitialPopUp() {
         let alertTitle = "Start Game"
-        let alertMessage = "Tap anywhere below the grey ball to launch the ball in that direction. Have fun!"
+        let alertMessage = "Drag on screen to rotate the Cannon" +
+            "and release to launch the ball in that direction. " +
+            "Clear all orange pegs with at most 10 balls to win." +
+            "Choose a Powerup below!"
         
         let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Space Blast", style: .default) { _ in
+            self.gameEngine.setPowerUp(powerup: .spaceBlast)
+        })
+        alert.addAction(UIAlertAction(title: "Spooky Ball", style: .default) { _ in
+            self.gameEngine.setPowerUp(powerup: .spookyBall)
+        })
 
         self.present(alert, animated: true, completion: nil)
     }
@@ -327,11 +343,12 @@ class GameViewController: UIViewController, Renderer {
     private func showFinalPopUp() {
         let hasWon = gameEngine.hasWon()
         let alertTitle = hasWon ? "You won! You've cleared all the orange pegs" : "You lost! You've run out of balls."
-        let alertMessage = "Restart another round?"
+        let alertMessage = ""
         
         let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Restart", style: .cancel) { _ in
-            self.restartAnotherRound()
+        alert.addAction(UIAlertAction(title: "Return to Main Menu", style: .cancel) { _ in
+            //self.restartAnotherRound()
+            self.returnToMainMenu()
         })
 
         self.present(alert, animated: true, completion: nil)
@@ -347,10 +364,30 @@ class GameViewController: UIViewController, Renderer {
         self.present(alert, animated: true, completion: nil)
     }
     
-    @objc private func restartAnotherRound() {
-        gameEngine.addDefaultPegs()
-        addDefaultPegImages()
-        updateBallsNumberLabel()
+//    @objc private func restartAnotherRound() {
+        // CHANGE TO RETURN TO MAIN MENU OR SOMETHING
+        
+//        gameEngine.addDefaultPegs()
+//        addDefaultPegImages()
+//        updateBallsNumberLabel()
+//    }
+    
+    @IBAction private func handleBackButtonTap(_ sender: Any) {
+        let alertTitle = "Return to Main Menu?"
+        let alertMessage = "Are you sure to exit? Game progress will not be saved."
+        
+        let alert = UIAlertController(title: alertTitle, message: alertMessage,
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Yes", style: .default) { _ in
+            self.returnToMainMenu()
+        })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    @objc private func returnToMainMenu() {
+        performSegue(withIdentifier: "backToMainFromGame", sender: self)
     }
     
     override var prefersStatusBarHidden: Bool {

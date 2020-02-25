@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class LevelDesignerViewController: UIViewController {
     
     private var logic: Logic!
         
@@ -237,6 +237,24 @@ class ViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
+    @IBAction func handleBackButtonTap(_ sender: Any) {
+        let alertTitle = "Return to Main Menu"
+        let alertMessage = "Are you sure you want to exit? Any unsaved work will be lost."
+        let alert = UIAlertController(title: alertTitle, message: alertMessage,
+                                      preferredStyle: UIAlertController.Style.alert)
+
+        // add the actions (buttons)
+        alert.addAction(UIAlertAction(title: "Yes", style: UIAlertAction.Style.default,
+                                      handler: self.goBackToMainMenu))
+        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
+
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func goBackToMainMenu(_ sender: UIAlertAction) {
+        performSegue(withIdentifier: "backToMainFromDesigner", sender: self)
+    }
+    
     func showNameLevelDialogue() {
         let alertTitle = "Enter level name"
         let alertMessage = "Or rename the current level"
@@ -321,6 +339,10 @@ class ViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
+    @IBAction private func startGame(_ sender: UIButton) {
+        // something
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showAllLevelNames" {
             if let levelTableViewController: LevelTableViewController =
@@ -328,12 +350,26 @@ class ViewController: UIViewController {
                 levelTableViewController.delegate = self
                 levelTableViewController.logic = logic
             }
+        } else if segue.identifier == "startGame" {
+            if let gameViewCongtroller: GameViewController =
+                segue.destination as? GameViewController {
+                gameViewCongtroller.delegate = self
+            }
         }
     }
     
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
 }
 
-extension ViewController: LoadGameBoardDelegate {
+extension LevelDesignerViewController: GetGameBoardDelegate {
+    func getGameBoard() -> GameBoard {
+        return logic.getCurrentGameBoard()
+    }
+}
+
+extension LevelDesignerViewController: LoadGameBoardDelegate {
     func loadGameBoard(name: String) {
         self.dismiss(animated: true) {
             // clear previous peg images

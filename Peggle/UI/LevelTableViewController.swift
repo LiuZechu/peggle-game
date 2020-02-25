@@ -8,14 +8,11 @@
 
 import UIKit
 
-protocol LoadGameBoardDelegate {
-    func loadGameBoard(name: String)
-}
-
 class LevelTableViewController: UITableViewController {
     var logic: Logic!
-    var delegate: LoadGameBoardDelegate?
+    weak var delegate: LoadGameBoardDelegate?
     private var levelNames = [String]()
+    private var levelNameSelected: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,8 +51,25 @@ class LevelTableViewController: UITableViewController {
         guard let cell = tableView.cellForRow(at: indexPath) as? LevelTableViewCell else {
             return
         }
-        let levelNameSelected = cell.levelLabel.text ?? "[unnamed]"
+        
+        levelNameSelected = cell.levelLabel.text ?? "[unnamed]"
         delegate?.loadGameBoard(name: levelNameSelected)
+        self.performSegue(withIdentifier: "startGameWithLoadedLevel", sender: self)
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "startGameWithLoadedLevel" {
+             if let gameViewController: GameViewController =
+                 segue.destination as? GameViewController {
+                gameViewController.delegate = self
+             }
+        }
+    }
+}
+
+extension LevelTableViewController: GetGameBoardDelegate {
+    func getGameBoard() -> GameBoard {
+        return logic.fetchGameBoardByName(name: levelNameSelected) ??
+            GameBoard(name: "default level")
+    }
 }

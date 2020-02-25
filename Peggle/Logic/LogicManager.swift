@@ -19,6 +19,10 @@ class LogicManager: Logic {
         self.storage = storage
     }
     
+    func getCurrentGameBoard() -> GameBoard {
+        return model.getCurrentGameBoard()
+    }
+    
     func isFirstGameBoard() -> Bool {
         return storage.isFirstGameBoard()
     }

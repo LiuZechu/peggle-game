@@ -41,14 +41,18 @@ class PeggleGameEngine {
     
     private var hasBallEntered: Bool = false
     private var isGameLoopStopped: Bool = true
+    private var typeOfPowerupChosen: Powerup!
     var isSpookyBallTriggered: Bool = false
 
-    init(leftBoundary: Double, rightBoundary: Double, upperBoundary: Double, lowerBoundary: Double) {
+    init(leftBoundary: Double, rightBoundary: Double,
+         upperBoundary: Double, lowerBoundary: Double,
+         gameboard: GameBoard) {
         physicsEngine = PhysicsEngine(leftBoundary: leftBoundary,
                                       rightBoundary: rightBoundary,
                                       upperBoundary: upperBoundary,
                                       lowerBoundary: lowerBoundary)
-        gameboard = GameBoard(name: "default level")
+        //gameboard = GameBoard(name: "default level")
+        self.gameboard = gameboard
         cannonBallInitialXPosition = (rightBoundary - leftBoundary) / 2
         cannonBall = CannonBall(xPosition: cannonBallInitialXPosition)
        
@@ -62,7 +66,10 @@ class PeggleGameEngine {
         self.upperBoundary = upperBoundary
         self.lowerBoundary = lowerBoundary
         
-        addDefaultPegs()
+        // addDefaultPegs()
+        
+        // set up the physics engine simulation
+        addPhysicsBodiesForPegs()
         _ = physicsEngine.addPhysicsBody(cannonBall.physicsBody)
     }
     
@@ -192,26 +199,32 @@ class PeggleGameEngine {
         cannonBall.physicsBody.launch(angle: angle, speed: initialSpeed)
     }
     
-    // add default pegs to game board and physics engine
-    func addDefaultPegs() {
-        for row in 2...6 {
-            for col in 1...5 {
-                let xCoord = col * 100
-                let yCoord = row * 100
-                let location = CGPoint(x: xCoord, y: yCoord)
-                //let color = (row + col) % 2 == 0 ? PegColor.blue : PegColor.orange
-                let color = (row + col) % 3 == 0 ?
-                    PegColor.blue : (row + col) % 3 == 1 ? PegColor.orange : PegColor.green
-                
-                let pegToAdd = Peg(color: color, location: location)
-                // TEMPORARY
-                if color == .green {
-                    pegToAdd.powerup = .spookyBall
-                }
-                
-                _ = gameboard.addPeg(toAdd: pegToAdd)
-                _ = physicsEngine.addPhysicsBody(pegToAdd.physicsBody)
-            }
+//    // add default pegs to game board and physics engine
+//    func addDefaultPegs() {
+//        for row in 2...6 {
+//            for col in 1...5 {
+//                let xCoord = col * 100
+//                let yCoord = row * 100
+//                let location = CGPoint(x: xCoord, y: yCoord)
+//                //let color = (row + col) % 2 == 0 ? PegColor.blue : PegColor.orange
+//                let color = (row + col) % 3 == 0 ?
+//                    PegColor.blue : (row + col) % 3 == 1 ? PegColor.orange : PegColor.green
+//
+//                let pegToAdd = Peg(color: color, location: location)
+//                // TEMPORARY
+//                if color == .green {
+//                    pegToAdd.powerup = .spookyBall
+//                }
+//
+//                _ = gameboard.addPeg(toAdd: pegToAdd)
+//                _ = physicsEngine.addPhysicsBody(pegToAdd.physicsBody)
+//            }
+//        }
+//    }
+    
+    private func addPhysicsBodiesForPegs() {
+        for peg in gameboard.pegs {
+            _ = physicsEngine.addPhysicsBody(peg.physicsBody)
         }
     }
     
@@ -248,6 +261,16 @@ class PeggleGameEngine {
     
     func triggerSpookyBall() {
         isSpookyBallTriggered = true
+    }
+    
+    func setPowerUp(powerup: Powerup) {
+        typeOfPowerupChosen = powerup
+        
+        // go through all the green pegs in game engine and
+        // make sure they are set to the correct powerup
+        for peg in gameboard.pegs where peg.color == .green {
+            peg.powerup = powerup
+        }
     }
     
     func teleportBallToCeiling() {

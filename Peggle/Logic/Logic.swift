@@ -13,6 +13,8 @@ import struct CoreGraphics.CGFloat
 protocol Logic {
     func getCurrentGameBoardName() -> String
     
+    func getCurrentGameBoard() -> GameBoard
+    
     func nameCurrentGameBoard(name: String)
     
     func addPegToCurrentGameBoard(color: PegColor, location: CGPoint) -> Bool
