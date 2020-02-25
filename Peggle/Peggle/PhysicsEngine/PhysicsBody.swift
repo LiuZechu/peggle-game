@@ -19,6 +19,8 @@ class PhysicsBody: Hashable {
     var elasticity: Double // 1 means fully elastic i.e. no energy loss upon collision; 0 means fully inelastic.
     var isHit: Bool = false // whether a collision has happened to it
     
+    var shape: Shape
+    
     private var forces: [Vector] // an array of continuous forces; momentary forces are excluded.
     private var resultantForce: Vector {
         var xComponentSum = 0.0
@@ -36,7 +38,7 @@ class PhysicsBody: Hashable {
     
     init(isMovable: Bool, radius: Double, initialPosition: Position,
          mass: Double = 1, initialVelocity: Vector = Vector(xComponent: 0, yComponent: 0),
-         elasticity: Double = 1) {
+         elasticity: Double = 1, shape: Shape = .circle) {
         self.isMovable = isMovable
         self.mass = mass
         self.radius = radius
@@ -44,6 +46,7 @@ class PhysicsBody: Hashable {
         self.position = initialPosition
         self.elasticity = elasticity
         self.forces = []
+        self.shape = shape
         
         // Prevent misassignment of non-zero velocity to an immovable body
         if !isMovable {

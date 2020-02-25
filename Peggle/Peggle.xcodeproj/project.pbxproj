@@ -12,7 +12,7 @@
 		41B2509A4E95EBDAD6102AA5 /* Pods_Peggle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40068ED016CC09A8C1FCEC03 /* Pods_Peggle.framework */; };
 		F3161EF8240270A20016D088 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161EF7240270A20016D088 /* AppDelegate.swift */; };
 		F3161EFA240270A20016D088 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161EF9240270A20016D088 /* SceneDelegate.swift */; };
-		F3161EFC240270A20016D088 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161EFB240270A20016D088 /* ViewController.swift */; };
+		F3161EFC240270A20016D088 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161EFB240270A20016D088 /* GameViewController.swift */; };
 		F3161EFF240270A20016D088 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F3161EFD240270A20016D088 /* Main.storyboard */; };
 		F3161F02240270A20016D088 /* Peggle.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F3161F00240270A20016D088 /* Peggle.xcdatamodeld */; };
 		F3161F04240270A70016D088 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3161F03240270A70016D088 /* Assets.xcassets */; };
@@ -33,6 +33,16 @@
 		F3161F52240373280016D088 /* GameBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F4D240373280016D088 /* GameBoard.swift */; };
 		F3161F54240381160016D088 /* Bucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F53240381160016D088 /* Bucket.swift */; };
 		F3161F562404BE9B0016D088 /* Powerup.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F552404BE9B0016D088 /* Powerup.swift */; };
+		F3161F582404D38D0016D088 /* Shape.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F572404D38D0016D088 /* Shape.swift */; };
+		F3161F692404E5D80016D088 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F5A2404E5D70016D088 /* ViewController.swift */; };
+		F3161F6A2404E5D80016D088 /* LevelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F5B2404E5D70016D088 /* LevelTableViewCell.swift */; };
+		F3161F6B2404E5D80016D088 /* LevelTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F5C2404E5D70016D088 /* LevelTableViewController.swift */; };
+		F3161F6C2404E5D80016D088 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F5E2404E5D80016D088 /* Model.swift */; };
+		F3161F6F2404E5D80016D088 /* ModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F612404E5D80016D088 /* ModelManager.swift */; };
+		F3161F712404E5D80016D088 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F642404E5D80016D088 /* Storage.swift */; };
+		F3161F722404E5D80016D088 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F652404E5D80016D088 /* StorageManager.swift */; };
+		F3161F732404E5D80016D088 /* Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F672404E5D80016D088 /* Logic.swift */; };
+		F3161F742404E5D80016D088 /* LogicManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F682404E5D80016D088 /* LogicManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,7 +75,7 @@
 		F3161EF4240270A20016D088 /* Peggle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Peggle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3161EF7240270A20016D088 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F3161EF9240270A20016D088 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		F3161EFB240270A20016D088 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F3161EFB240270A20016D088 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		F3161EFE240270A20016D088 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F3161F01240270A20016D088 /* Peggle.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Peggle.xcdatamodel; sourceTree = "<group>"; };
 		F3161F03240270A70016D088 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -91,6 +101,16 @@
 		F3161F4D240373280016D088 /* GameBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameBoard.swift; sourceTree = "<group>"; };
 		F3161F53240381160016D088 /* Bucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bucket.swift; sourceTree = "<group>"; };
 		F3161F552404BE9B0016D088 /* Powerup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Powerup.swift; sourceTree = "<group>"; };
+		F3161F572404D38D0016D088 /* Shape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shape.swift; sourceTree = "<group>"; };
+		F3161F5A2404E5D70016D088 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F3161F5B2404E5D70016D088 /* LevelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelTableViewCell.swift; sourceTree = "<group>"; };
+		F3161F5C2404E5D70016D088 /* LevelTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelTableViewController.swift; sourceTree = "<group>"; };
+		F3161F5E2404E5D80016D088 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		F3161F612404E5D80016D088 /* ModelManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelManager.swift; sourceTree = "<group>"; };
+		F3161F642404E5D80016D088 /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		F3161F652404E5D80016D088 /* StorageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		F3161F672404E5D80016D088 /* Logic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logic.swift; sourceTree = "<group>"; };
+		F3161F682404E5D80016D088 /* LogicManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogicManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,11 +190,15 @@
 			isa = PBXGroup;
 			children = (
 				F3161EF7240270A20016D088 /* AppDelegate.swift */,
+				F3161F662404E5D80016D088 /* Logic */,
+				F3161F5D2404E5D80016D088 /* Model */,
+				F3161F632404E5D80016D088 /* Storage */,
+				F3161F592404E5D70016D088 /* UI */,
 				F3161F48240373280016D088 /* GameEngine */,
 				F3161F3F240373200016D088 /* PhysicsEngine */,
 				F3161EF9240270A20016D088 /* SceneDelegate.swift */,
 				F3161F392403726A0016D088 /* CGPointExtension.swift */,
-				F3161EFB240270A20016D088 /* ViewController.swift */,
+				F3161EFB240270A20016D088 /* GameViewController.swift */,
 				F3161F3B240372720016D088 /* Renderer.swift */,
 				F3161F3C240372720016D088 /* UIImageViewExtension.swift */,
 				F3161EFD240270A20016D088 /* Main.storyboard */,
@@ -211,6 +235,7 @@
 				F3161F41240373200016D088 /* Vector.swift */,
 				F3161F42240373200016D088 /* PhysicsBody.swift */,
 				F3161F43240373200016D088 /* Position.swift */,
+				F3161F572404D38D0016D088 /* Shape.swift */,
 			);
 			path = PhysicsEngine;
 			sourceTree = "<group>";
@@ -228,6 +253,43 @@
 			);
 			path = GameEngine;
 			sourceTree = "<group>";
+		};
+		F3161F592404E5D70016D088 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				F3161F5A2404E5D70016D088 /* ViewController.swift */,
+				F3161F5B2404E5D70016D088 /* LevelTableViewCell.swift */,
+				F3161F5C2404E5D70016D088 /* LevelTableViewController.swift */,
+			);
+			path = UI;
+			sourceTree = SOURCE_ROOT;
+		};
+		F3161F5D2404E5D80016D088 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F3161F5E2404E5D80016D088 /* Model.swift */,
+				F3161F612404E5D80016D088 /* ModelManager.swift */,
+			);
+			path = Model;
+			sourceTree = SOURCE_ROOT;
+		};
+		F3161F632404E5D80016D088 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				F3161F642404E5D80016D088 /* Storage.swift */,
+				F3161F652404E5D80016D088 /* StorageManager.swift */,
+			);
+			path = Storage;
+			sourceTree = SOURCE_ROOT;
+		};
+		F3161F662404E5D80016D088 /* Logic */ = {
+			isa = PBXGroup;
+			children = (
+				F3161F672404E5D80016D088 /* Logic.swift */,
+				F3161F682404E5D80016D088 /* LogicManager.swift */,
+			);
+			path = Logic;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -450,9 +512,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F3161F712404E5D80016D088 /* Storage.swift in Sources */,
 				F3161F47240373200016D088 /* Position.swift in Sources */,
-				F3161EFC240270A20016D088 /* ViewController.swift in Sources */,
+				F3161EFC240270A20016D088 /* GameViewController.swift in Sources */,
 				F3161F46240373200016D088 /* PhysicsBody.swift in Sources */,
+				F3161F742404E5D80016D088 /* LogicManager.swift in Sources */,
+				F3161F722404E5D80016D088 /* StorageManager.swift in Sources */,
 				F3161F3E240372720016D088 /* UIImageViewExtension.swift in Sources */,
 				F3161F51240373280016D088 /* PegColor.swift in Sources */,
 				F3161EF8240270A20016D088 /* AppDelegate.swift in Sources */,
@@ -460,13 +525,20 @@
 				F3161EFA240270A20016D088 /* SceneDelegate.swift in Sources */,
 				F3161F4E240373280016D088 /* CannonBall.swift in Sources */,
 				F3161F3D240372720016D088 /* Renderer.swift in Sources */,
+				F3161F692404E5D80016D088 /* ViewController.swift in Sources */,
 				F3161F50240373280016D088 /* PeggleGameEngine.swift in Sources */,
+				F3161F732404E5D80016D088 /* Logic.swift in Sources */,
+				F3161F6B2404E5D80016D088 /* LevelTableViewController.swift in Sources */,
 				F3161F54240381160016D088 /* Bucket.swift in Sources */,
+				F3161F6C2404E5D80016D088 /* Model.swift in Sources */,
 				F3161F02240270A20016D088 /* Peggle.xcdatamodeld in Sources */,
 				F3161F52240373280016D088 /* GameBoard.swift in Sources */,
 				F3161F562404BE9B0016D088 /* Powerup.swift in Sources */,
 				F3161F45240373200016D088 /* Vector.swift in Sources */,
+				F3161F6F2404E5D80016D088 /* ModelManager.swift in Sources */,
+				F3161F6A2404E5D80016D088 /* LevelTableViewCell.swift in Sources */,
 				F3161F4F240373280016D088 /* Peg.swift in Sources */,
+				F3161F582404D38D0016D088 /* Shape.swift in Sources */,
 				F3161F44240373200016D088 /* PhysicsEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

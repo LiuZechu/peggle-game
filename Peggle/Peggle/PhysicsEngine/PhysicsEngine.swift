@@ -41,6 +41,11 @@ class PhysicsEngine {
             }
         }
         
+        // currently, this physics engine only supports movable/immovable circles and immovable triangles
+        if body.shape == .equilateralTriangle && body.isMovable {
+            return false
+        }
+        
         if body.isMovable {
             movableBodies.insert(body)
         } else {
@@ -65,16 +70,24 @@ class PhysicsEngine {
         return movableBodies.contains(body) || immovableBodies.contains(body)
     }
     
+    /// Returns whether the two bodies collide with each other.
+    /// `firstBody` must be movable,
+    /// `secondBody` can be movable or immovable
     func isCollision(firstBody: PhysicsBody, secondBody: PhysicsBody) -> Bool {
         // if they are the same body, then not a collision
         guard firstBody != secondBody else {
             return false
         }
         
-        let actualDistance = firstBody.getDistanceFrom(anotherBody: secondBody)
-        let collisionDistance = firstBody.radius + secondBody.radius
-        
-        return actualDistance <= collisionDistance
+        if firstBody.shape == .circle && secondBody.shape == .equilateralTriangle {
+            // SOMETHING
+            return false
+        } else { // two circles
+            let actualDistance = firstBody.getDistanceFrom(anotherBody: secondBody)
+            let collisionDistance = firstBody.radius + secondBody.radius
+            
+            return actualDistance <= collisionDistance
+        }
     }
     
     func update() {

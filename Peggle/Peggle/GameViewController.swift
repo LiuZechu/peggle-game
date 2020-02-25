@@ -8,16 +8,16 @@
 
 import UIKit
 
-class ViewController: UIViewController, Renderer {
+class GameViewController: UIViewController, Renderer {
     
     private var gameEngine: PeggleGameEngine!
     
     private var isLaunchable: Bool = true // indicates whether the cannon ball is ready to be launched now
     private var isRestarted = false // indicates whether the previous game loop has ended and a new ball replenished
     
-    @IBOutlet private var cannonImageView: UIImageView!
+    @IBOutlet var background: UIImageView!
     @IBOutlet private var ballsNumberLabel: UILabel!
-    @IBOutlet private var background: UIImageView!
+    @IBOutlet private var cannonImageView: UIImageView!
     private var ballImageView: UIImageView!
     private var bucketImageView: UIImageView!
     private var pegImages: [UIImageView] = []
