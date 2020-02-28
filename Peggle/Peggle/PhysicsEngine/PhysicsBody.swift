@@ -111,20 +111,20 @@ class PhysicsBody: Hashable {
             var result = [Position]()
             
             // first vertex
-            let addX1 = radius * sin(angleOfRotation)
-            let addY1 = -radius * cos(angleOfRotation)
-            result.append(Position(xComponent: centerX + addX1, yComponent: centerY + addY1))
-            
+            let addX3 = -radius * cos(Double.pi / 6 - angleOfRotation)
+            let addY3 = radius * sin(Double.pi / 6 - angleOfRotation)
+            result.append(Position(xComponent: centerX + addX3, yComponent: centerY + addY3))
+
             // second vertex
             let addX2 = radius * cos(Double.pi / 6 + angleOfRotation)
             let addY2 = radius * sin(Double.pi / 6 + angleOfRotation)
             result.append(Position(xComponent: centerX + addX2, yComponent: centerY + addY2))
             
             // third vertex
-            let addX3 = -radius * cos(Double.pi / 6 - angleOfRotation)
-            let addY3 = radius * sin(Double.pi / 6 - angleOfRotation)
-            result.append(Position(xComponent: centerX + addX3, yComponent: centerY + addY3))
-            
+            let addX1 = radius * sin(angleOfRotation)
+            let addY1 = -radius * cos(angleOfRotation)
+            result.append(Position(xComponent: centerX + addX1, yComponent: centerY + addY1))
+
             return result
         }
     }

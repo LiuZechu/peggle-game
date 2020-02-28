@@ -34,29 +34,33 @@ class CollisionChecker {
             var c1x = v1x - centerX
             var c1y = v1y - centerY
             if (c1x * c1x + c1y * c1y).squareRoot() <= radius {
+                print("vertex 1 within circle")
                 return true
             }
 
             var c2x = v2x - centerX
             var c2y = v2y - centerY
             if (c2x * c2x + c2y * c2y).squareRoot() <= radius {
+                print("vertex 2 within circle")
                 return true
             }
 
             var c3x = v3x - centerX
             var c3y = v3y - centerY
             if (c3x * c3x + c3y * c3y).squareRoot() <= radius {
+                print("vertex 3 within circle")
                 return true
             }
             
-            // TEST 2: Circle centre within triangle
-            // NOTE: This works for clockwise ordered vertices!
-            let isWithinFirstSide = ((v2y - v1y) * (centerX - v1x) - (v2x - v1x) * (centerY - v1y)) >= 0
-            let isWithinSecondSide = ((v3y - v2y) * (centerX - v2x) - (v3x - v2x) * (centerY - v2y)) >= 0
-            let isWithinThirdSide = ((v1y - v3y) * (centerX - v3x) - (v1x - v3x) * (centerX - v3x)) >= 0
-            if isWithinFirstSide && isWithinSecondSide && isWithinThirdSide {
-                return true
-            }
+//            // TEST 2: Circle centre within triangle
+//            // NOTE: This works for clockwise ordered vertices!
+//            let isWithinFirstSide = ((v2y - v1y) * (centerX - v1x) - (v2x - v1x) * (centerY - v1y)) >= 0
+//            let isWithinSecondSide = ((v3y - v2y) * (centerX - v2x) - (v3x - v2x) * (centerY - v2y)) >= 0
+//            let isWithinThirdSide = ((v1y - v3y) * (centerX - v3x) - (v1x - v3x) * (centerX - v3x)) >= 0
+//            if isWithinFirstSide && isWithinSecondSide && isWithinThirdSide {
+//                print("circle center within triangle")
+//                return true
+//            }
             
             // TEST 3: Circle intersects edge
             // Get the dot product
@@ -69,9 +73,10 @@ class CollisionChecker {
 
             if k > 0 {
                 let len = (e1x * e1x + e1y * e1y).squareRoot()
-                k = k/len
+                k /= len
                 
                 if k < len && (c1x * c1x + c1y * c1y - k * k).squareRoot() <= radius {
+                    print("circle intersects with side 12")
                     return true
                 }
             }
@@ -86,9 +91,10 @@ class CollisionChecker {
 
             if k > 0 {
                 let len = (e2x * e2x + e2y * e2y).squareRoot()
-                k = k/len
+                k /= len
 
                 if k < len && (c2x * c2x + c2y * c2y - k * k).squareRoot() <= radius {
+                    print("circle intersects with side 23")
                     return true
                 }
             }
@@ -103,9 +109,10 @@ class CollisionChecker {
 
             if k > 0 {
                 let len = (e3x * e3x + e3y * e3y).squareRoot()
-                k = k/len
+                k /= len
 
                 if k < len && (c3x * c3x + c3y * c3y - k * k).squareRoot() <= radius {
+                    print("circle intersects with side 13")
                     return true
                 }
             }

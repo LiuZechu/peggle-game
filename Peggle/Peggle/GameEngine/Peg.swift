@@ -17,9 +17,33 @@ class Peg: Hashable {
     var powerup: Powerup?
     
     let color: PegColor
-    let shape: Shape
-    var radius: CGFloat
-    var angleOfRotation: CGFloat
+    var shape: Shape {
+        get {
+            return physicsBody.shape
+        }
+        
+        set {
+            physicsBody.shape = newValue
+        }
+    }
+    var radius: CGFloat {
+        get {
+            return CGFloat(physicsBody.radius)
+        }
+        
+        set {
+            physicsBody.radius = Double(newValue)
+        }
+    }
+    var angleOfRotation: CGFloat {
+        get {
+            return CGFloat(physicsBody.angleOfRotation)
+        }
+        
+        set {
+            physicsBody.angleOfRotation = Double(newValue)
+        }
+    }
     
     var location: CGPoint {
         get {
@@ -63,11 +87,11 @@ class Peg: Hashable {
     init(color: PegColor, location: CGPoint, shape: Shape, powerup: Powerup? = nil,
          radius: CGFloat = Peg.defaultRadius, angleOfRotation: CGFloat = 0.0) {
         self.color = color
-        self.shape = shape
-        self.radius = radius
         self.physicsBody = PhysicsBody(isMovable: false, radius: Double(radius),
                                        initialPosition: location.toPosition(),
                                        shape: shape, angleOfRotation: Double(angleOfRotation))
+        self.shape = shape
+        self.radius = radius
         self.powerup = powerup
         self.angleOfRotation = angleOfRotation
     }

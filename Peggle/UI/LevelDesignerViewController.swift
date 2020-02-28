@@ -558,6 +558,9 @@ extension LevelDesignerViewController: LoadGameBoardDelegate {
                 let imageToAdd = self.createPegImageView(at: location, color: color, shape: shape,
                                                          radius: radius, angle: angle)
                 
+//                print("vertices:")
+//                print(peg.physicsBody.getVertices())
+                
                 self.allPegImages.append(imageToAdd)
                 self.view.addSubview(imageToAdd)
             }
