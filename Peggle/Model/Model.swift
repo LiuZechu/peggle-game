@@ -26,4 +26,6 @@ protocol Model {
     func updatePegLocation(from start: CGPoint, to end: CGPoint, bottomBoundary: CGFloat) -> Bool
     
     func clearCurrentGameBoard()
+    
+    func findPegFromLocation(at point: CGPoint) -> Peg?
 }

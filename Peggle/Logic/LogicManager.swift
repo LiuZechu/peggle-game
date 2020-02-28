@@ -88,4 +88,8 @@ class LogicManager: Logic {
         let gameBoard = fetchGameBoardByName(name: gameBoardName)
         return gameBoard?.pegs ?? Set<Peg>()
     }
+    
+    func findPegFromLocation(at point: CGPoint) -> Peg? {
+        return model.findPegFromLocation(at: point)
+    }
 }

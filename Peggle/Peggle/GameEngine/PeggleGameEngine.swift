@@ -254,7 +254,6 @@ class PeggleGameEngine {
         }
         
         for peg in affectedPegs {
-            print("here")
             peg.isHit = true
         }
     }

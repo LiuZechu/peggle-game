@@ -58,7 +58,7 @@ class ModelManager: Model {
         }
     }
     
-    private func findPegFromLocation(at point: CGPoint) -> Peg? {
+    func findPegFromLocation(at point: CGPoint) -> Peg? {
         let pegSet = currentGameBoard.pegs.filter {
             let isXWithinRange = abs($0.location.x - point.x) < Peg.defaultRadius
             let isYWithinRange = abs($0.location.y - point.y) < Peg.defaultRadius

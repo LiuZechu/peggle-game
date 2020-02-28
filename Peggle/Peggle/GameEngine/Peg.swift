@@ -12,12 +12,14 @@ import struct CoreGraphics.CGFloat
 
 class Peg: Hashable {
     static let defaultRadius: CGFloat = 20
+    static let maximumRadius: CGFloat = 40
     
     var powerup: Powerup?
     
     let color: PegColor
     let shape: Shape
     var radius: CGFloat
+    var angleOfRotation: CGFloat
     
     var location: CGPoint {
         get {
@@ -47,22 +49,25 @@ class Peg: Hashable {
     }
     private var hasPowerupBeenActivated = false
     
-    init(color: PegColor, location: CGPoint, shape: Shape, radius: CGFloat = Peg.defaultRadius) {
+    init(color: PegColor, location: CGPoint, shape: Shape,
+         radius: CGFloat = Peg.defaultRadius, angleOfRotation: CGFloat = 0.0) {
         self.color = color
         self.shape = shape
         self.radius = radius
+        self.angleOfRotation = angleOfRotation
         self.physicsBody = PhysicsBody(isMovable: false, radius: Double(radius),
                                        initialPosition: location.toPosition())
     }
     
     init(color: PegColor, location: CGPoint,
-         shape: Shape, radius: CGFloat = Peg.defaultRadius, powerup: Powerup) {
+         shape: Shape, powerup: Powerup, radius: CGFloat = Peg.defaultRadius, angleOfRotation: CGFloat = 0.0) {
         self.color = color
         self.shape = shape
         self.radius = radius
         self.physicsBody = PhysicsBody(isMovable: false, radius: Double(radius),
                                        initialPosition: location.toPosition())
         self.powerup = powerup
+        self.angleOfRotation = angleOfRotation
     }
     
     func isOverlapping(with peg: Peg) -> Bool {

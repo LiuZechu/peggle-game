@@ -28,6 +28,11 @@ class LevelDesignerViewController: UIViewController {
     private let litUpButtonAlpha: CGFloat = 1.0
     private let dimmedButtonAlpha: CGFloat = 0.5
     
+    private var rotationSlider: UISlider?
+    private var sizeSlider: UISlider?
+    private var pegToAdjust: Peg?
+    private var pegImageToAdjust: UIView?
+    
     @IBOutlet private var deleteButton: UIButton?
     @IBOutlet private var levelNameLabel: UILabel!
     @IBOutlet private var background: UIImageView?
@@ -145,8 +150,16 @@ class LevelDesignerViewController: UIViewController {
             allPegImages.append(imageToAdd)
             self.view.addSubview(imageToAdd)
         }
+        
+        if self.rotationSlider != nil || self.sizeSlider != nil {
+            self.rotationSlider?.removeFromSuperview()
+            self.sizeSlider?.removeFromSuperview()
+            self.rotationSlider = nil
+            self.sizeSlider = nil
+        }
     }
     
+    // These pegs are of default size and rotation angle, which can be changed by the user using sliders
     private func createPeg(at location: CGPoint) -> UIImageView? {
         let pegColor: PegColor
         switch buttonSelected {
@@ -180,13 +193,15 @@ class LevelDesignerViewController: UIViewController {
     
     /// Creates a peg's image at corresponding location on the screen, with the specified color.
     func createPegImageView(at location: CGPoint, color: PegColor, shape: Shape,
-                            radius: CGFloat = Peg.defaultRadius) -> UIImageView {
+                            radius: CGFloat = Peg.defaultRadius, angle: CGFloat = 0.0) -> UIImageView {
         let frame = CGRect(x: location.x - radius, y: location.y - radius,
                            width: radius * 2, height: radius * 2)
         var imageToAdd = UIImageView(frame: frame)
         imageToAdd.layer.cornerRadius = radius
         imageToAdd.contentMode = .scaleAspectFit
         imageToAdd.isUserInteractionEnabled = true
+        
+        print("create peg image view called")
         
         if color == .blue {
             if shape == .circle {
@@ -208,21 +223,25 @@ class LevelDesignerViewController: UIViewController {
             }
         }
         
-        makeImageDeletableByTap(image: &imageToAdd)
+        // rotate image
+        imageToAdd.transform = CGAffineTransform(rotationAngle: angle)
+        
+        makeImageResponsiveToTap(image: &imageToAdd)
         makeImageDeletableByLongPress(image: &imageToAdd)
         makeImageDraggable(image: &imageToAdd)
         
         return imageToAdd
     }
     
-    private func makeImageDeletableByTap(image: inout UIImageView) {
-        let deleteTap = UITapGestureRecognizer(target: self,
-                                               action: #selector(self.handleDeleteTap))
-        deleteTap.numberOfTapsRequired = 1
-        deleteTap.numberOfTouchesRequired = 1
-        image.addGestureRecognizer(deleteTap)
+    // Tapping the image either makes it editable or deletes it, depending on which button is pressed
+    private func makeImageResponsiveToTap(image: inout UIImageView) {
+        let tap = UITapGestureRecognizer(target: self,
+                                               action: #selector(self.handleTapOnPeg))
+        tap.numberOfTapsRequired = 1
+        tap.numberOfTouchesRequired = 1
+        image.addGestureRecognizer(tap)
     }
-    
+        
     private func makeImageDeletableByLongPress(image: inout UIImageView) {
         let deletionByLongPress =
             UILongPressGestureRecognizer(target: self,
@@ -235,15 +254,100 @@ class LevelDesignerViewController: UIViewController {
         image.addGestureRecognizer(dragRecognizer)
     }
     
-    @objc func handleDeleteTap(recognizer: UIPanGestureRecognizer) {
-        guard buttonSelected == .deleteButton else {
+    @objc private func changePegRotation(_ sender: UISlider) {
+        print("rotation value is \(sender.value)")
+        let newAngle = CGFloat(sender.value)
+        pegToAdjust?.angleOfRotation = newAngle
+        // UPDATE IMAGE
+        pegImageToAdjust?.removeFromSuperview()
+        allPegImages = allPegImages.filter { $0 != pegImageToAdjust }
+        // create a peg and a corresponding image
+        guard let peg = pegToAdjust else {
+            print("peg not found")
             return
         }
+        let imageToAdd = createPegImageView(at: peg.location, color: peg.color, shape: peg.shape,
+                                            radius: peg.radius, angle: newAngle)
+        
+        pegImageToAdjust = imageToAdd
+        allPegImages.append(imageToAdd)
+        self.view.addSubview(imageToAdd)
+    }
+    
+    @objc private func changePegSize(_ sender: UISlider) {
+        print("size value is \(sender.value)")
+        let newRadius = CGFloat(sender.value)
+        pegToAdjust?.radius = newRadius
+        // UPDATE IMAGE
+        pegImageToAdjust?.removeFromSuperview()
+        allPegImages = allPegImages.filter { $0 != pegImageToAdjust }
+        // create a peg and a corresponding image
+        guard let peg = pegToAdjust else {
+            print("peg not found")
+            return
+        }
+        let imageToAdd = createPegImageView(at: peg.location, color: peg.color, shape: peg.shape,
+                                            radius: peg.radius, angle: peg.angleOfRotation)
+        
+        pegImageToAdjust = imageToAdd
+        allPegImages.append(imageToAdd)
+        self.view.addSubview(imageToAdd)
+    }
+    
+    @objc func handleTapOnPeg(recognizer: UIPanGestureRecognizer) {
         guard let view = recognizer.view else {
             return
         }
         
-        removePegAndItsView(from: view)
+        if buttonSelected == .deleteButton {
+            removePegAndItsView(from: view)
+        } else { // make sliders appear so as to edit the peg size/rotation
+            let location = view.center
+            let pegFound = logic.findPegFromLocation(at: location)
+            guard let peg = pegFound else {
+                return
+            }
+
+            if self.rotationSlider != nil || self.sizeSlider != nil {
+                self.rotationSlider?.removeFromSuperview()
+                self.sizeSlider?.removeFromSuperview()
+                self.rotationSlider = nil
+                self.sizeSlider = nil
+                return
+            }
+            
+            // make a slider for changing size
+            let sizeSlider = UISlider()
+            sizeSlider.frame = CGRect(x: 0, y: 0, width: 250, height: 35)
+            sizeSlider.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 40)
+
+            sizeSlider.maximumValue = Float(Peg.maximumRadius)
+            sizeSlider.minimumValue = Float(Peg.defaultRadius)
+            sizeSlider.setValue(Float(peg.radius), animated: false)
+
+            sizeSlider.addTarget(self, action: #selector(self.changePegSize), for: .valueChanged)
+            self.sizeSlider = sizeSlider
+            self.view.addSubview(sizeSlider)
+            
+            if peg.shape == .equilateralTriangle {
+                // make a slider for rotation
+                let rotationSlider = UISlider()
+                rotationSlider.frame = CGRect(x: 0, y: 0, width: 250, height: 35)
+                rotationSlider.center = self.view.center
+
+                rotationSlider.maximumValue = 2 * Float.pi
+                rotationSlider.minimumValue = 0
+                rotationSlider.setValue(Float(peg.angleOfRotation), animated: false)
+
+                rotationSlider.addTarget(self, action: #selector(self.changePegRotation), for: .valueChanged)
+                self.rotationSlider = rotationSlider
+                self.view.addSubview(rotationSlider)
+            }
+            
+            // make the peg adjustable
+            pegToAdjust = peg
+            pegImageToAdjust = view
+        }
     }
     
     private func removePegAndItsView(from view: UIView) {
@@ -449,7 +553,10 @@ extension LevelDesignerViewController: LoadGameBoardDelegate {
                 let shape = peg.shape
                 let color = peg.color
                 let location = peg.location
-                let imageToAdd = self.createPegImageView(at: location, color: color, shape: shape)
+                let radius = peg.radius
+                let angle = CGFloat(peg.angleOfRotation)
+                let imageToAdd = self.createPegImageView(at: location, color: color, shape: shape,
+                                                         radius: radius, angle: angle)
                 
                 self.allPegImages.append(imageToAdd)
                 self.view.addSubview(imageToAdd)

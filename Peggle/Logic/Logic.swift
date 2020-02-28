@@ -42,4 +42,6 @@ protocol Logic {
     func getAllPegsInGameBoard(gameBoardName: String) -> Set<Peg>
     
     func isFirstGameBoard() -> Bool
+    
+    func findPegFromLocation(at point: CGPoint) -> Peg?
 }

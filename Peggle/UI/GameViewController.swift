@@ -211,8 +211,8 @@ class GameViewController: UIViewController, Renderer {
     private func addInitialPegImages() {
         let pegs = gameEngine.getAllPegs()
         for peg in pegs {
-            let pegImage = createPegImageView(at: peg.location, color: peg.color,
-                                              shape: peg.shape, isGlow: false, radius: peg.radius)
+            let pegImage = createPegImageView(at: peg.location, color: peg.color, shape: peg.shape,
+                                              isGlow: false, radius: peg.radius, angle: peg.angleOfRotation)
             self.view.addSubview(pegImage)
             pegImages.append(pegImage)
         }
@@ -220,7 +220,7 @@ class GameViewController: UIViewController, Renderer {
     
     /// Creates a peg's image at corresponding location on the screen, with the specified color.
     func createPegImageView(at location: CGPoint, color: PegColor, shape: Shape, isGlow: Bool,
-                            radius: CGFloat = Peg.defaultRadius) -> UIImageView {
+                            radius: CGFloat = Peg.defaultRadius, angle: CGFloat = 0.0) -> UIImageView {
         let frame = CGRect(x: location.x - radius, y: location.y - radius,
                            width: radius * 2, height: radius * 2)
         let imageToAdd = UIImageView(frame: frame)
@@ -253,6 +253,9 @@ class GameViewController: UIViewController, Renderer {
                     : UIImage(named: "peg-green-triangle")
             }
         }
+        
+        // rotate image
+        imageToAdd.transform = CGAffineTransform(rotationAngle: angle)
         
         return imageToAdd
     }
@@ -314,7 +317,8 @@ class GameViewController: UIViewController, Renderer {
                                                                 circleRadius: Peg.defaultRadius) {
                 let center = image.center
                 image.removeFromSuperview()
-                let glowImage = createPegImageView(at: center, color: peg.color, shape: peg.shape, isGlow: true)
+                let glowImage = createPegImageView(at: center, color: peg.color, shape: peg.shape,
+                                                   isGlow: true, radius: peg.radius, angle: peg.angleOfRotation)
                 self.view.addSubview(glowImage)
                 glowPegImages.append(glowImage)
             }

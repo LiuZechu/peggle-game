@@ -134,9 +134,10 @@ class StorageManager: Storage {
             let radius = (pegMO as AnyObject).value(forKeyPath: "radius") as? Double ?? Double(Peg.defaultRadius)
             let xLocation = (pegMO as AnyObject).value(forKeyPath: "xPosition") as? Double ?? 0.0
             let yLocation = (pegMO as AnyObject).value(forKeyPath: "yPosition") as? Double ?? 0.0
+            let angleOfRotation = (pegMO as AnyObject).value(forKeyPath: "angle") as? Double ?? 0.0
             
             let peg = Peg(color: pegColor, location: CGPoint(x: xLocation, y: yLocation),
-                          shape: pegShape, radius: CGFloat(radius))
+                          shape: pegShape, radius: CGFloat(radius), angleOfRotation: CGFloat(angleOfRotation))
             pegs.append(peg)
         }
         
@@ -175,12 +176,14 @@ class StorageManager: Storage {
             let pegXPosition = Double(peg.location.x)
             let pegYPosition = Double(peg.location.y)
             let pegRadius = Double(peg.radius)
+            let pegAngle = Double(peg.angleOfRotation)
             
             pegMO.setValue(pegColorString, forKeyPath: "color")
             pegMO.setValue(pegXPosition, forKeyPath: "xPosition")
             pegMO.setValue(pegYPosition, forKeyPath: "yPosition")
             pegMO.setValue(pegShapeString, forKey: "shape")
             pegMO.setValue(pegRadius, forKey: "radius")
+            pegMO.setValue(pegAngle, forKey: "angle")
 
             pegMOs.append(pegMO)
         }
