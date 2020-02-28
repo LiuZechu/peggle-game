@@ -36,7 +36,7 @@ class PhysicsEngine {
     func addPhysicsBody(_ body: PhysicsBody) -> Bool {
         // check for overlaps
         for anotherBody in movableBodies.union(immovableBodies) {
-            if isCollision(firstBody: body, secondBody: anotherBody) {
+            if CollisionChecker.isCollision(firstBody: body, secondBody: anotherBody) {
                 return false
             }
         }
@@ -70,25 +70,27 @@ class PhysicsEngine {
         return movableBodies.contains(body) || immovableBodies.contains(body)
     }
     
-    /// Returns whether the two bodies collide with each other.
-    /// `firstBody` must be movable,
-    /// `secondBody` can be movable or immovable
-    func isCollision(firstBody: PhysicsBody, secondBody: PhysicsBody) -> Bool {
-        // if they are the same body, then not a collision
-        guard firstBody != secondBody else {
-            return false
-        }
-        
-        if firstBody.shape == .circle && secondBody.shape == .equilateralTriangle {
-            // SOMETHING
-            return false
-        } else { // two circles
-            let actualDistance = firstBody.getDistanceFrom(anotherBody: secondBody)
-            let collisionDistance = firstBody.radius + secondBody.radius
-            
-            return actualDistance <= collisionDistance
-        }
-    }
+//    /// Returns whether the two bodies collide with each other.
+//    /// `firstBody` must be movable,
+//    /// `secondBody` can be movable or immovable
+//    func isCollision(firstBody: PhysicsBody, secondBody: PhysicsBody) -> Bool {
+//        // if they are the same body, then not a collision
+//        guard firstBody != secondBody else {
+//            return false
+//        }
+//
+//        if firstBody.shape == .circle && secondBody.shape == .equilateralTriangle {
+//
+//
+//
+//            return false
+//        } else { // two circles
+//            let actualDistance = firstBody.getDistanceFrom(anotherBody: secondBody)
+//            let collisionDistance = firstBody.radius + secondBody.radius
+//
+//            return actualDistance <= collisionDistance
+//        }
+//    }
     
     func update() {
         for body in movableBodies {
@@ -96,7 +98,7 @@ class PhysicsEngine {
             
             // detect collisions with other bodies
             for otherBody in movableBodies.union(immovableBodies) {
-                if isCollision(firstBody: body, secondBody: otherBody) {
+                if CollisionChecker.isCollision(firstBody: body, secondBody: otherBody) {
                     body.isHit = true
                     otherBody.isHit = true
                     resolveCollision(firstBody: body, secondBody: otherBody)

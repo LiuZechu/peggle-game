@@ -19,6 +19,7 @@ class PhysicsBody: Hashable {
     var elasticity: Double // 1 means fully elastic i.e. no energy loss upon collision; 0 means fully inelastic.
     var isHit: Bool = false // whether a collision has happened to it
     
+    var angleOfRotation: Double
     var shape: Shape
     
     private var forces: [Vector] // an array of continuous forces; momentary forces are excluded.
@@ -38,7 +39,7 @@ class PhysicsBody: Hashable {
     
     init(isMovable: Bool, radius: Double, initialPosition: Position,
          mass: Double = 1, initialVelocity: Vector = Vector(xComponent: 0, yComponent: 0),
-         elasticity: Double = 1, shape: Shape = .circle) {
+         elasticity: Double = 1, shape: Shape = .circle, angleOfRotation: Double = 0) {
         self.isMovable = isMovable
         self.mass = mass
         self.radius = radius
@@ -47,6 +48,7 @@ class PhysicsBody: Hashable {
         self.elasticity = elasticity
         self.forces = []
         self.shape = shape
+        self.angleOfRotation = angleOfRotation
         
         // Prevent misassignment of non-zero velocity to an immovable body
         if !isMovable {
@@ -95,6 +97,36 @@ class PhysicsBody: Hashable {
         }
 
         velocity = Vector(xComponent: xVelocity, yComponent: yVelocity)
+    }
+    
+    /// Returns an array of vertices of the body. If the body is a circle, it will return an empty set since a circle has no vertices.
+    func getVertices() -> [Position] {
+        switch self.shape {
+        case .circle:
+            return []
+        case .equilateralTriangle:
+            let centerX = position.xComponent
+            let centerY = position.yComponent
+            let angleOfRotation = self.angleOfRotation.truncatingRemainder(dividingBy: 2 * Double.pi / 3)
+            var result = [Position]()
+            
+            // first vertex
+            let addX1 = radius * sin(angleOfRotation)
+            let addY1 = -radius * cos(angleOfRotation)
+            result.append(Position(xComponent: centerX + addX1, yComponent: centerY + addY1))
+            
+            // second vertex
+            let addX2 = radius * cos(Double.pi / 6 + angleOfRotation)
+            let addY2 = radius * sin(Double.pi / 6 + angleOfRotation)
+            result.append(Position(xComponent: centerX + addX2, yComponent: centerY + addY2))
+            
+            // third vertex
+            let addX3 = -radius * cos(Double.pi / 6 - angleOfRotation)
+            let addY3 = radius * sin(Double.pi / 6 - angleOfRotation)
+            result.append(Position(xComponent: centerX + addX3, yComponent: centerY + addY3))
+            
+            return result
+        }
     }
     
     // calculates its position in the next moment in time

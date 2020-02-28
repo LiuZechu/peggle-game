@@ -48,6 +48,7 @@
 		F3BAA46024055BAB0061E9A3 /* GetGameBoardDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BAA45F24055BAB0061E9A3 /* GetGameBoardDelegate.swift */; };
 		F3BAA462240562D10061E9A3 /* LevelDesignerAlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BAA461240562D10061E9A3 /* LevelDesignerAlertManager.swift */; };
 		F3BAA46424056C110061E9A3 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BAA46324056C110061E9A3 /* Button.swift */; };
+		F3BAA466240909FF0061E9A3 /* CollisionChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BAA465240909FE0061E9A3 /* CollisionChecker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,6 +122,7 @@
 		F3BAA45F24055BAB0061E9A3 /* GetGameBoardDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetGameBoardDelegate.swift; sourceTree = "<group>"; };
 		F3BAA461240562D10061E9A3 /* LevelDesignerAlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelDesignerAlertManager.swift; sourceTree = "<group>"; };
 		F3BAA46324056C110061E9A3 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		F3BAA465240909FE0061E9A3 /* CollisionChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionChecker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -245,6 +247,7 @@
 				F3161F42240373200016D088 /* PhysicsBody.swift */,
 				F3161F43240373200016D088 /* Position.swift */,
 				F3161F572404D38D0016D088 /* Shape.swift */,
+				F3BAA465240909FE0061E9A3 /* CollisionChecker.swift */,
 			);
 			path = PhysicsEngine;
 			sourceTree = "<group>";
@@ -543,6 +546,7 @@
 				F344688F24052D8500E5B9E0 /* LoadGameBoardDelegate.swift in Sources */,
 				F3BAA46024055BAB0061E9A3 /* GetGameBoardDelegate.swift in Sources */,
 				F3161F3D240372720016D088 /* Renderer.swift in Sources */,
+				F3BAA466240909FF0061E9A3 /* CollisionChecker.swift in Sources */,
 				F3161F692404E5D80016D088 /* LevelDesignerViewController.swift in Sources */,
 				F3161F50240373280016D088 /* PeggleGameEngine.swift in Sources */,
 				F3161F732404E5D80016D088 /* Logic.swift in Sources */,

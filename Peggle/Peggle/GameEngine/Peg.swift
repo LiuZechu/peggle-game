@@ -49,23 +49,25 @@ class Peg: Hashable {
     }
     private var hasPowerupBeenActivated = false
     
-    init(color: PegColor, location: CGPoint, shape: Shape,
+//    init(color: PegColor, location: CGPoint, shape: Shape,
+//         radius: CGFloat = Peg.defaultRadius, angleOfRotation: CGFloat = 0.0) {
+//        self.color = color
+//        self.shape = shape
+//        self.radius = radius
+//        self.angleOfRotation = angleOfRotation
+//        self.physicsBody = PhysicsBody(isMovable: false, radius: Double(radius),
+//                                       initialPosition: location.toPosition(),
+//                                       shape: shape, angleOfRotation: Double(angleOfRotation))
+//    }
+    
+    init(color: PegColor, location: CGPoint, shape: Shape, powerup: Powerup? = nil,
          radius: CGFloat = Peg.defaultRadius, angleOfRotation: CGFloat = 0.0) {
         self.color = color
         self.shape = shape
         self.radius = radius
-        self.angleOfRotation = angleOfRotation
         self.physicsBody = PhysicsBody(isMovable: false, radius: Double(radius),
-                                       initialPosition: location.toPosition())
-    }
-    
-    init(color: PegColor, location: CGPoint,
-         shape: Shape, powerup: Powerup, radius: CGFloat = Peg.defaultRadius, angleOfRotation: CGFloat = 0.0) {
-        self.color = color
-        self.shape = shape
-        self.radius = radius
-        self.physicsBody = PhysicsBody(isMovable: false, radius: Double(radius),
-                                       initialPosition: location.toPosition())
+                                       initialPosition: location.toPosition(),
+                                       shape: shape, angleOfRotation: Double(angleOfRotation))
         self.powerup = powerup
         self.angleOfRotation = angleOfRotation
     }
