@@ -35,6 +35,4 @@ extension LevelDesignerViewController {
 
         self.present(alert, animated: true, completion: nil)
     }
-    
-    
 }

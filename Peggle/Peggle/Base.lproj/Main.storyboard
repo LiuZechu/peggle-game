@@ -169,7 +169,6 @@
                                                 <state key="normal" title="GreenPegSelector" image="peg-green"/>
                                                 <connections>
                                                     <action selector="handleGreenPegSelectorTap:" destination="fAs-xo-bGh" eventType="touchUpInside" id="kKs-ec-Mlv"/>
-                                                    <action selector="handleOrangePegSelectorTap" destination="fAs-xo-bGh" eventType="touchDown" id="fPG-26-7vl"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="10p-nn-yqo">
@@ -179,7 +178,6 @@
                                                 </constraints>
                                                 <state key="normal" title="TriangleBluePegSelector" image="peg-blue-triangle"/>
                                                 <connections>
-                                                    <action selector="handleOrangePegSelectorTap" destination="fAs-xo-bGh" eventType="touchDown" id="KQE-me-uOf"/>
                                                     <action selector="handleTriangleBluePegSelectorTap:" destination="fAs-xo-bGh" eventType="touchUpInside" id="ela-XX-0rP"/>
                                                 </connections>
                                             </button>
@@ -190,7 +188,6 @@
                                                 </constraints>
                                                 <state key="normal" title="TriangleOrangePegSelector" image="peg-orange-triangle"/>
                                                 <connections>
-                                                    <action selector="handleOrangePegSelectorTap" destination="fAs-xo-bGh" eventType="touchDown" id="NbD-vC-pfN"/>
                                                     <action selector="handleTriangleOrangePegSelectorTap:" destination="fAs-xo-bGh" eventType="touchUpInside" id="jWe-Xg-DiI"/>
                                                 </connections>
                                             </button>
@@ -264,7 +261,6 @@
                                                 </constraints>
                                                 <state key="normal" title="TriangleGreenPegSelector" image="peg-green-triangle"/>
                                                 <connections>
-                                                    <action selector="handleOrangePegSelectorTap" destination="fAs-xo-bGh" eventType="touchDown" id="6bj-Qm-6GY"/>
                                                     <action selector="handleTriangleGreenPegSelectorTap:" destination="fAs-xo-bGh" eventType="touchUpInside" id="d0M-08-kdV"/>
                                                 </connections>
                                             </button>
@@ -352,14 +348,14 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="levelTableViewCell" id="TEh-2O-xpb" customClass="LevelTableViewCell" customModule="Peggle" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="712" height="43.5"/>
+                                <rect key="frame" x="0.0" y="28" width="712" height="43"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TEh-2O-xpb" id="ObG-3d-0ou">
-                                    <rect key="frame" x="0.0" y="0.0" width="712" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="712" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="levelLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qns-6R-0Mz">
-                                            <rect key="frame" x="20" y="11" width="672" height="21.5"/>
+                                            <rect key="frame" x="20" y="11" width="672" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>

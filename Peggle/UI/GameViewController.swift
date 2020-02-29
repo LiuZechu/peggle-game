@@ -14,8 +14,9 @@ class GameViewController: UIViewController, Renderer {
     private var gameEngine: PeggleGameEngine!
     
     private var isLaunchable: Bool = true // indicates whether the cannon ball is ready to be launched now
-    private var isRestarted = false // indicates whether the previous game loop has ended and a new ball replenished
-    
+    //private var isRestarted = false
+    // indicates whether the previous game loop has ended and a new ball replenished
+        
     @IBOutlet private var background: UIImageView!
     @IBOutlet private var ballsNumberLabel: UILabel!
     @IBOutlet private var cannonImageView: UIImageView!
@@ -27,12 +28,17 @@ class GameViewController: UIViewController, Renderer {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let leftBoundary = self.view.frame.minX
+        let rightBoundary = self.view.frame.maxX
+        let upperBoundary = self.view.frame.minY
+        let lowerBoundary = self.view.frame.maxY
+
         let gameboard = delegate?.getGameBoard() ?? GameBoard(name: "default gameboard")
         
-        gameEngine = PeggleGameEngine(leftBoundary: Double(self.view.frame.minX),
-                                      rightBoundary: Double(self.view.frame.maxX),
-                                      upperBoundary: Double(self.view.frame.minY),
-                                      lowerBoundary: Double(self.view.frame.maxY),
+        gameEngine = PeggleGameEngine(leftBoundary: Double(leftBoundary),
+                                      rightBoundary: Double(rightBoundary),
+                                      upperBoundary: Double(upperBoundary),
+                                      lowerBoundary: Double(lowerBoundary),
                                       gameboard: gameboard)
         gameEngine.addRenderer(renderer: self)
         addInitialPegImages()
@@ -109,7 +115,7 @@ class GameViewController: UIViewController, Renderer {
             print(launchAngle)
             gameEngine.launchCannonBall(angle: launchAngle, initialSpeed: PeggleGameEngine.initialBallSpeed)
             isLaunchable = false
-            isRestarted = false
+            gameEngine.isRestarted = false
         }
 
         let angleOfRotation = calculateAngleOfRotation(cannonLocation: cannonLocation,
@@ -143,23 +149,7 @@ class GameViewController: UIViewController, Renderer {
         
         return CGFloat(angleOfRotation)
     }
-    
-//    private func addCannonToScreen() {
-//        let cannonImage = UIImage(named: "cannon")
-//        let location = gameEngine.getBallLocation()
-//        let frame = CGRect(x: location.x - CGFloat(CannonBall.radius),
-//                           y: location.y - CGFloat(CannonBall.radius),
-//                           width: CGFloat(CannonBall.radius) * 2,
-//                           height: CGFloat(CannonBall.radius) * 2)
-//        let cannonViewToAdd = UIImageView(frame: frame)
-//        cannonViewToAdd.layer.cornerRadius = Peg.radius
-//        cannonViewToAdd.contentMode = .scaleAspectFit
-//        cannonViewToAdd.image = cannonImage
-//        self.view.addSubview(cannonViewToAdd)
-//
-//        ballImageView = cannonViewToAdd
-//    }
-    
+        
     private func addBucketToScreen() {
         let bucketImage = UIImage(named: "bucket")
         let location = gameEngine.getBucketBottomCenterLocation()
@@ -204,7 +194,7 @@ class GameViewController: UIViewController, Renderer {
             // ONLY THE FOLLOWING COPIED TO THE NEW ROTATION LAUNCH METHOD
             gameEngine.launchCannonBall(angle: launchAngle, initialSpeed: PeggleGameEngine.initialBallSpeed)
             isLaunchable = false
-            isRestarted = false
+            gameEngine.isRestarted = false
         }
     }
 
@@ -262,22 +252,28 @@ class GameViewController: UIViewController, Renderer {
 
     private func deleteAllGlowingPegs() {
         for image in glowPegImages {
-            animateRemovalOfPeg(pegImage: image)
-            removePegAndItsView(from: image)
+            //animateRemovalOfPeg(pegImage: image)
+            UIView.animate(withDuration: 2, animations: {
+                image.alpha = 0
+            }, completion: { _ in
+                self.removePegAndItsView(from: image)
+            })
         }
         
         glowPegImages = []
+        
+        gameEngine.shouldDeleteAllPegs = false
         
         // after all the deletions, restart the round
         Timer.scheduledTimer(timeInterval: TimeInterval(2.2), target: self,
                              selector: #selector(restart), userInfo: nil, repeats: false)
     }
     
-    private func animateRemovalOfPeg(pegImage: UIImageView) {
-        UIView.animate(withDuration: 2) {
-            pegImage.alpha = 0
-        }
-    }
+//    private func animateRemovalOfPeg(pegImage: UIImageView) {
+//        UIView.animate(withDuration: 2) {
+//            pegImage.alpha = 0
+//        }
+//    }
 
     private func removePegAndItsView(from view: UIView) {
         let isRemoveSuccessful = gameEngine.removePegFromCurrentGameBoard(at: view.center)
@@ -312,9 +308,9 @@ class GameViewController: UIViewController, Renderer {
         bucketImageView.center = CGPoint(x: newBucketLocationX, y: newBucketLocationY)
         
         // light up pegs hit
-        for peg in gameEngine.getPegsHit() {
+        for peg in gameEngine.getPegsHit() where peg.hasBeenHit == false {
             for image in pegImages where image.containsLocation(location: peg.location,
-                                                                circleRadius: Peg.defaultRadius) {
+                                                                circleRadius: peg.radius) {
                 let center = image.center
                 image.removeFromSuperview()
                 let glowImage = createPegImageView(at: center, color: peg.color, shape: peg.shape,
@@ -322,12 +318,18 @@ class GameViewController: UIViewController, Renderer {
                 self.view.addSubview(glowImage)
                 glowPegImages.append(glowImage)
             }
+            
+            peg.hasBeenHit = true
         }
         
-        // delete pegs when ball flies out
-        if gameEngine.isBallOutOfBounds() && !isRestarted && !gameEngine.isSpookyBallTriggered {
+//        // delete pegs when ball flies out
+//        if gameEngine.isBallOutOfBounds() && !gameEngine.isRestarted && !gameEngine.isSpookyBallTriggered {
+//            deleteAllGlowingPegs()
+//            gameEngine.isRestarted = true
+//        }
+        
+        if gameEngine.shouldDeleteAllPegs {
             deleteAllGlowingPegs()
-            isRestarted = true
         }
         
         // show additional ball popup
@@ -408,6 +410,7 @@ class GameViewController: UIViewController, Renderer {
     }
     
     @objc private func returnToMainMenu() {
+        gameEngine.stopGameLoop()
         performSegue(withIdentifier: "backToMainFromGame", sender: self)
     }
     

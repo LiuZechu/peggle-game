@@ -8,7 +8,6 @@
 
 import Foundation
 
-// For now, a physics body is a circle
 class PhysicsBody: Hashable {
     
     var isMovable: Bool
@@ -18,7 +17,6 @@ class PhysicsBody: Hashable {
     var radius: Double
     var elasticity: Double // 1 means fully elastic i.e. no energy loss upon collision; 0 means fully inelastic.
     var isHit: Bool = false // whether a collision has happened to it
-    
     var angleOfRotation: Double
     var shape: Shape
     
@@ -99,7 +97,8 @@ class PhysicsBody: Hashable {
         velocity = Vector(xComponent: xVelocity, yComponent: yVelocity)
     }
     
-    /// Returns an array of vertices of the body. If the body is a circle, it will return an empty set since a circle has no vertices.
+    /// Returns an array of vertices of the body, arranged in a clockwise order.
+    /// If the body is a circle, it will return an empty set since a circle has no vertices.
     func getVertices() -> [Position] {
         switch self.shape {
         case .circle:
@@ -111,25 +110,25 @@ class PhysicsBody: Hashable {
             var result = [Position]()
             
             // first vertex
-            let addX3 = -radius * cos(Double.pi / 6 - angleOfRotation)
-            let addY3 = radius * sin(Double.pi / 6 - angleOfRotation)
-            result.append(Position(xComponent: centerX + addX3, yComponent: centerY + addY3))
-
-            // second vertex
-            let addX2 = radius * cos(Double.pi / 6 + angleOfRotation)
-            let addY2 = radius * sin(Double.pi / 6 + angleOfRotation)
-            result.append(Position(xComponent: centerX + addX2, yComponent: centerY + addY2))
-            
-            // third vertex
             let addX1 = radius * sin(angleOfRotation)
             let addY1 = -radius * cos(angleOfRotation)
             result.append(Position(xComponent: centerX + addX1, yComponent: centerY + addY1))
+            
+            // second vertex
+            let addX2 = -radius * cos(Double.pi / 6 - angleOfRotation)
+            let addY2 = radius * sin(Double.pi / 6 - angleOfRotation)
+            result.append(Position(xComponent: centerX + addX2, yComponent: centerY + addY2))
 
+            // third vertex
+            let addX3 = radius * cos(Double.pi / 6 + angleOfRotation)
+            let addY3 = radius * sin(Double.pi / 6 + angleOfRotation)
+            result.append(Position(xComponent: centerX + addX3, yComponent: centerY + addY3))
+            
             return result
         }
     }
     
-    // calculates its position in the next moment in time
+    /// This function calculates and updates the body's position in the next moment in time.
     func update() {
         guard isMovable else {
             return

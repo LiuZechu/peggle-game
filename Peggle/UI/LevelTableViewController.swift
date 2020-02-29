@@ -9,7 +9,7 @@
 import UIKit
 
 class LevelTableViewController: UITableViewController {
-    var logic: Logic!
+    var logic: LevelDesignerLogic!
     weak var delegate: LoadGameBoardDelegate?
     private var levelNames = [String]()
     private var levelNameSelected: String!

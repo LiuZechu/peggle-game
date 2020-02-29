@@ -1,5 +1,5 @@
 //
-//  LogicManager.swift
+//  LevelDesignerLogicManager.swift
 //  Peggle
 //
 //  Created by Liu Zechu on 27/1/20.
@@ -10,7 +10,7 @@ import Foundation
 import struct CoreGraphics.CGPoint
 import struct CoreGraphics.CGFloat
 
-class LogicManager: Logic {
+class LevelDesignerLogicManager: LevelDesignerLogic {
     private var model: Model
     private var storage: Storage
     

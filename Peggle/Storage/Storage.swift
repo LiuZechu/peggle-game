@@ -19,4 +19,6 @@ protocol Storage {
     func fetchGameBoardByName(name: String) -> GameBoard?
     
     func isFirstGameBoard() -> Bool
+    
+    func savePreloadedLevels(multiplier: Double)
 }

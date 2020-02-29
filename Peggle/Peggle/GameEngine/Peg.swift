@@ -71,6 +71,9 @@ class Peg: Hashable {
             physicsBody.isHit = newValue
         }
     }
+    // this attribute shows whether the peg's hit status has been noticed
+    var hasBeenHit = false
+    
     private var hasPowerupBeenActivated = false
     
 //    init(color: PegColor, location: CGPoint, shape: Shape,

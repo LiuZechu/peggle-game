@@ -130,7 +130,7 @@ class PhysicsEngine {
     private func resolveHorizontalReflectionFromWall(movableBody: PhysicsBody) {
         // prevent the ball from getting stuck at the wall
         let isOverlapping = movableBody.velocity.xComponent
-            * (movableBody.position.xComponent - movableBody.radius) <= 0
+            * (movableBody.position.xComponent - movableBody.radius - leftBoundary) <= 0
         guard !isOverlapping else {
             return
         }
@@ -141,7 +141,7 @@ class PhysicsEngine {
     private func resolveVerticalReflectionFromWall(movableBody: PhysicsBody) {
         // prevent the ball from getting stuck at the wall
         let isOverlapping = movableBody.velocity.yComponent
-            * (movableBody.position.yComponent - movableBody.radius) <= 0
+            * (movableBody.position.yComponent - movableBody.radius - upperBoundary) <= 0
         guard !isOverlapping else {
             return
         }

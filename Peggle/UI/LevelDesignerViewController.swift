@@ -10,8 +10,8 @@ import UIKit
 
 class LevelDesignerViewController: UIViewController {
     
-    private var logic: Logic!
-        
+    private var logic: LevelDesignerLogic!
+
     private var buttonSelected = Button.bluePegSelector
     
     private var initialPegLocation = CGPoint(x: 0, y: 0)
@@ -43,11 +43,22 @@ class LevelDesignerViewController: UIViewController {
         
         let model = ModelManager()
         let storage = StorageManager()
-        logic = LogicManager(model: model, storage: storage)
+        logic = LevelDesignerLogicManager(model: model, storage: storage)
         
         enableBackgroundTap()
         highlightButton(button: .bluePegSelector)
         updateLevelName()
+    
+        let leftBoundary = self.view.frame.minX
+        let rightBoundary = self.view.frame.maxX
+        let upperBoundary = self.view.frame.minY
+        let lowerBoundary = self.view.frame.maxY
+        let screenHeight = lowerBoundary - upperBoundary
+        let screenWidth = rightBoundary - leftBoundary
+        
+        let displayMultiplier = min(screenHeight / MenuScreenViewController.fixedHeight,
+                                    screenWidth / MenuScreenViewController.fixedWidth)
+        storage.savePreloadedLevels(multiplier: Double(displayMultiplier))
     }
         
     private func updateLevelName() {
@@ -236,7 +247,7 @@ class LevelDesignerViewController: UIViewController {
     // Tapping the image either makes it editable or deletes it, depending on which button is pressed
     private func makeImageResponsiveToTap(image: inout UIImageView) {
         let tap = UITapGestureRecognizer(target: self,
-                                               action: #selector(self.handleTapOnPeg))
+                                         action: #selector(self.handleTapOnPeg))
         tap.numberOfTapsRequired = 1
         tap.numberOfTouchesRequired = 1
         image.addGestureRecognizer(tap)
@@ -326,6 +337,7 @@ class LevelDesignerViewController: UIViewController {
             sizeSlider.setValue(Float(peg.radius), animated: false)
 
             sizeSlider.addTarget(self, action: #selector(self.changePegSize), for: .valueChanged)
+            sizeSlider.maximumValueImage = UIImage(systemName: "arrow.up.left.and.arrow.down.right")
             self.sizeSlider = sizeSlider
             self.view.addSubview(sizeSlider)
             
@@ -338,8 +350,9 @@ class LevelDesignerViewController: UIViewController {
                 rotationSlider.maximumValue = 2 * Float.pi
                 rotationSlider.minimumValue = 0
                 rotationSlider.setValue(Float(peg.angleOfRotation), animated: false)
-
+                
                 rotationSlider.addTarget(self, action: #selector(self.changePegRotation), for: .valueChanged)
+                rotationSlider.maximumValueImage = UIImage(systemName: "arrow.clockwise")
                 self.rotationSlider = rotationSlider
                 self.view.addSubview(rotationSlider)
             }

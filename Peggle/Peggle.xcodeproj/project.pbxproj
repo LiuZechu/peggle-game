@@ -41,10 +41,11 @@
 		F3161F6F2404E5D80016D088 /* ModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F612404E5D80016D088 /* ModelManager.swift */; };
 		F3161F712404E5D80016D088 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F642404E5D80016D088 /* Storage.swift */; };
 		F3161F722404E5D80016D088 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F652404E5D80016D088 /* StorageManager.swift */; };
-		F3161F732404E5D80016D088 /* Logic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F672404E5D80016D088 /* Logic.swift */; };
-		F3161F742404E5D80016D088 /* LogicManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F682404E5D80016D088 /* LogicManager.swift */; };
+		F3161F732404E5D80016D088 /* LevelDesignerLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F672404E5D80016D088 /* LevelDesignerLogic.swift */; };
+		F3161F742404E5D80016D088 /* LevelDesignerLogicManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F682404E5D80016D088 /* LevelDesignerLogicManager.swift */; };
 		F344688D24050E1B00E5B9E0 /* MenuScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F344688C24050E1B00E5B9E0 /* MenuScreenViewController.swift */; };
 		F344688F24052D8500E5B9E0 /* LoadGameBoardDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F344688E24052D8500E5B9E0 /* LoadGameBoardDelegate.swift */; };
+		F3A172B1240A7151004350B4 /* SampleLevelsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A172B0240A7151004350B4 /* SampleLevelsLoader.swift */; };
 		F3BAA46024055BAB0061E9A3 /* GetGameBoardDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BAA45F24055BAB0061E9A3 /* GetGameBoardDelegate.swift */; };
 		F3BAA462240562D10061E9A3 /* LevelDesignerAlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BAA461240562D10061E9A3 /* LevelDesignerAlertManager.swift */; };
 		F3BAA46424056C110061E9A3 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BAA46324056C110061E9A3 /* Button.swift */; };
@@ -115,10 +116,11 @@
 		F3161F612404E5D80016D088 /* ModelManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelManager.swift; sourceTree = "<group>"; };
 		F3161F642404E5D80016D088 /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		F3161F652404E5D80016D088 /* StorageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
-		F3161F672404E5D80016D088 /* Logic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logic.swift; sourceTree = "<group>"; };
-		F3161F682404E5D80016D088 /* LogicManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogicManager.swift; sourceTree = "<group>"; };
+		F3161F672404E5D80016D088 /* LevelDesignerLogic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelDesignerLogic.swift; sourceTree = "<group>"; };
+		F3161F682404E5D80016D088 /* LevelDesignerLogicManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelDesignerLogicManager.swift; sourceTree = "<group>"; };
 		F344688C24050E1B00E5B9E0 /* MenuScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScreenViewController.swift; sourceTree = "<group>"; };
 		F344688E24052D8500E5B9E0 /* LoadGameBoardDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadGameBoardDelegate.swift; sourceTree = "<group>"; };
+		F3A172B0240A7151004350B4 /* SampleLevelsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLevelsLoader.swift; sourceTree = "<group>"; };
 		F3BAA45F24055BAB0061E9A3 /* GetGameBoardDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetGameBoardDelegate.swift; sourceTree = "<group>"; };
 		F3BAA461240562D10061E9A3 /* LevelDesignerAlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelDesignerAlertManager.swift; sourceTree = "<group>"; };
 		F3BAA46324056C110061E9A3 /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
@@ -203,7 +205,6 @@
 			children = (
 				F3161EF7240270A20016D088 /* AppDelegate.swift */,
 				F3161F662404E5D80016D088 /* Logic */,
-				F3161F5D2404E5D80016D088 /* Model */,
 				F3161F632404E5D80016D088 /* Storage */,
 				F3161F592404E5D70016D088 /* UI */,
 				F3161F48240373280016D088 /* GameEngine */,
@@ -288,7 +289,8 @@
 				F3161F5E2404E5D80016D088 /* Model.swift */,
 				F3161F612404E5D80016D088 /* ModelManager.swift */,
 			);
-			path = Model;
+			name = Model;
+			path = Storage/Model;
 			sourceTree = SOURCE_ROOT;
 		};
 		F3161F632404E5D80016D088 /* Storage */ = {
@@ -296,6 +298,8 @@
 			children = (
 				F3161F642404E5D80016D088 /* Storage.swift */,
 				F3161F652404E5D80016D088 /* StorageManager.swift */,
+				F3A172B0240A7151004350B4 /* SampleLevelsLoader.swift */,
+				F3161F5D2404E5D80016D088 /* Model */,
 			);
 			path = Storage;
 			sourceTree = SOURCE_ROOT;
@@ -303,8 +307,8 @@
 		F3161F662404E5D80016D088 /* Logic */ = {
 			isa = PBXGroup;
 			children = (
-				F3161F672404E5D80016D088 /* Logic.swift */,
-				F3161F682404E5D80016D088 /* LogicManager.swift */,
+				F3161F672404E5D80016D088 /* LevelDesignerLogic.swift */,
+				F3161F682404E5D80016D088 /* LevelDesignerLogicManager.swift */,
 			);
 			path = Logic;
 			sourceTree = SOURCE_ROOT;
@@ -535,7 +539,7 @@
 				F3161EFC240270A20016D088 /* GameViewController.swift in Sources */,
 				F344688D24050E1B00E5B9E0 /* MenuScreenViewController.swift in Sources */,
 				F3161F46240373200016D088 /* PhysicsBody.swift in Sources */,
-				F3161F742404E5D80016D088 /* LogicManager.swift in Sources */,
+				F3161F742404E5D80016D088 /* LevelDesignerLogicManager.swift in Sources */,
 				F3161F722404E5D80016D088 /* StorageManager.swift in Sources */,
 				F3161F3E240372720016D088 /* UIImageViewExtension.swift in Sources */,
 				F3161F51240373280016D088 /* PegColor.swift in Sources */,
@@ -549,7 +553,7 @@
 				F3BAA466240909FF0061E9A3 /* CollisionChecker.swift in Sources */,
 				F3161F692404E5D80016D088 /* LevelDesignerViewController.swift in Sources */,
 				F3161F50240373280016D088 /* PeggleGameEngine.swift in Sources */,
-				F3161F732404E5D80016D088 /* Logic.swift in Sources */,
+				F3161F732404E5D80016D088 /* LevelDesignerLogic.swift in Sources */,
 				F3161F6B2404E5D80016D088 /* LevelTableViewController.swift in Sources */,
 				F3161F54240381160016D088 /* Bucket.swift in Sources */,
 				F3161F6C2404E5D80016D088 /* Model.swift in Sources */,
@@ -560,6 +564,7 @@
 				F3161F45240373200016D088 /* Vector.swift in Sources */,
 				F3161F6F2404E5D80016D088 /* ModelManager.swift in Sources */,
 				F3161F6A2404E5D80016D088 /* LevelTableViewCell.swift in Sources */,
+				F3A172B1240A7151004350B4 /* SampleLevelsLoader.swift in Sources */,
 				F3161F4F240373280016D088 /* Peg.swift in Sources */,
 				F3161F582404D38D0016D088 /* Shape.swift in Sources */,
 				F3BAA46424056C110061E9A3 /* Button.swift in Sources */,
@@ -738,6 +743,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = RVZD4FPJG5;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/Pods/**";
 				INFOPLIST_FILE = Peggle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -757,6 +763,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = RVZD4FPJG5;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/Pods/**";
 				INFOPLIST_FILE = Peggle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

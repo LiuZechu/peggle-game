@@ -1,5 +1,5 @@
 //
-//  Logic.swift
+//  LevelDesignerLogic.swift
 //  Peggle
 //
 //  Created by Liu Zechu on 30/1/20.
@@ -10,7 +10,7 @@ import Foundation
 import struct CoreGraphics.CGPoint
 import struct CoreGraphics.CGFloat
 
-protocol Logic {
+protocol LevelDesignerLogic {
     func getCurrentGameBoardName() -> String
     
     func getCurrentGameBoard() -> GameBoard

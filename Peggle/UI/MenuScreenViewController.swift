@@ -9,14 +9,26 @@
 import UIKit
 
 class MenuScreenViewController: UIViewController {
-    private var logic: Logic!
+    static let fixedWidth: CGFloat = 768
+    static let fixedHeight: CGFloat = 1_024
+
+    private var logic: LevelDesignerLogic!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let model = ModelManager()
+        let leftBoundary = self.view.frame.minX
+        let rightBoundary = self.view.frame.maxX
+        let upperBoundary = self.view.frame.minY
+        let lowerBoundary = self.view.frame.maxY
+        let screenHeight = lowerBoundary - upperBoundary
+        let screenWidth = rightBoundary - leftBoundary
+        let displayMultiplier = min(screenHeight / MenuScreenViewController.fixedHeight,
+                                    screenWidth / MenuScreenViewController.fixedWidth)
         let storage = StorageManager()
-        logic = LogicManager(model: model, storage: storage)
+        storage.savePreloadedLevels(multiplier: Double(displayMultiplier))
+        let model = ModelManager()
+        logic = LevelDesignerLogicManager(model: model, storage: storage)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

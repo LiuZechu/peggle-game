@@ -11,6 +11,16 @@ import struct CoreGraphics.CGPoint
 
 struct CannonBall {
     static let radius = 20.0
+    var hitCounter = 0
+    var isHit: Bool {
+        get {
+            return physicsBody.isHit
+        }
+        
+        set {
+            physicsBody.isHit = newValue
+        }
+    }
     
     var location: CGPoint {
         

@@ -63,6 +63,8 @@ class StorageManager: Storage {
     }
     
     func fetchAllLevelNames() -> [String] {
+        print("START")
+        
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return []
         }
@@ -84,6 +86,8 @@ class StorageManager: Storage {
             }
             return levelName
         }
+        
+        print("END")
     }
     
     func fetchGameBoardByName(name: String) -> GameBoard? {
@@ -152,9 +156,64 @@ class StorageManager: Storage {
         let levelName = gameBoard.name
         gameBoardMO.setValue(levelName, forKey: "name")
 
-        // add pegs to the storage object
+        let pegMOs = convertPegsToManagedObjects(pegs: gameBoard.pegs, managedContext: managedContext)
+        
+//        var pegMOs = [NSManagedObject]()
+//        for peg in gameBoard.pegs {
+//            let entity = NSEntityDescription.entity(forEntityName: "Peg", in: managedContext)!
+//            let pegMO = NSManagedObject(entity: entity, insertInto: managedContext)
+//            let pegColorString: String
+//            switch peg.color {
+//            case .blue:
+//                pegColorString = "blue"
+//            case .orange:
+//                pegColorString = "orange"
+//            case .green:
+//                pegColorString = "green"
+//            }
+//            let pegShapeString: String
+//            switch peg.shape {
+//            case .circle:
+//                pegShapeString = "circle"
+//            case .equilateralTriangle:
+//                pegShapeString = "equilateralTriangle"
+//            }
+//            let pegXPosition = Double(peg.location.x)
+//            let pegYPosition = Double(peg.location.y)
+//            let pegRadius = Double(peg.radius)
+//            let pegAngle = Double(peg.angleOfRotation)
+//
+//            pegMO.setValue(pegColorString, forKeyPath: "color")
+//            pegMO.setValue(pegXPosition, forKeyPath: "xPosition")
+//            pegMO.setValue(pegYPosition, forKeyPath: "yPosition")
+//            pegMO.setValue(pegShapeString, forKey: "shape")
+//            pegMO.setValue(pegRadius, forKey: "radius")
+//            pegMO.setValue(pegAngle, forKey: "angle")
+//
+//            pegMOs.append(pegMO)
+//        }
+        
+        let pegStorageSet = gameBoardMO.mutableSetValue(forKey: "pegs")
+        pegStorageSet.removeAllObjects() // clear all previously stored objects
+        pegStorageSet.addObjects(from: pegMOs)
+
+        // add pegs set to the game board storage object
+        gameBoardMO.setValue(pegStorageSet, forKeyPath: "pegs")
+        
+        currentGameBoardStorageObject = gameBoardMO
+        
+        // commit changes and save to disk
+        do {
+            try managedContext.save()
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
+        }
+    }
+    
+    private func convertPegsToManagedObjects(pegs: Set<Peg>,
+                                             managedContext: NSManagedObjectContext) -> [NSManagedObject] {
         var pegMOs = [NSManagedObject]()
-        for peg in gameBoard.pegs {
+        for peg in pegs {
             let entity = NSEntityDescription.entity(forEntityName: "Peg", in: managedContext)!
             let pegMO = NSManagedObject(entity: entity, insertInto: managedContext)
             let pegColorString: String
@@ -185,24 +244,13 @@ class StorageManager: Storage {
             pegMO.setValue(pegRadius, forKey: "radius")
             pegMO.setValue(pegAngle, forKey: "angle")
 
+            print("color: \(pegColorString), x:\(pegXPosition), y:\(pegYPosition), shape: \(pegShapeString)")
+            print("radius: \(pegRadius), angle:\(pegAngle)")
+            
             pegMOs.append(pegMO)
         }
         
-        let pegStorageSet = gameBoardMO.mutableSetValue(forKey: "pegs")
-        pegStorageSet.removeAllObjects() // clear all previously stored objects
-        pegStorageSet.addObjects(from: pegMOs)
-
-        // add pegs set to the game board storage object
-        gameBoardMO.setValue(pegStorageSet, forKeyPath: "pegs")
-        
-        currentGameBoardStorageObject = gameBoardMO
-        
-        // commit changes and save to disk
-        do {
-            try managedContext.save()
-        } catch let error as NSError {
-            print("Could not save. \(error), \(error.userInfo)")
-        }
+        return pegMOs
     }
     
     func isFirstGameBoard() -> Bool {
@@ -232,4 +280,18 @@ class StorageManager: Storage {
         }.isEmpty
     }
     
+    func savePreloadedLevels(multiplier: Double) {
+        // already saved
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+                return
+        }
+        let managedContext = appDelegate.persistentContainer.viewContext
+        
+        let loader = SampleLevelsLoader(multiplier: multiplier)
+        for gameboard in loader.games {
+            if !checkNameAlreadyExists(name: gameboard.name) {
+                save(gameBoard: gameboard, managedContext: managedContext)
+            }
+        }
+    }
 }

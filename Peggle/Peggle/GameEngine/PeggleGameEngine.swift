@@ -12,7 +12,7 @@ import UIKit
 class PeggleGameEngine {
     static let initialBallSpeed: Double = 300
     static let spaceBlastRadius: Double = 100
-
+    
     private let physicsEngine: PhysicsEngine
     private let gameboard: GameBoard
     private var cannonBall: CannonBall
@@ -43,7 +43,9 @@ class PeggleGameEngine {
     private var isGameLoopStopped: Bool = true
     private var typeOfPowerupChosen: Powerup!
     var isSpookyBallTriggered: Bool = false
-
+    var isRestarted = false // indicates whether the previous game loop has ended and a new ball replenished
+    var shouldDeleteAllPegs = false
+    
     init(leftBoundary: Double, rightBoundary: Double,
          upperBoundary: Double, lowerBoundary: Double,
          gameboard: GameBoard) {
@@ -57,9 +59,9 @@ class PeggleGameEngine {
         cannonBall = CannonBall(xPosition: cannonBallInitialXPosition)
        
         // ARBITRARY FOR NOW
-        bucket = Bucket(upperBoundary: lowerBoundary - 150, width: 150,
+        bucket = Bucket(upperBoundary: lowerBoundary - 50, width: 150,
                         bottomCenterLocation: CGPoint(x: rightBoundary / 2,
-                                                      y: lowerBoundary))
+                                                      y: lowerBoundary + 100))
         
         self.leftBoundary = leftBoundary
         self.rightBoundary = rightBoundary
@@ -86,7 +88,7 @@ class PeggleGameEngine {
         isGameLoopStopped = false
     }
     
-    private func stopGameLoop() {
+    func stopGameLoop() {
         guard !isGameLoopStopped else {
             return
         }
@@ -132,6 +134,12 @@ class PeggleGameEngine {
             }
         }
         
+        // delete pegs when ball flies out
+        if isBallOutOfBounds() && !isRestarted && !isSpookyBallTriggered {
+            shouldDeleteAllPegs = true
+            isRestarted = true
+        }
+        
         // move the bucket
         if bucket.hitsLeftBoundary(leftBoundary: leftBoundary)
             || bucket.hitsRightBoundary(rightBoundary: rightBoundary) {
@@ -147,6 +155,18 @@ class PeggleGameEngine {
                 incrementBallCount()
             }
             hasBallEntered = true
+        }
+        
+        // increase ball hit count to detect whether it's stuck
+        if cannonBall.isHit {
+            cannonBall.hitCounter += 1
+            cannonBall.isHit = false
+        }
+        
+        // delete ball and pegs if the ball gets stuck
+        if isBallStuck() && !isRestarted {
+            shouldDeleteAllPegs = true
+            isRestarted = true
         }
         
         // trigger powerups
@@ -270,6 +290,11 @@ class PeggleGameEngine {
         for peg in gameboard.pegs where peg.color == .green {
             peg.powerup = powerup
         }
+    }
+    
+    func isBallStuck() -> Bool {
+        print("hit count is \(cannonBall.hitCounter)")
+        return cannonBall.hitCounter > gameboard.pegs.count * 10
     }
     
     func teleportBallToCeiling() {
