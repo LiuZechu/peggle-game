@@ -125,6 +125,26 @@ To resize a peg, tap on the peg. Two sliders will appear in the middle of the sc
 Please write all of the additional features that you have implemented so that
 your grader can award you credit.
 
+1. Sound effects: 
+    * When the game starts, a background music will start playing. This music continues throughout the game, and will stop once the user returns to the main menu (either through the BACK button or when the game ends)
+    * When the ball hits a peg, a bouncing sound effect will play.
+    * When the user wins or loses, a cheering sound effect will play. This sound is played even when the user loses so as to cheer them up :)
+    
+2. Windy Mode:
+    * When starting the game, the user will be prompted by a popup window to choose a powerup or a mode of the game. There are two extra modes, namely, `Windy Mode` and `CHAOS MODE` (which will be explained below). 
+    * For Windy Mode, each time the ball is launched from the cannon, there will be a wind of random magnitude, either to the left or to the right. The ball will move as if there is a (strong) wind, in addition to gravity. Powerups are not activated in this mode.
+
+3. Chaos Mode:
+    * When the user chooses `CHAOS MODE`, the game will enter the Chaos Mode. 
+    * In this mode, a circular peg of any colour will turn red once it is hit.
+    * Once a peg turns red, it will become a free-moving body, launched at a random speed and direction.
+    * The delocalised pegs will act as balls, hitting other pegs and turning them into free-moving bodies. 
+    * When a circular peg is delocalised, the peg is launched at a random speed and direction.
+    * Triangular pegs will not delocalise or turn red when hit. They will stay stationary, but will light up.
+    * Once all the free-moving pegs and the ball exit the screen, any remaining lit up pegs on the screen will fade out, and the cannon will be ready to launch again (same as the original game)
+    * The win/lose conditions are the same as original.
+    * To better experience this mode, please try it on the Preloaded Level named **Third Level**.
+    
 ## Tests
 If you decide to write how you are going to do your tests instead of writing
 actual tests, please write in this section. If you decide to write all of your
