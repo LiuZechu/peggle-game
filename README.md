@@ -145,6 +145,9 @@ your grader can award you credit.
     * The win/lose conditions are the same as original.
     * To better experience this mode, please try it on the Preloaded Level named **Third Level**.
     
+4. Level Designer upper border:
+    * In the Level Designer, a white line is drawn near the top of the screen. The user is not allowed to place pegs there. This is to prevent the user from placing pegs above the cannon.
+    
 ## Tests
 If you decide to write how you are going to do your tests instead of writing
 actual tests, please write in this section. If you decide to write all of your
@@ -206,6 +209,8 @@ tests in code, please delete this section.
         * sliding the slider of a peg should not affect any other peg on the screen
      * when tapping an enlarged/rotated peg
         * the slider level should be pre-set to indicate the current size/angle of the peg, relative to the min/max value.
+    * when tapping above the white line at any time, nothing should happen.
+    * when dragging a peg above the white line and release the finger, the peg should go back to its original position.
 3. Test persistence
     * Put some pegs on the screen, then tap SAVE, and name it `some level`. Tap `New Level`. The bottom label on the palette should change the name to  `some level`.
     * Then, tap LOAD, a level named `some level` should appear in the table view, together with preloaded levels called `First Level`, `Second Level`, and `Third Level`. Dismiss the table by swiping it down.
