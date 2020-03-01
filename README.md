@@ -284,4 +284,4 @@ For my problem set 3, I feel that I did not separate the VC and game engine comp
 
 Also, the physics engine collision checking in PS3 was designed only for circle-cirlce collision. More work had to be done to enable it to handle circle-triangle collisions as well. However, this is still not optimal. If I were to do the app again, I should not think of the objects as circles only, but instead I should model the objects as more flexible shapes (i.e. define an object using a list of vertices) and allow for more universal collision rules. 
 
-Nevertheless, the interaction between physics engine and game engine was largely unchanged, as the game engine calls the `update()` function of physics engine, and cares about the locations of the bodies. No major work needed to be done regarding the interaction between these two engine.
+Nevertheless, the interaction between physics engine and game engine was largely unchanged, as the game engine calls the `update()` function of physics engine, and cares about the locations of the bodies. No major work needed to be done regarding the interaction between these two engines.
