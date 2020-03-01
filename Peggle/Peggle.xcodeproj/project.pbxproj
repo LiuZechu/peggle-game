@@ -17,7 +17,7 @@
 		F3161F02240270A20016D088 /* Peggle.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F3161F00240270A20016D088 /* Peggle.xcdatamodeld */; };
 		F3161F04240270A70016D088 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3161F03240270A70016D088 /* Assets.xcassets */; };
 		F3161F07240270A70016D088 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F3161F05240270A70016D088 /* LaunchScreen.storyboard */; };
-		F3161F12240270A80016D088 /* PeggleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F11240270A80016D088 /* PeggleTests.swift */; };
+		F3161F12240270A80016D088 /* StorageManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F11240270A80016D088 /* StorageManagerTests.swift */; };
 		F3161F1D240270A80016D088 /* PeggleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F1C240270A80016D088 /* PeggleUITests.swift */; };
 		F3161F3A2403726A0016D088 /* CGPointExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F392403726A0016D088 /* CGPointExtension.swift */; };
 		F3161F3D240372720016D088 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F3B240372720016D088 /* Renderer.swift */; };
@@ -45,6 +45,13 @@
 		F3161F742404E5D80016D088 /* LevelDesignerLogicManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F682404E5D80016D088 /* LevelDesignerLogicManager.swift */; };
 		F344688D24050E1B00E5B9E0 /* MenuScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F344688C24050E1B00E5B9E0 /* MenuScreenViewController.swift */; };
 		F344688F24052D8500E5B9E0 /* LoadGameBoardDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F344688E24052D8500E5B9E0 /* LoadGameBoardDelegate.swift */; };
+		F357AACA240B540E00A152E4 /* LevelDesignerModelManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F357AAC9240B540E00A152E4 /* LevelDesignerModelManagerTests.swift */; };
+		F357AACC240B549E00A152E4 /* GameBoardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F357AACB240B549E00A152E4 /* GameBoardTests.swift */; };
+		F357AACE240B551200A152E4 /* PegTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F357AACD240B551200A152E4 /* PegTests.swift */; };
+		F357AAD0240B556300A152E4 /* CannonBallTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F357AACF240B556300A152E4 /* CannonBallTests.swift */; };
+		F357AAD2240B55B400A152E4 /* PhysicsBodyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F357AAD1240B55B400A152E4 /* PhysicsBodyTests.swift */; };
+		F357AAD4240B55E500A152E4 /* PhysicsEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F357AAD3240B55E500A152E4 /* PhysicsEngineTests.swift */; };
+		F357AAD6240B56DA00A152E4 /* CollisionCheckerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F357AAD5240B56DA00A152E4 /* CollisionCheckerTests.swift */; };
 		F3A172B1240A7151004350B4 /* SampleLevelsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A172B0240A7151004350B4 /* SampleLevelsLoader.swift */; };
 		F3A172B5240AAC60004350B4 /* ViewControllerUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A172B4240AAC60004350B4 /* ViewControllerUtility.swift */; };
 		F3A172B7240AB0EE004350B4 /* LevelDesignerDelegateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A172B6240AB0EE004350B4 /* LevelDesignerDelegateExtensions.swift */; };
@@ -92,7 +99,7 @@
 		F3161F06240270A70016D088 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F3161F08240270A70016D088 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F3161F0D240270A70016D088 /* PeggleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PeggleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F3161F11240270A80016D088 /* PeggleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeggleTests.swift; sourceTree = "<group>"; };
+		F3161F11240270A80016D088 /* StorageManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManagerTests.swift; sourceTree = "<group>"; };
 		F3161F13240270A80016D088 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F3161F18240270A80016D088 /* PeggleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PeggleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3161F1C240270A80016D088 /* PeggleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeggleUITests.swift; sourceTree = "<group>"; };
@@ -123,6 +130,13 @@
 		F3161F682404E5D80016D088 /* LevelDesignerLogicManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelDesignerLogicManager.swift; sourceTree = "<group>"; };
 		F344688C24050E1B00E5B9E0 /* MenuScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScreenViewController.swift; sourceTree = "<group>"; };
 		F344688E24052D8500E5B9E0 /* LoadGameBoardDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadGameBoardDelegate.swift; sourceTree = "<group>"; };
+		F357AAC9240B540E00A152E4 /* LevelDesignerModelManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelDesignerModelManagerTests.swift; sourceTree = "<group>"; };
+		F357AACB240B549E00A152E4 /* GameBoardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBoardTests.swift; sourceTree = "<group>"; };
+		F357AACD240B551200A152E4 /* PegTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PegTests.swift; sourceTree = "<group>"; };
+		F357AACF240B556300A152E4 /* CannonBallTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CannonBallTests.swift; sourceTree = "<group>"; };
+		F357AAD1240B55B400A152E4 /* PhysicsBodyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsBodyTests.swift; sourceTree = "<group>"; };
+		F357AAD3240B55E500A152E4 /* PhysicsEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsEngineTests.swift; sourceTree = "<group>"; };
+		F357AAD5240B56DA00A152E4 /* CollisionCheckerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionCheckerTests.swift; sourceTree = "<group>"; };
 		F3A172B0240A7151004350B4 /* SampleLevelsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLevelsLoader.swift; sourceTree = "<group>"; };
 		F3A172B4240AAC60004350B4 /* ViewControllerUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerUtility.swift; sourceTree = "<group>"; };
 		F3A172B6240AB0EE004350B4 /* LevelDesignerDelegateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelDesignerDelegateExtensions.swift; sourceTree = "<group>"; };
@@ -231,8 +245,15 @@
 		F3161F10240270A70016D088 /* PeggleTests */ = {
 			isa = PBXGroup;
 			children = (
-				F3161F11240270A80016D088 /* PeggleTests.swift */,
+				F3161F11240270A80016D088 /* StorageManagerTests.swift */,
 				F3161F13240270A80016D088 /* Info.plist */,
+				F357AAC9240B540E00A152E4 /* LevelDesignerModelManagerTests.swift */,
+				F357AACB240B549E00A152E4 /* GameBoardTests.swift */,
+				F357AACD240B551200A152E4 /* PegTests.swift */,
+				F357AACF240B556300A152E4 /* CannonBallTests.swift */,
+				F357AAD1240B55B400A152E4 /* PhysicsBodyTests.swift */,
+				F357AAD3240B55E500A152E4 /* PhysicsEngineTests.swift */,
+				F357AAD5240B56DA00A152E4 /* CollisionCheckerTests.swift */,
 			);
 			path = PeggleTests;
 			sourceTree = "<group>";
@@ -588,7 +609,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F3161F12240270A80016D088 /* PeggleTests.swift in Sources */,
+				F357AAD4240B55E500A152E4 /* PhysicsEngineTests.swift in Sources */,
+				F357AACE240B551200A152E4 /* PegTests.swift in Sources */,
+				F357AAD6240B56DA00A152E4 /* CollisionCheckerTests.swift in Sources */,
+				F357AAD2240B55B400A152E4 /* PhysicsBodyTests.swift in Sources */,
+				F3161F12240270A80016D088 /* StorageManagerTests.swift in Sources */,
+				F357AACA240B540E00A152E4 /* LevelDesignerModelManagerTests.swift in Sources */,
+				F357AACC240B549E00A152E4 /* GameBoardTests.swift in Sources */,
+				F357AAD0240B556300A152E4 /* CannonBallTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
