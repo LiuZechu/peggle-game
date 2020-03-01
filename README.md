@@ -228,7 +228,7 @@ tests in code, please delete this section.
 ### Game tests
 1. Test initial screen
     * pop-up window
-        * when the game is just launched either from the main menu or from Level Designer, a popup window titled `Start Game` should immediately appear and provide instructions on how to launch the ball. There will be two options, `Space Blast` and `Spooky Ball`. Tapping one of them will start the game, and set the green pegs' powerup to the selected one (more below).
+        * when the game is just launched either from the main menu or from Level Designer, a popup window titled `Start Game` should immediately appear and provide instructions on how to launch the ball. There will be four options, `Space Blast`, `Spooky Ball`, `Windy Mode` and `CHAOS MODE`. We will focus on the first two for testing. Tapping one of the first two options will start the game, and set the green pegs' powerup to the selected one (more below).
 2. Test gameplay:
 (Before testing, go to Level Designer to create a level with a few blue, orange and green pegs of different shapes, sizes and angles, and start the game to test)
     * downward cannon

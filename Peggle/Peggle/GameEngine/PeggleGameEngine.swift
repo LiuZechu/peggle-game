@@ -34,6 +34,7 @@ class PeggleGameEngine {
     var numberOfOrangePegsLeft: Int {
         return gameboard.getNumberOfPegsOfColor(color: .orange)
     }
+    private var score: Int = 0
     
     private var hasBallEntered: Bool = false
     private var isGameLoopStopped: Bool = true
@@ -330,6 +331,11 @@ class PeggleGameEngine {
         
         cannonBall.location = newLocation
         isSpookyBallTriggered = false
+    }
+    
+    func getCurrentScore() -> Int {
+        score += cannonBall.hitCounter * gameboard.pegs.count
+        return score
     }
     
     private func findPegFromLocation(at point: CGPoint) -> Peg? {

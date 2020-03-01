@@ -15,7 +15,7 @@ class GameViewController: UIViewController, Renderer {
     private var isLaunchable: Bool = true // indicates whether the cannon ball is ready to be launched now
         
     @IBOutlet private var background: UIImageView!
-    @IBOutlet private var ballsNumberLabel: UILabel!
+    @IBOutlet private var scoreLabel: UILabel!
     @IBOutlet private var cannonImageView: UIImageView!
     private var ballImageView: UIImageView!
     private var bucketImageView: UIImageView!
@@ -37,7 +37,7 @@ class GameViewController: UIViewController, Renderer {
         gameEngine.setBallYPosition(yPosition: Double(cannonImageView.center.y))
         addBallToScreen()
         addBucketToScreen()
-        updateBallsNumberLabel()
+        updateScoreLabel()
         playBackgroundMusic()
         
         // make cannon on top of ball
@@ -202,8 +202,8 @@ class GameViewController: UIViewController, Renderer {
         ballImageView.center = gameEngine.getBallLocation()
         isLaunchable = true
         
-        // update the ball number
-        updateBallsNumberLabel()
+        // update the ball number and score
+        updateScoreLabel()
         
         // If the player has won/lost, restart another round
         if gameEngine.hasWon() || gameEngine.hasLost() {
@@ -272,10 +272,12 @@ class GameViewController: UIViewController, Renderer {
     }
     
     // update the text on top right hand corner of the background
-    private func updateBallsNumberLabel() {
-        ballsNumberLabel.text = "Balls left: \(gameEngine.numberOfBallsLeft)"
+    private func updateScoreLabel() {
+        let textToDisplay = "Balls left: \(gameEngine.numberOfBallsLeft)\n"
+            + "Score: \(gameEngine.getCurrentScore())"
+        scoreLabel.text = textToDisplay
     }
-    
+
     private func handleChaosMode() {
         guard gameEngine.isChaosMode else {
             return

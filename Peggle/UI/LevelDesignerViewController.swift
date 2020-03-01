@@ -354,8 +354,8 @@ class LevelDesignerViewController: UIViewController {
             lastPegLocation = view.center
             
             // update the peg's location
-            let bottomBoundary = background?.frame.maxY ?? 0.0
-            let topBoundary = CGFloat(CannonBall.distanceFromTop)
+            let bottomBoundary = (background?.frame.maxY ?? 0.0) - Peg.defaultRadius
+            let topBoundary = CGFloat(CannonBall.distanceFromTop) + Peg.defaultRadius
             let updateLocationSuccessful = logic.updatePegLocation(from: initialPegLocation, to: lastPegLocation,
                                                                    bottomBoundary: bottomBoundary,
                                                                    topBoundary: topBoundary)
