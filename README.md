@@ -153,7 +153,7 @@ your grader can award you credit.
     * At the top right-hand corner of the game, the number of balls left is displayed.
     * Below the number of balls, the user's current score is displayed.
     * The score is updated every time the ball exits the playing area.
-    * The score is the sum of the scores obtained in previous rounds. In a round (one round is defined as one ball launch), the score of that round is the total number of times the ball hits a peg (repeated hits are counted too), multiplied by the total number of pegs on the screen at the time.
+    * The score is the sum of the scores obtained in previous rounds. In a round (one round is defined as one ball launch), the score of that round is the total number of times the ball hits a peg (repeated hits are counted too), multiplied by the total number of pegs remaining (excluding lit up pegs) on the screen at the time.
     
 ## Tests
 If you decide to write how you are going to do your tests instead of writing
