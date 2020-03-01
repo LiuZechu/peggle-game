@@ -73,8 +73,7 @@ class ViewControllerUtility {
             }
         case .red:
             if shape == .circle {
-                // "peg-red-glow"
-                imageToAdd.image = isGlow ? UIImage(named: "moonface") : UIImage(named: "peg-red")
+                imageToAdd.image = isGlow ? UIImage(named: "peg-red-glow") : UIImage(named: "peg-red")
             } else {
                 imageToAdd.image = isGlow ? UIImage(named: "peg-red-glow-triangle")
                     : UIImage(named: "peg-red-triangle")

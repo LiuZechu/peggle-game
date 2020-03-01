@@ -25,6 +25,9 @@ extension GameViewController {
         alert.addAction(UIAlertAction(title: "Spooky Ball", style: .default) { _ in
             self.gameEngine.setPowerUp(powerup: .spookyBall)
         })
+        alert.addAction(UIAlertAction(title: "Windy Mode", style: .default) { _ in
+            self.gameEngine.isWindyMode = true
+        })
         alert.addAction(UIAlertAction(title: "CHAOS MODE", style: .default) { _ in
             self.gameEngine.isChaosMode = true
         })

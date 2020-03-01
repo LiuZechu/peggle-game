@@ -41,6 +41,7 @@ class PeggleGameEngine {
     var isSpookyBallTriggered: Bool = false
     var isRestarted = false // indicates whether the previous game loop has ended and a new ball replenished
     var shouldDeleteAllPegs = false
+    var isWindyMode = false // special mode
     var isChaosMode = false // special mode
     private var chaosPegs: [Peg] = []
     
@@ -195,7 +196,7 @@ class PeggleGameEngine {
                 body.isMovable = true
                 _ = physicsEngine.addPhysicsBody(body)
                 let randomLaunchAngle = Double.random(in: 0 ..< (2 * Double.pi))
-                let randomLaunchSpeed = Double.random(in: 0 ..< 300)
+                let randomLaunchSpeed = Double.random(in: 0 ..< 600)
                 body.launch(angle: randomLaunchAngle, speed: randomLaunchSpeed)
             }
             if physicsEngine.isBodyOutOfLowerBound(body: body) {
@@ -203,6 +204,12 @@ class PeggleGameEngine {
                 chaosPegs = chaosPegs.filter { $0 != peg }
             }
         }
+    }
+    
+    func addWindToBall() {
+        let windMagnitude = Double.random(in: -600 ... 600)
+        let windForce = Vector(xComponent: windMagnitude, yComponent: 0)
+        cannonBall.physicsBody.applyForce(windForce)
     }
     
     func addToChaosPegs(peg: Peg) {
@@ -253,6 +260,9 @@ class PeggleGameEngine {
     func launchCannonBall(angle: Double, initialSpeed: Double) {
         startGameLoop()
         cannonBall.physicsBody.launch(angle: angle, speed: initialSpeed)
+        if isWindyMode {
+            addWindToBall()
+        }
     }
         
     private func addPhysicsBodiesForPegs() {
