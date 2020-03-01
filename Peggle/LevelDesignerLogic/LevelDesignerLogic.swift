@@ -22,7 +22,8 @@ protocol LevelDesignerLogic {
     func removePegFromCurrentGameBoard(at location: CGPoint) -> Bool
     
     /// Returns false if the new location overlaps with another peg or is out of bounds.
-    func updatePegLocation(from start: CGPoint, to end: CGPoint, bottomBoundary: CGFloat) -> Bool
+    func updatePegLocation(from start: CGPoint, to end: CGPoint,
+                           bottomBoundary: CGFloat, topBoundary: CGFloat) -> Bool
     
     func clearCurrentGameBoard()
     

@@ -23,7 +23,8 @@ protocol LevelDesignerModel {
     /// Updates a peg's location.
     /// Returns true if the update is successful.
     /// Returns false if the new location overlaps with another peg or is out of bounds.
-    func updatePegLocation(from start: CGPoint, to end: CGPoint, bottomBoundary: CGFloat) -> Bool
+    func updatePegLocation(from start: CGPoint, to end: CGPoint,
+                           bottomBoundary: CGFloat, topBoundary: CGFloat) -> Bool
     
     func clearCurrentGameBoard()
     

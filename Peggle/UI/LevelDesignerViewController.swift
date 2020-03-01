@@ -47,19 +47,29 @@ class LevelDesignerViewController: UIViewController {
         enableBackgroundTap()
         highlightButton(button: .bluePegSelector)
         updateLevelName()
+        initialisePreloadedLevels(storage: storage)
+        addUpperBorderLine()
+    }
     
+    private func initialisePreloadedLevels(storage: Storage) {
         let leftBoundary = self.view.frame.minX
         let rightBoundary = self.view.frame.maxX
         let upperBoundary = self.view.frame.minY
         let lowerBoundary = self.view.frame.maxY
         let screenHeight = lowerBoundary - upperBoundary
         let screenWidth = rightBoundary - leftBoundary
-        
         let displayMultiplier = min(screenHeight / MenuScreenViewController.fixedHeight,
                                     screenWidth / MenuScreenViewController.fixedWidth)
         storage.savePreloadedLevels(multiplier: Double(displayMultiplier))
     }
-        
+    
+    // to prevent placing pegs above the cannon location
+    private func addUpperBorderLine() {
+        let line = ViewControllerUtility.getBorderLineImageView(height: CGFloat(CannonBall.distanceFromTop),
+                                                                width: self.view.frame.maxX)
+        self.view.addSubview(line)
+    }
+
     func updateLevelName() {
         levelNameLabel.text = logic.getCurrentGameBoardName()
     }
@@ -152,15 +162,20 @@ class LevelDesignerViewController: UIViewController {
             guard let location: CGPoint = backgroundTapGesture?.location(in: nil) else {
                 return
             }
+            // check whether the peg is above the upper limit
+            guard Double(location.y - Peg.defaultRadius) > CannonBall.distanceFromTop else {
+                return
+            }
+            
             // create a peg and a corresponding image
             guard let imageToAdd = createPeg(at: location) else {
                 return
             }
-            
             allPegImages.append(imageToAdd)
             self.view.addSubview(imageToAdd)
         }
         
+        // make sliders for another peg disappear upon creating a new peg
         if self.rotationSlider != nil || self.sizeSlider != nil {
             self.rotationSlider?.removeFromSuperview()
             self.sizeSlider?.removeFromSuperview()
@@ -194,7 +209,6 @@ class LevelDesignerViewController: UIViewController {
         }
         
         let imageToAdd = createPegImageView(at: location, color: pegColor, shape: pegShape)
-       
         let pegAddedSuccessfully =
             logic.addPegToCurrentGameBoard(color: pegColor, location: imageToAdd.center, shape: pegShape)
         
@@ -341,11 +355,12 @@ class LevelDesignerViewController: UIViewController {
             
             // update the peg's location
             let bottomBoundary = background?.frame.maxY ?? 0.0
+            let topBoundary = CGFloat(CannonBall.distanceFromTop)
             let updateLocationSuccessful = logic.updatePegLocation(from: initialPegLocation, to: lastPegLocation,
-                                                                   bottomBoundary: bottomBoundary)
-            
+                                                                   bottomBoundary: bottomBoundary,
+                                                                   topBoundary: topBoundary)
             // make the peg go back if it overlaps with other existing pegs
-            // or exceeds the background bottom boundary
+            // or exceeds the background lower and upper boundaries
             if !updateLocationSuccessful {
                 view.center = initialPegLocation
             }

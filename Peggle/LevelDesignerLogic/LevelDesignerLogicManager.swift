@@ -35,8 +35,10 @@ class LevelDesignerLogicManager: LevelDesignerLogic {
         return model.removePegFromCurrentGameBoard(at: location)
     }
     
-    func updatePegLocation(from start: CGPoint, to end: CGPoint, bottomBoundary: CGFloat) -> Bool {
-        return model.updatePegLocation(from: start, to: end, bottomBoundary: bottomBoundary)
+    func updatePegLocation(from start: CGPoint, to end: CGPoint,
+                           bottomBoundary: CGFloat, topBoundary: CGFloat) -> Bool {
+        return model.updatePegLocation(from: start, to: end,
+                                       bottomBoundary: bottomBoundary, topBoundary: topBoundary)
     }
     
     func clearCurrentGameBoard() {

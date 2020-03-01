@@ -85,4 +85,18 @@ class ViewControllerUtility {
         
         return imageToAdd
     }
+    
+    // This returns a line across the screen
+    static func getBorderLineImageView(height: CGFloat, width: CGFloat) -> UIImageView {
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: width, height: height))
+        let image = renderer.image { context in
+            context.cgContext.setStrokeColor(UIColor.white.cgColor)
+            context.cgContext.setLineWidth(3)
+            context.cgContext.addLines(between: [CGPoint(x: 0, y: height),
+                                                 CGPoint(x: width, y: height)])
+            context.cgContext.drawPath(using: .fillStroke)
+        }
+        
+        return UIImageView(image: image)
+    }
 }

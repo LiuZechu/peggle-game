@@ -11,6 +11,7 @@ import struct CoreGraphics.CGPoint
 
 struct CannonBall {
     static let radius = 20.0
+    static let distanceFromTop = 100.0
     var hitCounter = 0
     var isHit: Bool {
         get {
@@ -38,7 +39,7 @@ struct CannonBall {
     }
     let physicsBody: PhysicsBody
     
-    init(xPosition: Double, yPosition: Double = 100) {
+    init(xPosition: Double, yPosition: Double = CannonBall.distanceFromTop) {
         physicsBody = PhysicsBody(isMovable: true, radius: CannonBall.radius,
                                   initialPosition: Position(xComponent: xPosition, yComponent: yPosition),
                                   initialVelocity: Vector(xComponent: 0, yComponent: 0),

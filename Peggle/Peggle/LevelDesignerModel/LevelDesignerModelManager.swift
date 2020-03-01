@@ -40,7 +40,8 @@ class LevelDesignerModelManager: LevelDesignerModel {
     }
     
     /// Returns false if peg not found or new location overlaps with other pegs or out of bounds.
-    func updatePegLocation(from start: CGPoint, to end: CGPoint, bottomBoundary: CGFloat) -> Bool {
+    func updatePegLocation(from start: CGPoint, to end: CGPoint,
+                           bottomBoundary: CGFloat, topBoundary: CGFloat) -> Bool {
         guard let peg = findPegFromLocation(at: start) else {
             return false
         }
@@ -48,8 +49,8 @@ class LevelDesignerModelManager: LevelDesignerModel {
         peg.location = end
         
         // checks whether it overlaps with other existing pegs on the board,
-        // or whether it exceeds bottom boundary.
-        let exceedsBoundary = end.y > bottomBoundary
+        // or whether it exceeds bottom/top boundaries.
+        let exceedsBoundary = end.y > bottomBoundary || end.y < topBoundary
         if exceedsBoundary || currentGameBoard.pegDoesOverlap(peg: peg) {
             peg.location = start
             return false
