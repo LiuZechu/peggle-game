@@ -22,62 +22,69 @@ You may put your dev guide either in this section, or in a new file entirely.
 You are encouraged to include diagrams where appropriate in order to enhance
 your guide.
 
-FROM PS 2
-Overall architecture: this application can be separated into the following major components: Model, Storage, Logic, ViewController, and View (UI), according to the following diagram. (solid arrows indicate that the source component holds a reference to and utilises the functionalities provided by the destination component, whereas a dotted arrow indicate that the source component uses the destination component as a function argument)
+Please refer to the following diagram for an overview of the architecture of this application. (solid arrows indicate that the source component holds a reference to and utilises the functionalities provided by the destination component, whereas a dotted arrow indicate that the source component uses the destination component as a function argument)
 
-![image of architecture diagram](https://github.com/cs3217-1920/2020-ps2-LiuZechu/blob/master/Peggle%20architecture%20diagram.png)
+![image of architecture diagram](https://github.com/cs3217-1920/2020-ps4-LiuZechu/blob/master/overall-architecture.png)
 
-For simplicity, the implementation classes of Logic (LogicManager), Storage (StorageManager), and Model (ModelManager) are omitted in the diagram. I will now briefly go through these components from bottom up.
 
-Each level is represented by a `GameBoard` which has the name of the level and a set of `Peg`s. Each `Peg` records its colour and its location on the screen. `ModelManager` is the concrete class that conforms to the `Model` protocol. `ModelManager` holds a reference to the current game board displayed on the screen, and it has methods that get information from or manipulate this `GameBoard`. `Model` serves as the interface between other components and the Model component.
+### Model Component
 
-The Storage component is in charge of persisting data to local storage. `StorageManager` is the implementation of `Storage` protocol. It has methods that take in a model and save it to memory, or fetch data to `Logic` for use by higher level components. Data persistence uses Core Data.
+This component is used by both the Level Designer and Game Engine.
 
-The Logic component holds references to a `Model` object and a `Storage` object. It has methods that call functionalities of `Model` and `Storage`, or pass `Model` to `Storage` for persistence. `LogicManager` is the concrete class for `Logic` protocol. `Logic` serves as the interface between domain logic and presentation logic. It is the only entry point for `ViewController` to access the business logic of the application.
+Each level is represented by a `GameBoard` which has the name of the level and a set of `Peg`s. Each `Peg` records its colour, location on the screen, radius, shape and angle of rotation. `LevelDesignerViewController` accesses the Model component through `LevelDesignerModelManager`, which is the concrete class that conforms to the `LevelDesignerModel` protocol. `LevelDesignerModelManager` holds a reference to the current game board displayed on the screen, and it has methods that get information from or manipulate this `GameBoard`. `LevelDesignerModel` serves as the interface between other parts in the level designer feature and the Model component. How the game engine utilises the Model component will be explained below under Game Engine component.
 
-`ViewController` holds a reference to `Logic`, through which `ViewController` gets information from and updates `Model`. `ViewController` is tightly linked to the View, and it controls what the user sees and also gets information from user actions. `ViewController` acts as an intermediary in the sense that when `ViewController` gets a user action, such as a touch or drag, it updates both View and Model (through Logic), such that neither View or Logic knows about the existence of each other.
+- `Peg` and `CannonBall`:
+Each of these objects holds a reference to a `PhysicsBody`, a representation of their physical self in the world of phyiscs. `Peg` also has an `isHit` boolean flag to indicate whether it has been collided by the ball. When an external client, say the `Renderer`, requests the location of one of these objects, it does so through `PeggleGameEngine`, which will then obtain this information by accessing the location of the corresponding `PhysicsBody`. When a `Peg` or a `CannonBall` is deleted, its corresponding `PhysicsBody` is deleted from the physics engine as well.
+
+- `Bucket`:
+This represents the moving bucket on the screen. The game engine (explained below) holds a reference to a `Bucket` and moves this bucket on screen while updating its location through the game loop.
+
+### Storage Component
+
+The Storage component is in charge of persisting data to local storage. `StorageManager` is the implementation of `Storage` protocol. It has methods that take in a model and save it to memory, or fetch data to `LevelDesignerLogic`. Data persistence uses Core Data.
+
+### Level Designer Logic Component
+
+The Level Designer Logic component holds references to a `LevelDesignerModel` object and a `Storage` object. It has methods that call functionalities of `LevelDesignerModel` and `Storage`, or pass `LevelDesignerModel` to `Storage` for persistence. `LevelDesignerLogicManager` is the concrete class for `LevelDesignerLogic` protocol. `LevelDesignerLogic` serves as the interface between domain logic and presentation logic of the level designer feature. It is the only entry point for `LevelDesignerViewController` to access the business logic of the application.
+
+### Level Designer View Component
+`LevelDesignerViewController` holds a reference to `LevelDesignerLogic`, through which `LevelDesignerViewController` gets information from and updates `LevelDesignerModel`. `LevelDesignerViewController` is tightly linked to the View, and it controls what the user sees and also gets information from user actions. `LevelDesignerViewController` acts as an intermediary in the sense that when it gets a user action, such as a touch or drag, it updates both View and Model (through `LevelDesignerLogic`), such that neither View or Model knows about the existence of each other.
 
 An example of what happens when the user drags a peg around, illustrated using a sequence diagram.
 
 ![image of sequence diagram for dragging a peg](https://github.com/cs3217-1920/2020-ps2-LiuZechu/blob/master/Peggle%20sequence%20diagram.png)
 
-PS3
-Please refer to the following diagram for an overview of the architecture of this application.
-
-![image of architecture diagram](https://github.com/cs3217-1920/2020-ps3-LiuZechu/blob/master/architecture_diagram.png)
 
 ### Physics Engine component
 
 - `PhysicsEngine`:
-This class is in charge of simulating the rules of physics governing interaction of physics bodies. It contains a set of movable `PhysicsBody` and a set of immovable `PhysicsBody`. `PhysicsEngine` has methods that detect and resolve collisions between two movable bodies or between a movable body and an immovable one. It also handles collisions with "walls" (boundaries of the screen). Its `update()` function updates the positions and velocities of all `PhysicsBody`s residing inside this simulation in the next moment in time. All launched movable bodies in this world is subject to a constant downward gravitational acceleration. 
+This class is in charge of simulating the rules of physics governing interaction of physics bodies. It contains a set of movable `PhysicsBody` and a set of immovable `PhysicsBody`. `PhysicsEngine` has methods that detect and resolve collisions between two movable bodies or between a movable body and an immovable one. It also handles collisions with "walls" (boundaries of the screen). It can handle circle-circle collisions as well as circle-triangle collisions. Its `update()` function updates the positions and velocities of all `PhysicsBody`s residing inside this simulation in the next moment in time. All launched movable bodies in this world is subject to a constant downward gravitational acceleration. 
 
 - `PhysicsBody` :
-This is the representation of a circular object interacting inside the world of `PhysicsEngine`.  Each body can either be movable or immovable, and it has other attributes such as mass, velocity, position, radius, elasticity (an elasticity of 1 means that the body doesn't lose kinetic energy upon collision; 0 means the object loses all kinatic energy upon collision) and so on. It also has an array of forces and a computed property of `resultantForce`. At each instant of time, the `update()` method of the body is called by the `update()` method of the governing physics engine. The former will update the position and velocity of the body based on the resultant force.
+This is the representation of an object interacting inside the world of `PhysicsEngine`.  Each body can either be movable or immovable, circular or triangular, and it has other attributes such as mass, velocity, position, radius, elasticity (an elasticity of 1 means that the body doesn't lose kinetic energy upon collision; 0 means the object loses all kinatic energy upon collision) and so on. It also has an array of forces and a computed property of `resultantForce`. At each instant of time, the `update()` method of the body is called by the `update()` method of the governing physics engine. The former will update the position and velocity of the body based on the resultant force.
 
 ### Game Engine component
 
 - `PeggleGameEngine`:
-This class holds references to a `PhysicsEngine`, a `GameBoard`, a `CannonBall` and a `Renderer`. `PeggleGameEngine` is the sole entry point for `ViewControl` to access the domain logic. The `GameBoard` and  `CannonBall` represent models of the game. The game loop resides in this game engine, where `CADisplayLink` is used to for the game loop. At every frame, the physics engine is updated, and the renderer renders the views in the next moment on the screen.
+This class holds references to a `PhysicsEngine`, a `GameBoard`, a `CannonBall`, a `Bucket` and a `Renderer`. `PeggleGameEngine` is the sole entry point for `GameViewControl` to access the domain logic. The `GameBoard`, `Bucket` and  `CannonBall` represent models of the game. The game loop resides in this game engine, where `CADisplayLink` is used to for the game loop. At every frame, the physics engine is updated, and the renderer renders the views in the next moment on the screen.
 
-- `GameBoard` has a set of `Peg`, same as in Problem Set 2.
-
-- `Peg` and `CannonBall`:
-Each of these objects holds a reference to a `PhysicsBody`, a representation of their physical self in the world of phyiscs. `Peg` also has an `isHit` boolean flag to indicate whether it has been collided by the ball. When an external client, say the `Renderer`, requests the location of one of these objects, it does so through `PeggleGameEngine`, which will then obtain this information by accessing the location of the corresponding `PhysicsBody`. When a `Peg` or a `CannonBall` is deleted, its corresponding `PhysicsBody` is deleted from the physics engine as well.
-
-### View and Renderer component
+### Game View and Renderer component
 - `Renderer`:
 This protocol only has one method, `render()`, which updates the view every time it is called by the game loop.
 
-- `ViewController`:
+- `GameViewController`:
 This class conforms to `Renderer` protocol. It is also in charge of receiving user actions, such as a tap on the screen, and calling relevant functions from `PeggleGameEngine`. It also handles other user interaction things such as alert windows to tell the user how to start the game and restart the game after all the pegs are cleared.
 
-In summary, this application is divided into three components: physics engine, game engine and UI/renderer. The physics engine knows about no one other than its own world of physics. The game engine only knows about its models and the physics engine. The game loop also calls `renderer()` in the renderer through the `Renderer` protocol. The renderer only knows about the game engine but not the physics engine.
-
-### Sequence diagram
+In summary, the game play part of this application is divided into three components: physics engine, game engine and UI/renderer. The physics engine knows about no one other than its own world of physics. The game engine only knows about its models and the physics engine. The game loop also calls `renderer()` in the renderer through the `Renderer` protocol. The renderer only knows about the game engine but not the physics engine.
 
 Please refer to the following simplified sequence diagram for what happens at every frame of the game loop, when `update()` is called on `PeggleGameEngine`.
 
 ![image of architecture diagram](https://github.com/cs3217-1920/2020-ps3-LiuZechu/blob/master/sequence_diagram.png)
+
+### How the View Controllers interact
+There are four View Controllers in this application, namely, `LevelDesignerViewController`, `LevelTableViewController`, `MenuScreenViewController`, and `GameViewController`. They interact with each other through segues and delegates.
+
+
 
 ## Rules of the Game
 Please write the rules of your game here. This section should include the
