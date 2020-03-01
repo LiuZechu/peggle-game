@@ -43,6 +43,10 @@
 		F3161F722404E5D80016D088 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F652404E5D80016D088 /* StorageManager.swift */; };
 		F3161F732404E5D80016D088 /* LevelDesignerLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F672404E5D80016D088 /* LevelDesignerLogic.swift */; };
 		F3161F742404E5D80016D088 /* LevelDesignerLogicManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3161F682404E5D80016D088 /* LevelDesignerLogicManager.swift */; };
+		F3325A64240B973E0019479E /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3325A63240B973E0019479E /* AudioManager.swift */; };
+		F3325A68240B9AFC0019479E /* background-music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F3325A67240B9AFC0019479E /* background-music.mp3 */; };
+		F3325A6A240B9E180019479E /* bounce-sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F3325A69240B9E180019479E /* bounce-sound.mp3 */; };
+		F3325A6C240BA95A0019479E /* cheer-sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = F3325A6B240BA95A0019479E /* cheer-sound.mp3 */; };
 		F344688D24050E1B00E5B9E0 /* MenuScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F344688C24050E1B00E5B9E0 /* MenuScreenViewController.swift */; };
 		F344688F24052D8500E5B9E0 /* LoadGameBoardDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F344688E24052D8500E5B9E0 /* LoadGameBoardDelegate.swift */; };
 		F357AACA240B540E00A152E4 /* LevelDesignerModelManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F357AAC9240B540E00A152E4 /* LevelDesignerModelManagerTests.swift */; };
@@ -128,6 +132,10 @@
 		F3161F652404E5D80016D088 /* StorageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		F3161F672404E5D80016D088 /* LevelDesignerLogic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelDesignerLogic.swift; sourceTree = "<group>"; };
 		F3161F682404E5D80016D088 /* LevelDesignerLogicManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelDesignerLogicManager.swift; sourceTree = "<group>"; };
+		F3325A63240B973E0019479E /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		F3325A67240B9AFC0019479E /* background-music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = "background-music.mp3"; path = "Peggle/Sounds/background-music.mp3"; sourceTree = SOURCE_ROOT; };
+		F3325A69240B9E180019479E /* bounce-sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "bounce-sound.mp3"; sourceTree = "<group>"; };
+		F3325A6B240BA95A0019479E /* cheer-sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "cheer-sound.mp3"; sourceTree = "<group>"; };
 		F344688C24050E1B00E5B9E0 /* MenuScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScreenViewController.swift; sourceTree = "<group>"; };
 		F344688E24052D8500E5B9E0 /* LoadGameBoardDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadGameBoardDelegate.swift; sourceTree = "<group>"; };
 		F357AAC9240B540E00A152E4 /* LevelDesignerModelManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelDesignerModelManagerTests.swift; sourceTree = "<group>"; };
@@ -223,6 +231,7 @@
 		F3161EF6240270A20016D088 /* Peggle */ = {
 			isa = PBXGroup;
 			children = (
+				F3325A6D240BA9D10019479E /* Sounds */,
 				F3161EF7240270A20016D088 /* AppDelegate.swift */,
 				F3161F662404E5D80016D088 /* LevelDesignerLogic */,
 				F3161F5D2404E5D80016D088 /* LevelDesignerModel */,
@@ -310,6 +319,7 @@
 				F3A172B4240AAC60004350B4 /* ViewControllerUtility.swift */,
 				F3A172B6240AB0EE004350B4 /* LevelDesignerDelegateExtensions.swift */,
 				F3A172B8240AB313004350B4 /* GameViewController+PopUp.swift */,
+				F3325A63240B973E0019479E /* AudioManager.swift */,
 			);
 			path = UI;
 			sourceTree = SOURCE_ROOT;
@@ -342,6 +352,16 @@
 			);
 			path = LevelDesignerLogic;
 			sourceTree = SOURCE_ROOT;
+		};
+		F3325A6D240BA9D10019479E /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				F3325A69240B9E180019479E /* bounce-sound.mp3 */,
+				F3325A67240B9AFC0019479E /* background-music.mp3 */,
+				F3325A6B240BA95A0019479E /* cheer-sound.mp3 */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -451,8 +471,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F3325A68240B9AFC0019479E /* background-music.mp3 in Resources */,
+				F3325A6A240B9E180019479E /* bounce-sound.mp3 in Resources */,
 				F3161F07240270A70016D088 /* LaunchScreen.storyboard in Resources */,
 				F3161F04240270A70016D088 /* Assets.xcassets in Resources */,
+				F3325A6C240BA95A0019479E /* cheer-sound.mp3 in Resources */,
 				F3161EFF240270A20016D088 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -576,6 +599,7 @@
 				F3161F3E240372720016D088 /* UIImageViewExtension.swift in Sources */,
 				F3161F51240373280016D088 /* PegColor.swift in Sources */,
 				F3161EF8240270A20016D088 /* AppDelegate.swift in Sources */,
+				F3325A64240B973E0019479E /* AudioManager.swift in Sources */,
 				F3161F3A2403726A0016D088 /* CGPointExtension.swift in Sources */,
 				F3161EFA240270A20016D088 /* SceneDelegate.swift in Sources */,
 				F3161F4E240373280016D088 /* CannonBall.swift in Sources */,

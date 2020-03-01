@@ -21,21 +21,16 @@ class GameViewController: UIViewController, Renderer {
     private var bucketImageView: UIImageView!
     private var pegImages: [UIImageView] = []
     private var glowPegImages: [UIImageView] = []
+    private var chaosModePegImages: [Peg: UIImageView] = [:] // for special mode
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let leftBoundary = self.view.frame.minX
-        let rightBoundary = self.view.frame.maxX
-        let upperBoundary = self.view.frame.minY
-        let lowerBoundary = self.view.frame.maxY
 
         let gameboard = delegate?.getGameBoard() ?? GameBoard(name: "default gameboard")
-        
-        gameEngine = PeggleGameEngine(leftBoundary: Double(leftBoundary),
-                                      rightBoundary: Double(rightBoundary),
-                                      upperBoundary: Double(upperBoundary),
-                                      lowerBoundary: Double(lowerBoundary),
+        gameEngine = PeggleGameEngine(leftBoundary: Double(self.view.frame.minX),
+                                      rightBoundary: Double(self.view.frame.maxX),
+                                      upperBoundary: Double(self.view.frame.minY),
+                                      lowerBoundary: Double(self.view.frame.maxY),
                                       gameboard: gameboard)
         gameEngine.addRenderer(renderer: self)
         addInitialPegImages()
@@ -43,6 +38,7 @@ class GameViewController: UIViewController, Renderer {
         addBallToScreen()
         addBucketToScreen()
         updateBallsNumberLabel()
+        playBackgroundMusic()
         
         // make cannon on top of ball
         self.view.bringSubviewToFront(cannonImageView)
@@ -56,6 +52,20 @@ class GameViewController: UIViewController, Renderer {
         super.viewDidAppear(animated)
         
         showInitialPopUp()
+    }
+    
+    private func playBackgroundMusic() {
+        if let player = AudioManager.sharedManager.backgroundPlayer {
+            player.prepareToPlay()
+            player.numberOfLoops = -1
+            player.play()
+        }
+    }
+    
+    private func stopBackgroundMusic() {
+        if let player = AudioManager.sharedManager.backgroundPlayer {
+            player.stop()
+        }
     }
     
     private func addBallToScreen() {
@@ -82,20 +92,17 @@ class GameViewController: UIViewController, Renderer {
         
         let cannonLocation = cannonImageView.center
         var touchLocation = recognizer.location(in: nil)
-        
         if recognizer.state == .began {
             touchLocation = recognizer.location(in: nil)
             let angleOfRotation = calculateAngleOfRotation(cannonLocation: cannonLocation,
                                                            touchLocation: touchLocation)
             cannonImageView.transform = CGAffineTransform(rotationAngle: angleOfRotation)
-            
         } else if recognizer.state == .ended {
-
             let xDifference = touchLocation.x - cannonLocation.x
             let yDifference = touchLocation.y - cannonLocation.y
             
             var launchAngle = Double(atan(yDifference / xDifference))
-            
+            // prevent launching upwards
             if yDifference < 0 {
                 if xDifference > 0 {
                     launchAngle = -Double.pi
@@ -110,18 +117,16 @@ class GameViewController: UIViewController, Renderer {
             gameEngine.isRestarted = false
         }
 
-        let angleOfRotation = calculateAngleOfRotation(cannonLocation: cannonLocation,
-                                                       touchLocation: touchLocation)
+        let angleOfRotation = calculateAngleOfRotation(cannonLocation: cannonLocation, touchLocation: touchLocation)
         cannonImageView.transform = CGAffineTransform(rotationAngle: angleOfRotation)
     }
     
     private func calculateAngleOfRotation(cannonLocation: CGPoint,
                                           touchLocation: CGPoint) -> CGFloat {
-
         let xDifference = touchLocation.x - cannonLocation.x
         let yDifference = touchLocation.y - cannonLocation.y
         
-        // prevent tapping above the cannon
+        // prevent launching above the cannon
         guard yDifference > 0 else {
             if xDifference > 0 {
                 return -CGFloat.pi / 2
@@ -132,7 +137,6 @@ class GameViewController: UIViewController, Renderer {
         
         let angleFromHorizontal = Double(atan(yDifference / xDifference))
         let angleOfRotation: Double
-        
         if angleFromHorizontal > 0 {
             angleOfRotation = -(Double.pi / 2 - angleFromHorizontal)
         } else {
@@ -145,13 +149,9 @@ class GameViewController: UIViewController, Renderer {
     private func addBucketToScreen() {
         let bucketImage = UIImage(named: "bucket")
         let location = gameEngine.getBucketBottomCenterLocation()
-        // hard code for now
-        let frame = CGRect(x: location.x - CGFloat(150 / 2),
-                           y: location.y - CGFloat(150),
-                           width: 150,
-                           height: 150)
+        let frame = CGRect(x: location.x - CGFloat(150 / 2), y: location.y - CGFloat(150),
+                           width: 150, height: 150)
         let bucketViewToAdd = UIImageView(frame: frame)
-        //bucketViewToAdd.layer.cornerRadius = Peg.radius
         bucketViewToAdd.contentMode = .scaleAspectFit
         bucketViewToAdd.image = bucketImage
         self.view.addSubview(bucketViewToAdd)
@@ -159,36 +159,6 @@ class GameViewController: UIViewController, Renderer {
         bucketImageView = bucketViewToAdd
     }
     
-    // To enable the user to choose the angle at which the ball will be launched
-    private func enableBackgroundTapForLaunch() {
-        let singleTap = UITapGestureRecognizer(target: self,
-                                               action: #selector(self.handleBackgroundTapForLaunch))
-        singleTap.numberOfTapsRequired = 1
-        singleTap.numberOfTouchesRequired = 1
-        self.background?.addGestureRecognizer(singleTap)
-        self.background?.isUserInteractionEnabled = true
-    }
-    
-    @objc func handleBackgroundTapForLaunch(sender: UITapGestureRecognizer) {
-        if sender.state == .ended && isLaunchable {
-            let tapLocation = sender.location(in: nil)
-            let ballLocation = gameEngine.getBallLocation()
-            let xDifference = tapLocation.x - ballLocation.x
-            let yDifference = tapLocation.y - ballLocation.y
-            
-            // prevent tapping above the cannon
-            guard yDifference > 0 else {
-                return
-            }
-            
-            let launchAngle = Double(atan(yDifference / xDifference))
-            
-            gameEngine.launchCannonBall(angle: launchAngle, initialSpeed: PeggleGameEngine.initialBallSpeed)
-            isLaunchable = false
-            gameEngine.isRestarted = false
-        }
-    }
-
     private func addInitialPegImages() {
         let pegs = gameEngine.getAllPegs()
         for peg in pegs {
@@ -203,7 +173,6 @@ class GameViewController: UIViewController, Renderer {
     
     private func deleteAllGlowingPegs() {
         for image in glowPegImages {
-            //animateRemovalOfPeg(pegImage: image)
             UIView.animate(withDuration: 2, animations: {
                 image.alpha = 0
             }, completion: { _ in
@@ -212,7 +181,6 @@ class GameViewController: UIViewController, Renderer {
         }
         
         glowPegImages = []
-        
         gameEngine.shouldDeleteAllPegs = false
         
         // after all the deletions, restart the round
@@ -240,6 +208,7 @@ class GameViewController: UIViewController, Renderer {
         // If the player has won/lost, restart another round
         if gameEngine.hasWon() || gameEngine.hasLost() {
             showFinalPopUp()
+            playCheerSoundEffect() // Note: cheering is played even if the player loses to cheer them up
         }
     }
     
@@ -252,23 +221,13 @@ class GameViewController: UIViewController, Renderer {
         let newBucketLocationY = gameEngine.getBucketBottomCenterLocation().y - 150 / 2
         bucketImageView.center = CGPoint(x: newBucketLocationX, y: newBucketLocationY)
         
-        // light up pegs hit
-        for peg in gameEngine.getPegsHit() where peg.hasBeenHit == false {
-            for image in pegImages where image.containsLocation(location: peg.location,
-                                                                circleRadius: peg.radius) {
-                let center = image.center
-                image.removeFromSuperview()
-                let glowImage =
-                    ViewControllerUtility.createPegImageView(at: center, color: peg.color, shape: peg.shape,
-                                                             isGlow: true, radius: peg.radius,
-                                                             angle: peg.angleOfRotation)
-                self.view.addSubview(glowImage)
-                glowPegImages.append(glowImage)
-            }
-            
-            peg.hasBeenHit = true
+        lightUpPegsHit()
+        
+        // play sound effect
+        if gameEngine.isBallHit() {
+            playBounceSoundEffect()
         }
-            
+
         if gameEngine.shouldDeleteAllPegs {
             deleteAllGlowingPegs()
         }
@@ -277,6 +236,39 @@ class GameViewController: UIViewController, Renderer {
         if gameEngine.isBallInsideBucket() {
             showAdditionalBallPopUp()
         }
+        
+        // special mode
+        handleChaosMode()
+    }
+    
+    private func lightUpPegsHit() {
+        for peg in gameEngine.getPegsHit() where peg.hasBeenHit == false {
+            for image in pegImages where image.containsLocation(location: peg.location, circleRadius: peg.radius) {
+                let center = image.center
+                image.removeFromSuperview()
+                let glowImage =
+                    ViewControllerUtility.createPegImageView(at: center, color: peg.color, shape: peg.shape,
+                                                             isGlow: true, radius: peg.radius,
+                                                             angle: peg.angleOfRotation)
+                self.view.addSubview(glowImage)
+                glowPegImages.append(glowImage)
+                // for special mode
+                chaosModePegImages[peg] = glowImage
+            }
+            peg.hasBeenHit = true
+        }
+    }
+    
+    private func playBounceSoundEffect() {
+        if let player = AudioManager.sharedManager.bounceSoundPlayer {
+            player.play()
+        }
+    }
+    
+    private func playCheerSoundEffect() {
+        if let player = AudioManager.sharedManager.cheerSoundPlayer {
+            player.play()
+        }
     }
     
     // update the text on top right hand corner of the background
@@ -284,8 +276,35 @@ class GameViewController: UIViewController, Renderer {
         ballsNumberLabel.text = "Balls left: \(gameEngine.numberOfBallsLeft)"
     }
     
+    private func handleChaosMode() {
+        guard gameEngine.isChaosMode else {
+            return
+        }
+        for peg in gameEngine.getPegsHit() where peg.color != .red && peg.shape == .circle {
+            peg.color = .red
+            peg.hasBeenHit = false
+            gameEngine.addToChaosPegs(peg: peg)
+            let glowImage = chaosModePegImages[peg]
+            glowPegImages = glowPegImages.filter { $0 != glowImage }
+            glowImage?.removeFromSuperview()
+        }
+        lightUpPegsHit()
+        for peg in gameEngine.getChaosPegs() {
+            let glowImage = chaosModePegImages[peg]
+            glowPegImages = glowPegImages.filter { $0 != glowImage }
+            glowImage?.removeFromSuperview()
+            let pegImage = ViewControllerUtility
+                .createPegImageView(at: peg.location, color: peg.color, shape: peg.shape,
+                                    isGlow: peg.isHit, radius: peg.radius, angle: peg.angleOfRotation)
+            self.view.addSubview(pegImage)
+            glowPegImages.append(pegImage)
+            chaosModePegImages[peg] = pegImage
+        }
+    }
+    
     @objc func returnToMainMenu() {
         gameEngine.stopGameLoop()
+        stopBackgroundMusic()
         performSegue(withIdentifier: "backToMainFromGame", sender: self)
     }
     

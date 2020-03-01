@@ -15,6 +15,8 @@ class Bucket {
     let width: Double
     var bottomCenterLocation: CGPoint
     private var speed: Double = 1
+    private let widthAdjustment = 10.0
+    private let heightAdjustment = 20.0
     
     func isInBucket(ballLocation: CGPoint, ballRadius: Double) -> Bool {
         let ballLocationX = Double(ballLocation.x)
@@ -22,8 +24,9 @@ class Bucket {
         let bucketLocationX = Double(bottomCenterLocation.x)
 
         let isWithinHeight = (ballLocationY - ballRadius) >= upperBoundary
+            && (ballLocationY - ballRadius) <= upperBoundary + heightAdjustment
         let isWithinWidth = abs(ballLocationX - bucketLocationX)
-            <= (width / 2 - ballRadius)
+            <= (width / 2 - ballRadius) - widthAdjustment
         
         return isWithinHeight && isWithinWidth
     }

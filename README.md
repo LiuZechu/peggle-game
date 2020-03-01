@@ -230,8 +230,8 @@ tests in code, please delete this section.
     * when the ball is moving, the bucket should be moving too.
     * when the bucket is moving
         * only the top rim of the bucket should be visible (similar to the original Peggle)
-        * when the grey ball goes inside the bucket, a popup window titled `Good Job!` should appear, telling the user a new ball is rewarded. This can be seen from the observation that the `Balls left` on top right hand corner does not decrement after this round.
-        * when the grey ball falls anywhere outside the bucket, the popup window should not appear and no extra ball should be rewarded. This can be seen from that the  `Balls left` on top right hand corner decrements by 1 after this round.
+        * when the grey ball goes inside the bucket through the center opening of the bucket, a popup window titled `Good Job!` should appear, telling the user a new ball is rewarded. This can be seen from the observation that the `Balls left` on top right hand corner does not decrement after this round.
+        * when the grey ball falls anywhere outside the bucket, or barely touches the side of the bucket, the popup window should not appear and no extra ball should be rewarded. This can be seen from that the  `Balls left` on top right hand corner decrements by 1 after this round.
         * when the bucket hits a side wall, it should change direction but still moves with constant speed.
 
 4. Test trapped ball:
@@ -252,6 +252,9 @@ tests in code, please delete this section.
     * When the ball flies out of screen and another round started, `Balls left`  should decrement by 1 unless the ball has just entered the bucket.
     * When all the orange pegs, regards of shape, size and angle, are cleared, and the number of balls left is not zero, a popup window should appear, titled `You Won`. Tapping the button on the window should bring the user back to the main menu.
     * When the number of balls left is 0 and there are still orange pegs left on the screen, once the current ball falls out of screen, a popup window should appear, titled `You Lost`. Tapping the button on the window should bring the user back to the main menu.
+    * When the user creates a level with no orange pegs, the user should be allowed to play the game for one round. After the ball exits the screen, a popup window with `You Won` should appear since there are no more orange pegs.
+    * To test winning condition, you may create a level with one orange peg, and clear it. A popup window with `You Won` should appear as described above.
+    * To test losing condition, you may create a level with one orange peg, and use up all the 10 balls without hitting the orange peg. A popup window with `You Lost` should appear as described above.
 
 7. Test other scenarios:
     * closing the app

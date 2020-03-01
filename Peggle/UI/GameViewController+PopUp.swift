@@ -25,6 +25,9 @@ extension GameViewController {
         alert.addAction(UIAlertAction(title: "Spooky Ball", style: .default) { _ in
             self.gameEngine.setPowerUp(powerup: .spookyBall)
         })
+        alert.addAction(UIAlertAction(title: "CHAOS MODE", style: .default) { _ in
+            self.gameEngine.isChaosMode = true
+        })
 
         self.present(alert, animated: true, completion: nil)
     }
@@ -38,7 +41,6 @@ extension GameViewController {
         
         let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Return to Main Menu", style: .cancel) { _ in
-            //self.restartAnotherRound()
             self.returnToMainMenu()
         })
 

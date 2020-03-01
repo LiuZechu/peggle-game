@@ -33,13 +33,6 @@ class PhysicsEngine {
     /// Returns a boolean value to indicate whether the body is successfully added.
     /// If the body overlaps with another body, false will be returned.
     func addPhysicsBody(_ body: PhysicsBody) -> Bool {
-        // check for overlaps
-        for anotherBody in movableBodies.union(immovableBodies) {
-            if CollisionChecker.isCollision(firstBody: body, secondBody: anotherBody) {
-                return false
-            }
-        }
-        
         // currently, this physics engine only supports movable/immovable circles and immovable triangles
         if body.shape == .equilateralTriangle && body.isMovable {
             return false

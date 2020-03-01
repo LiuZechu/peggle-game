@@ -16,7 +16,7 @@ class Peg: Hashable {
     
     var powerup: Powerup?
     
-    let color: PegColor
+    var color: PegColor
     var shape: Shape {
         get {
             return physicsBody.shape

@@ -121,8 +121,10 @@ class StorageManager: Storage {
                 pegColor = .blue
             } else if pegColorString == "orange" {
                 pegColor = .orange
-            } else {
+            } else if pegColorString == "green" {
                 pegColor = .green
+            } else {
+                pegColor = .red
             }
             let pegShapeString = (pegMO as AnyObject).value(forKeyPath: "shape") as? String
             let pegShape: Shape
@@ -185,6 +187,8 @@ class StorageManager: Storage {
                 pegColorString = "orange"
             case .green:
                 pegColorString = "green"
+            case .red:
+                pegColorString = "red"
             }
             let pegShapeString: String
             switch peg.shape {

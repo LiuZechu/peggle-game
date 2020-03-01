@@ -261,9 +261,8 @@ class LevelDesignerViewController: UIViewController {
         guard let peg = pegToAdjust else {
             return
         }
-        let imageToAdd =
-            createPegImageView(at: peg.location, color: peg.color, shape: peg.shape,
-                               radius: peg.radius, angle: peg.angleOfRotation)
+        let imageToAdd = createPegImageView(at: peg.location, color: peg.color, shape: peg.shape,
+                                            radius: peg.radius, angle: peg.angleOfRotation)
         pegImageToAdjust = imageToAdd
         allPegImages.append(imageToAdd)
         self.view.addSubview(imageToAdd)
@@ -291,8 +290,7 @@ class LevelDesignerViewController: UIViewController {
                 return
             }
             
-            let sizeSlider =
-                ViewControllerUtility.getSliderForChangingSize(center: self.view.center,
+            let sizeSlider = ViewControllerUtility.getSliderForChangingSize(center: self.view.center,
                                                                             initialValue: Float(peg.radius))
             sizeSlider.addTarget(self, action: #selector(self.changePegSize), for: .valueChanged)
             self.sizeSlider = sizeSlider

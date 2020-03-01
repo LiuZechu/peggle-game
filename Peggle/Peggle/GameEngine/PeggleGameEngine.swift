@@ -41,6 +41,8 @@ class PeggleGameEngine {
     var isSpookyBallTriggered: Bool = false
     var isRestarted = false // indicates whether the previous game loop has ended and a new ball replenished
     var shouldDeleteAllPegs = false
+    var isChaosMode = false // special mode
+    private var chaosPegs: [Peg] = []
     
     init(leftBoundary: Double, rightBoundary: Double,
          upperBoundary: Double, lowerBoundary: Double,
@@ -102,11 +104,6 @@ class PeggleGameEngine {
         numberOfBallsLeft -= 1
         
         hasBallEntered = false
-        
-        // when there's no more balls, increase back to 10
-        if hasWon() || hasLost() {
-            numberOfBallsLeft = PeggleGameEngine.totalNumberOfBalls
-        }
     }
     
     func addRenderer(renderer: Renderer) {
@@ -114,6 +111,9 @@ class PeggleGameEngine {
     }
     
     @objc func update(updater: CADisplayLink) {
+        // special mode
+        handleChaosMode()
+        
         physicsEngine.update()
         renderer.render()
         
@@ -133,9 +133,11 @@ class PeggleGameEngine {
                 _ = physicsEngine.removePhysicsBody(cannonBall.physicsBody)
             }
         }
-        
+    
         // delete pegs when ball flies out
-        if isBallOutOfBounds() && !isRestarted && !isSpookyBallTriggered {
+        let chaosModeDeleteCondition = isChaosMode && isBallOutOfBounds() && chaosPegs.isEmpty && !isRestarted
+        let normalDeleteCondition = !isChaosMode && isBallOutOfBounds() && !isRestarted && !isSpookyBallTriggered
+        if normalDeleteCondition || chaosModeDeleteCondition {
             shouldDeleteAllPegs = true
             isRestarted = true
         }
@@ -182,6 +184,38 @@ class PeggleGameEngine {
         }
     }
     
+    private func handleChaosMode() {
+        guard isChaosMode else {
+            return
+        }
+        for peg in chaosPegs {
+            let body = peg.physicsBody
+            if !body.isMovable {
+                _ = physicsEngine.removePhysicsBody(body)
+                body.isMovable = true
+                _ = physicsEngine.addPhysicsBody(body)
+                let randomLaunchAngle = Double.random(in: 0 ..< (2 * Double.pi))
+                let randomLaunchSpeed = Double.random(in: 0 ..< 300)
+                body.launch(angle: randomLaunchAngle, speed: randomLaunchSpeed)
+            }
+            if physicsEngine.isBodyOutOfLowerBound(body: body) {
+                _ = physicsEngine.removePhysicsBody(body)
+                chaosPegs = chaosPegs.filter { $0 != peg }
+            }
+        }
+    }
+    
+    func addToChaosPegs(peg: Peg) {
+        guard !chaosPegs.contains(peg) else {
+            return
+        }
+        chaosPegs.append(peg)
+    }
+    
+    func getChaosPegs() -> [Peg] {
+        return chaosPegs
+    }
+    
     // called when the ball enters the bucket
     private func incrementBallCount() {
         numberOfBallsLeft += 1
@@ -213,7 +247,6 @@ class PeggleGameEngine {
             peg.isHit = true
             hitPegs.insert(peg)
         }
-
         return hitPegs
     }
     
@@ -273,6 +306,10 @@ class PeggleGameEngine {
     
     func isBallStuck() -> Bool {
         return cannonBall.hitCounter > gameboard.pegs.count * 10
+    }
+    
+    func isBallHit() -> Bool {
+        return cannonBall.isHit
     }
     
     func teleportBallToCeiling() {

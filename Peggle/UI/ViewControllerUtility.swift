@@ -71,6 +71,14 @@ class ViewControllerUtility {
                 imageToAdd.image = isGlow ? UIImage(named: "peg-green-glow-triangle")
                     : UIImage(named: "peg-green-triangle")
             }
+        case .red:
+            if shape == .circle {
+                // "peg-red-glow"
+                imageToAdd.image = isGlow ? UIImage(named: "moonface") : UIImage(named: "peg-red")
+            } else {
+                imageToAdd.image = isGlow ? UIImage(named: "peg-red-glow-triangle")
+                    : UIImage(named: "peg-red-triangle")
+            }
         }
         
         // rotate image
