@@ -139,4 +139,8 @@ private class ModelStub: LevelDesignerModel {
     func findPegFromLocation(at point: CGPoint) -> Peg? {
         return nil
     }
+    
+    func updatePegLocation(from start: CGPoint, to end: CGPoint, bottomBoundary: CGFloat, topBoundary: CGFloat) -> Bool {
+        return true
+    }
 }

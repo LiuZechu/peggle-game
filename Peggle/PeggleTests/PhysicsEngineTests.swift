@@ -40,26 +40,7 @@ class PhysicsEngineTests: XCTestCase {
         XCTAssertTrue(physicsEngine.contains(body: body1))
         XCTAssertTrue(physicsEngine.contains(body: body2))
     }
-    
-    func testAddPhysicsBody_overlapping_failure() {
-        let physicsEngine = PhysicsEngine(leftBoundary: 0,
-                                          rightBoundary: 1_000,
-                                          upperBoundary: 0,
-                                          lowerBoundary: 2_000)
-        let body1 = PhysicsBody(isMovable: true, radius: 20,
-                                initialPosition: Position(xComponent: 50, yComponent: 60))
-        let body2 = PhysicsBody(isMovable: true, radius: 20,
-                                initialPosition: Position(xComponent: 45, yComponent: 60))
         
-        let result1 = physicsEngine.addPhysicsBody(body1)
-        let result2 = physicsEngine.addPhysicsBody(body2)
-        
-        XCTAssertTrue(result1)
-        XCTAssertFalse(result2)
-        XCTAssertTrue(physicsEngine.contains(body: body1))
-        XCTAssertFalse(physicsEngine.contains(body: body2))
-    }
-    
     func testRemovePhysicsBody_success() {
         let physicsEngine = PhysicsEngine(leftBoundary: 0,
                                           rightBoundary: 1_000,

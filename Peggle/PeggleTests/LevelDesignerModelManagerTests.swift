@@ -80,7 +80,7 @@ class LevelDesignerModelManagerTests: XCTestCase {
         model.changeCurrentGameBoard(newGameBoard: gameBoard)
         _ = model.addPegToCurrentGameBoard(color: .orange, location: initialLocation, shape: .circle)
         
-        let result = model.updatePegLocation(from: initialLocation, to: finalLocation, bottomBoundary: 500)
+        let result = model.updatePegLocation(from: initialLocation, to: finalLocation, bottomBoundary: 500, topBoundary: 0)
         
         XCTAssertTrue(result)
         
@@ -97,7 +97,7 @@ class LevelDesignerModelManagerTests: XCTestCase {
         model.changeCurrentGameBoard(newGameBoard: gameBoard)
         _ = model.addPegToCurrentGameBoard(color: .orange, location: initialLocation, shape: .circle)
         
-        let result = model.updatePegLocation(from: initialLocation, to: finalLocation, bottomBoundary: 1_170)
+        let result = model.updatePegLocation(from: initialLocation, to: finalLocation, bottomBoundary: 1_170, topBoundary: 0)
         
         XCTAssertFalse(result)
         
@@ -117,7 +117,7 @@ class LevelDesignerModelManagerTests: XCTestCase {
         
         _ = model.addPegToCurrentGameBoard(color: .orange, location: overlappingLocation, shape: .circle)
         
-        let result = model.updatePegLocation(from: initialLocation, to: finalLocation, bottomBoundary: 1_200)
+        let result = model.updatePegLocation(from: initialLocation, to: finalLocation, bottomBoundary: 1_200, topBoundary: 0)
         XCTAssertFalse(result)
     }
     
