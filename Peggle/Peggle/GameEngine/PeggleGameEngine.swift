@@ -28,11 +28,7 @@ class PeggleGameEngine {
     private var displayLink: CADisplayLink!
     private var renderer: Renderer!
     
-    // player's stats to determing winningl/losing
-    // winning condition:
-    // To win, clear all orange pegs.
-    // You start with 10 balls. Every time you shoot a ball, the number of balls get subtracted.
-    // You lose if you run out of balls and there are still orange pegs remaining in the game.
+    // To determine win/lose conditions
     static let totalNumberOfBalls = 10
     private(set) var numberOfBallsLeft = 10 // decrements every round
     var numberOfOrangePegsLeft: Int {
@@ -53,12 +49,10 @@ class PeggleGameEngine {
                                       rightBoundary: rightBoundary,
                                       upperBoundary: upperBoundary,
                                       lowerBoundary: lowerBoundary)
-        //gameboard = GameBoard(name: "default level")
         self.gameboard = gameboard
         cannonBallInitialXPosition = (rightBoundary - leftBoundary) / 2
         cannonBall = CannonBall(xPosition: cannonBallInitialXPosition)
        
-        // ARBITRARY FOR NOW
         bucket = Bucket(upperBoundary: lowerBoundary - 50, width: 150,
                         bottomCenterLocation: CGPoint(x: rightBoundary / 2,
                                                       y: lowerBoundary + 100))
@@ -67,8 +61,6 @@ class PeggleGameEngine {
         self.rightBoundary = rightBoundary
         self.upperBoundary = upperBoundary
         self.lowerBoundary = lowerBoundary
-        
-        // addDefaultPegs()
         
         // set up the physics engine simulation
         addPhysicsBodiesForPegs()
@@ -125,6 +117,14 @@ class PeggleGameEngine {
         physicsEngine.update()
         renderer.render()
         
+        checkBallOutOfBounds()
+        moveBucket()
+        checkWhetherBallInBucket()
+        handleStuckBall()
+        triggerPowerups()
+    }
+    
+    private func checkBallOutOfBounds() {
         // if the ball is out of bounds, remove it
         if physicsEngine.isBodyOutOfLowerBound(body: cannonBall.physicsBody) {
             if isSpookyBallTriggered {
@@ -139,37 +139,40 @@ class PeggleGameEngine {
             shouldDeleteAllPegs = true
             isRestarted = true
         }
-        
-        // move the bucket
+    }
+    
+    private func moveBucket() {
         if bucket.hitsLeftBoundary(leftBoundary: leftBoundary)
             || bucket.hitsRightBoundary(rightBoundary: rightBoundary) {
             bucket.toggleDirection()
         }
         bucket.move()
-        
-        // check whether the cannon ball is in the bucket
+    }
+    
+    private func checkWhetherBallInBucket() {
         if isBallInsideBucket() {
-            print("the ball is inside the bucket!")
             // so that the count is not incremented repeatedly
             if hasBallEntered == false {
                 incrementBallCount()
             }
             hasBallEntered = true
         }
-        
+    }
+    
+    private func handleStuckBall() {
         // increase ball hit count to detect whether it's stuck
         if cannonBall.isHit {
             cannonBall.hitCounter += 1
             cannonBall.isHit = false
         }
-        
-        // delete ball and pegs if the ball gets stuck
+        // ball and pegs should be deleted if the ball gets stuck
         if isBallStuck() && !isRestarted {
             shouldDeleteAllPegs = true
             isRestarted = true
         }
-        
-        // trigger powerups
+    }
+    
+    private func triggerPowerups() {
         for peg in getAllPegs() where peg.isPowerupActivated() {
             if peg.powerup == Powerup.spaceBlast {
                 triggerSpaceBlast(centerPeg: peg)
@@ -218,30 +221,7 @@ class PeggleGameEngine {
         startGameLoop()
         cannonBall.physicsBody.launch(angle: angle, speed: initialSpeed)
     }
-    
-//    // add default pegs to game board and physics engine
-//    func addDefaultPegs() {
-//        for row in 2...6 {
-//            for col in 1...5 {
-//                let xCoord = col * 100
-//                let yCoord = row * 100
-//                let location = CGPoint(x: xCoord, y: yCoord)
-//                //let color = (row + col) % 2 == 0 ? PegColor.blue : PegColor.orange
-//                let color = (row + col) % 3 == 0 ?
-//                    PegColor.blue : (row + col) % 3 == 1 ? PegColor.orange : PegColor.green
-//
-//                let pegToAdd = Peg(color: color, location: location)
-//                // TEMPORARY
-//                if color == .green {
-//                    pegToAdd.powerup = .spookyBall
-//                }
-//
-//                _ = gameboard.addPeg(toAdd: pegToAdd)
-//                _ = physicsEngine.addPhysicsBody(pegToAdd.physicsBody)
-//            }
-//        }
-//    }
-    
+        
     private func addPhysicsBodiesForPegs() {
         for peg in gameboard.pegs {
             _ = physicsEngine.addPhysicsBody(peg.physicsBody)
@@ -267,7 +247,6 @@ class PeggleGameEngine {
         return numberOfOrangePegsLeft != 0 && numberOfBallsLeft <= 0
     }
     
-    // POWERUPS
     func triggerSpaceBlast(centerPeg: Peg) {
         let affectedPegs = getAllPegs().filter {
             $0.getDistanceFrom(otherPeg: centerPeg) <= PeggleGameEngine.spaceBlastRadius
@@ -293,15 +272,11 @@ class PeggleGameEngine {
     }
     
     func isBallStuck() -> Bool {
-        print("hit count is \(cannonBall.hitCounter)")
         return cannonBall.hitCounter > gameboard.pegs.count * 10
     }
     
     func teleportBallToCeiling() {
-//        let verticalDistance = lowerBoundary - upperBoundary
-//        let originalY = cannonBall.location.y
         let originalX = cannonBall.location.x
-//        let newY = originalY - CGFloat(verticalDistance)
         let newX = originalX
         let newY = 0 - Peg.defaultRadius
         let newLocation = CGPoint(x: newX, y: newY)

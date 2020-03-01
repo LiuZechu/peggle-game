@@ -12,7 +12,6 @@ class PhysicsEngine {
     static let gravity = Vector(xComponent: 0, yComponent: 200) // define downwards as positive
     static let framerate = 60
     
-    // boundaries
     var leftBoundary: Double
     var rightBoundary: Double
     var upperBoundary: Double
@@ -69,29 +68,7 @@ class PhysicsEngine {
     func contains(body: PhysicsBody) -> Bool {
         return movableBodies.contains(body) || immovableBodies.contains(body)
     }
-    
-//    /// Returns whether the two bodies collide with each other.
-//    /// `firstBody` must be movable,
-//    /// `secondBody` can be movable or immovable
-//    func isCollision(firstBody: PhysicsBody, secondBody: PhysicsBody) -> Bool {
-//        // if they are the same body, then not a collision
-//        guard firstBody != secondBody else {
-//            return false
-//        }
-//
-//        if firstBody.shape == .circle && secondBody.shape == .equilateralTriangle {
-//
-//
-//
-//            return false
-//        } else { // two circles
-//            let actualDistance = firstBody.getDistanceFrom(anotherBody: secondBody)
-//            let collisionDistance = firstBody.radius + secondBody.radius
-//
-//            return actualDistance <= collisionDistance
-//        }
-//    }
-    
+        
     func update() {
         for body in movableBodies {
             body.update()
@@ -114,11 +91,6 @@ class PhysicsEngine {
             } else if exceedsUpper {
                 resolveVerticalReflectionFromWall(movableBody: body)
             }
-
-//            // anything out of the lower bound will be removed
-//            if bodyOutOfLowerBound(body: body) {
-//                movableBodies.remove(body)
-//            }
         }
     }
     
@@ -220,5 +192,4 @@ class PhysicsEngine {
         
         return rotatedVelocity
     }
-
 }

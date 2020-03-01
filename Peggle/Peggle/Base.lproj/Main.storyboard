@@ -233,7 +233,6 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                                 <state key="normal" title="START"/>
                                                 <connections>
-                                                    <action selector="startGame:" destination="fAs-xo-bGh" eventType="touchUpInside" id="qgc-AT-qS7"/>
                                                     <segue destination="BYZ-38-t0r" kind="presentation" identifier="startGame" animates="NO" modalPresentationStyle="fullScreen" id="xyt-tJ-i9c"/>
                                                 </connections>
                                             </button>
@@ -251,7 +250,6 @@
                                                 <state key="normal" title="BACK"/>
                                                 <connections>
                                                     <action selector="handleBackButtonTap:" destination="fAs-xo-bGh" eventType="touchUpInside" id="HJR-cj-fQQ"/>
-                                                    <action selector="startGame:" destination="fAs-xo-bGh" eventType="touchUpInside" id="0Ws-eM-kHZ"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tkr-H0-twp">
@@ -348,14 +346,14 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="levelTableViewCell" id="TEh-2O-xpb" customClass="LevelTableViewCell" customModule="Peggle" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="712" height="43"/>
+                                <rect key="frame" x="0.0" y="28" width="712" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TEh-2O-xpb" id="ObG-3d-0ou">
-                                    <rect key="frame" x="0.0" y="0.0" width="712" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="712" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="levelLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qns-6R-0Mz">
-                                            <rect key="frame" x="20" y="11" width="672" height="21"/>
+                                            <rect key="frame" x="20" y="11" width="672" height="21.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>

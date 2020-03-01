@@ -17,7 +17,7 @@ class StorageManager: Storage {
     /// Saves the current version of game board as a modification to an old game board.
     /// Returns true if save is successful.
     /// Returns false if name already exists or is empty.
-    func saveOldGameBoard(model: Model) -> Bool {
+    func saveOldGameBoard(model: LevelDesignerModel) -> Bool {
         let gameBoard = model.getCurrentGameBoard()
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
                 return false
@@ -44,7 +44,7 @@ class StorageManager: Storage {
     /// Saves the current version of game board as a new level.
     /// Returns true if save is successful.
     /// Returns false if name already exists or is empty.
-    func saveNewGameBoard(model: Model) -> Bool {
+    func saveNewGameBoard(model: LevelDesignerModel) -> Bool {
         let gameBoard = model.getCurrentGameBoard()
         let isNameEmpty = gameBoard.name.trimmingCharacters(in: .whitespaces).isEmpty
         let validName = !isNameEmpty && !checkNameAlreadyExists(name: gameBoard.name)
@@ -63,8 +63,6 @@ class StorageManager: Storage {
     }
     
     func fetchAllLevelNames() -> [String] {
-        print("START")
-        
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return []
         }
@@ -86,8 +84,6 @@ class StorageManager: Storage {
             }
             return levelName
         }
-        
-        print("END")
     }
     
     func fetchGameBoardByName(name: String) -> GameBoard? {
@@ -157,42 +153,7 @@ class StorageManager: Storage {
         gameBoardMO.setValue(levelName, forKey: "name")
 
         let pegMOs = convertPegsToManagedObjects(pegs: gameBoard.pegs, managedContext: managedContext)
-        
-//        var pegMOs = [NSManagedObject]()
-//        for peg in gameBoard.pegs {
-//            let entity = NSEntityDescription.entity(forEntityName: "Peg", in: managedContext)!
-//            let pegMO = NSManagedObject(entity: entity, insertInto: managedContext)
-//            let pegColorString: String
-//            switch peg.color {
-//            case .blue:
-//                pegColorString = "blue"
-//            case .orange:
-//                pegColorString = "orange"
-//            case .green:
-//                pegColorString = "green"
-//            }
-//            let pegShapeString: String
-//            switch peg.shape {
-//            case .circle:
-//                pegShapeString = "circle"
-//            case .equilateralTriangle:
-//                pegShapeString = "equilateralTriangle"
-//            }
-//            let pegXPosition = Double(peg.location.x)
-//            let pegYPosition = Double(peg.location.y)
-//            let pegRadius = Double(peg.radius)
-//            let pegAngle = Double(peg.angleOfRotation)
-//
-//            pegMO.setValue(pegColorString, forKeyPath: "color")
-//            pegMO.setValue(pegXPosition, forKeyPath: "xPosition")
-//            pegMO.setValue(pegYPosition, forKeyPath: "yPosition")
-//            pegMO.setValue(pegShapeString, forKey: "shape")
-//            pegMO.setValue(pegRadius, forKey: "radius")
-//            pegMO.setValue(pegAngle, forKey: "angle")
-//
-//            pegMOs.append(pegMO)
-//        }
-        
+                
         let pegStorageSet = gameBoardMO.mutableSetValue(forKey: "pegs")
         pegStorageSet.removeAllObjects() // clear all previously stored objects
         pegStorageSet.addObjects(from: pegMOs)
@@ -244,9 +205,6 @@ class StorageManager: Storage {
             pegMO.setValue(pegRadius, forKey: "radius")
             pegMO.setValue(pegAngle, forKey: "angle")
 
-            print("color: \(pegColorString), x:\(pegXPosition), y:\(pegYPosition), shape: \(pegShapeString)")
-            print("radius: \(pegRadius), angle:\(pegAngle)")
-            
             pegMOs.append(pegMO)
         }
         

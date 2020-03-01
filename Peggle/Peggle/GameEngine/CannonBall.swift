@@ -21,7 +21,6 @@ struct CannonBall {
             physicsBody.isHit = newValue
         }
     }
-    
     var location: CGPoint {
         
         get {

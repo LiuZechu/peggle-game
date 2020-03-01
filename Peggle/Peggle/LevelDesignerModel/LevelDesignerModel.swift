@@ -10,7 +10,7 @@ import Foundation
 import struct CoreGraphics.CGPoint
 import struct CoreGraphics.CGFloat
 
-protocol Model {
+protocol LevelDesignerModel {
     
     func getCurrentGameBoard() -> GameBoard
     

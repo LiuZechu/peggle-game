@@ -27,7 +27,7 @@ class MenuScreenViewController: UIViewController {
                                     screenWidth / MenuScreenViewController.fixedWidth)
         let storage = StorageManager()
         storage.savePreloadedLevels(multiplier: Double(displayMultiplier))
-        let model = ModelManager()
+        let model = LevelDesignerModelManager()
         logic = LevelDesignerLogicManager(model: model, storage: storage)
     }
     

@@ -38,7 +38,6 @@ protocol LevelDesignerLogic {
     
     func fetchGameBoardByName(name: String) -> GameBoard?
     
-    //func getColorsAndLocationsOfAllPegs(gameBoardName: String) -> [(PegColor, CGPoint)]
     func getAllPegsInGameBoard(gameBoardName: String) -> Set<Peg>
     
     func isFirstGameBoard() -> Bool

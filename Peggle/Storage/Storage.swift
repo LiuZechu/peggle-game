@@ -9,10 +9,9 @@
 import Foundation
 
 protocol Storage {
+    func saveNewGameBoard(model: LevelDesignerModel) -> Bool
     
-    func saveNewGameBoard(model: Model) -> Bool
-    
-    func saveOldGameBoard(model: Model) -> Bool
+    func saveOldGameBoard(model: LevelDesignerModel) -> Bool
     
     func fetchAllLevelNames() -> [String]
     

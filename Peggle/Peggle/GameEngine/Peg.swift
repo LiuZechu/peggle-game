@@ -59,9 +59,7 @@ class Peg: Hashable {
             physicsBody.position = newPosition
         }
     }
-    
     let physicsBody: PhysicsBody
-    //var isHit = false
     var isHit: Bool {
         get {
             return physicsBody.isHit
@@ -75,18 +73,7 @@ class Peg: Hashable {
     var hasBeenHit = false
     
     private var hasPowerupBeenActivated = false
-    
-//    init(color: PegColor, location: CGPoint, shape: Shape,
-//         radius: CGFloat = Peg.defaultRadius, angleOfRotation: CGFloat = 0.0) {
-//        self.color = color
-//        self.shape = shape
-//        self.radius = radius
-//        self.angleOfRotation = angleOfRotation
-//        self.physicsBody = PhysicsBody(isMovable: false, radius: Double(radius),
-//                                       initialPosition: location.toPosition(),
-//                                       shape: shape, angleOfRotation: Double(angleOfRotation))
-//    }
-    
+        
     init(color: PegColor, location: CGPoint, shape: Shape, powerup: Powerup? = nil,
          radius: CGFloat = Peg.defaultRadius, angleOfRotation: CGFloat = 0.0) {
         self.color = color

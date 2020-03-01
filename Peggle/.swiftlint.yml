@@ -23,7 +23,6 @@ opt_in_rules:
   - explicit_self
   - fallthrough
   - fatal_error_message
-  - file_name
   - first_where
   - flatmap_over_map_reduce
   - function_default_parameter_at_end

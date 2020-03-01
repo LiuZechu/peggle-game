@@ -10,7 +10,7 @@ import Foundation
 import struct CoreGraphics.CGPoint
 import struct CoreGraphics.CGFloat
 
-class ModelManager: Model {
+class LevelDesignerModelManager: LevelDesignerModel {
 
     private var currentGameBoard: GameBoard
     

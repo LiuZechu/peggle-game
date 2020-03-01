@@ -11,10 +11,10 @@ import struct CoreGraphics.CGPoint
 import struct CoreGraphics.CGFloat
 
 class LevelDesignerLogicManager: LevelDesignerLogic {
-    private var model: Model
+    private var model: LevelDesignerModel
     private var storage: Storage
     
-    init(model: Model, storage: Storage) {
+    init(model: LevelDesignerModel, storage: Storage) {
         self.model = model
         self.storage = storage
     }
@@ -71,18 +71,6 @@ class LevelDesignerLogicManager: LevelDesignerLogic {
             return nil
         }
     }
-    
-//    func getColorsAndLocationsOfAllPegs(gameBoardName: String) -> [(PegColor, CGPoint)] {
-//        let gameBoard = fetchGameBoardByName(name: gameBoardName)
-//        var pegColorsAndLocations = [(PegColor, CGPoint)]()
-//        for peg in gameBoard?.pegs ?? [] {
-//            let color = peg.color
-//            let location = peg.location
-//            pegColorsAndLocations.append((color, location))
-//        }
-//        
-//        return pegColorsAndLocations
-//    }
     
     func getAllPegsInGameBoard(gameBoardName: String) -> Set<Peg> {
         let gameBoard = fetchGameBoardByName(name: gameBoardName)

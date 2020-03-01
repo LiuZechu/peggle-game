@@ -2,18 +2,19 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="19C57" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="GameBoard" representedClassName=".GameBoardMO" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String"/>
-        <relationship name="pegs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Peg"/>
+        <relationship name="pegs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Peg" inverseName="gameboard" inverseEntity="Peg"/>
     </entity>
-    <entity name="Peg" representedClassName="PegMO" syncable="YES" codeGenerationType="class">
+    <entity name="Peg" representedClassName="PegMO" syncable="YES">
         <attribute name="angle" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="color" optional="YES" attributeType="String"/>
         <attribute name="radius" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="shape" optional="YES" attributeType="String"/>
         <attribute name="xPosition" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="yPosition" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
+        <relationship name="gameboard" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="GameBoard" inverseName="pegs" inverseEntity="GameBoard"/>
     </entity>
     <elements>
         <element name="GameBoard" positionX="-63" positionY="-18" width="128" height="73"/>
-        <element name="Peg" positionX="-54" positionY="0" width="128" height="133"/>
+        <element name="Peg" positionX="-54" positionY="0" width="128" height="148"/>
     </elements>
 </model>

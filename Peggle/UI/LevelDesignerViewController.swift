@@ -9,14 +9,13 @@
 import UIKit
 
 class LevelDesignerViewController: UIViewController {
-    
-    private var logic: LevelDesignerLogic!
+    var logic: LevelDesignerLogic!
 
     private var buttonSelected = Button.bluePegSelector
     
     private var initialPegLocation = CGPoint(x: 0, y: 0)
     private var lastPegLocation = CGPoint(x: 0, y: 0)
-    private var allPegImages: [UIImageView] = []
+    var allPegImages: [UIImageView] = []
         
     @IBOutlet private var bluePegSelector: UIButton?
     @IBOutlet private var orangePegSelector: UIButton?
@@ -33,15 +32,15 @@ class LevelDesignerViewController: UIViewController {
     private var pegToAdjust: Peg?
     private var pegImageToAdjust: UIView?
     
+    @IBOutlet var levelNameLabel: UILabel! // made public to allow access from extension
     @IBOutlet private var deleteButton: UIButton?
-    @IBOutlet private var levelNameLabel: UILabel!
     @IBOutlet private var background: UIImageView?
     @IBOutlet private var backgroundTapGesture: UITapGestureRecognizer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let model = ModelManager()
+        let model = LevelDesignerModelManager()
         let storage = StorageManager()
         logic = LevelDesignerLogicManager(model: model, storage: storage)
         
@@ -61,7 +60,7 @@ class LevelDesignerViewController: UIViewController {
         storage.savePreloadedLevels(multiplier: Double(displayMultiplier))
     }
         
-    private func updateLevelName() {
+    func updateLevelName() {
         levelNameLabel.text = logic.getCurrentGameBoardName()
     }
     
@@ -205,38 +204,9 @@ class LevelDesignerViewController: UIViewController {
     /// Creates a peg's image at corresponding location on the screen, with the specified color.
     func createPegImageView(at location: CGPoint, color: PegColor, shape: Shape,
                             radius: CGFloat = Peg.defaultRadius, angle: CGFloat = 0.0) -> UIImageView {
-        let frame = CGRect(x: location.x - radius, y: location.y - radius,
-                           width: radius * 2, height: radius * 2)
-        var imageToAdd = UIImageView(frame: frame)
-        imageToAdd.layer.cornerRadius = radius
-        imageToAdd.contentMode = .scaleAspectFit
-        imageToAdd.isUserInteractionEnabled = true
-        
-        print("create peg image view called")
-        
-        if color == .blue {
-            if shape == .circle {
-                imageToAdd.image = UIImage(named: "peg-blue")
-            } else {
-                imageToAdd.image = UIImage(named: "peg-blue-triangle")
-            }
-        } else if color == .orange {
-            if shape == .circle {
-                imageToAdd.image = UIImage(named: "peg-orange")
-            } else {
-                imageToAdd.image = UIImage(named: "peg-orange-triangle")
-            }
-        } else {
-            if shape == .circle {
-                imageToAdd.image = UIImage(named: "peg-green")
-            } else {
-                imageToAdd.image = UIImage(named: "peg-green-triangle")
-            }
-        }
-        
-        // rotate image
-        imageToAdd.transform = CGAffineTransform(rotationAngle: angle)
-        
+        var imageToAdd =
+            ViewControllerUtility.createPegImageView(at: location, color: color, shape: shape,
+                                                     isGlow: false, radius: radius, angle: angle)
         makeImageResponsiveToTap(image: &imageToAdd)
         makeImageDeletableByLongPress(image: &imageToAdd)
         makeImageDraggable(image: &imageToAdd)
@@ -266,15 +236,12 @@ class LevelDesignerViewController: UIViewController {
     }
     
     @objc private func changePegRotation(_ sender: UISlider) {
-        print("rotation value is \(sender.value)")
         let newAngle = CGFloat(sender.value)
         pegToAdjust?.angleOfRotation = newAngle
-        // UPDATE IMAGE
         pegImageToAdjust?.removeFromSuperview()
         allPegImages = allPegImages.filter { $0 != pegImageToAdjust }
         // create a peg and a corresponding image
         guard let peg = pegToAdjust else {
-            print("peg not found")
             return
         }
         let imageToAdd = createPegImageView(at: peg.location, color: peg.color, shape: peg.shape,
@@ -286,20 +253,17 @@ class LevelDesignerViewController: UIViewController {
     }
     
     @objc private func changePegSize(_ sender: UISlider) {
-        print("size value is \(sender.value)")
         let newRadius = CGFloat(sender.value)
         pegToAdjust?.radius = newRadius
-        // UPDATE IMAGE
         pegImageToAdjust?.removeFromSuperview()
         allPegImages = allPegImages.filter { $0 != pegImageToAdjust }
         // create a peg and a corresponding image
         guard let peg = pegToAdjust else {
-            print("peg not found")
             return
         }
-        let imageToAdd = createPegImageView(at: peg.location, color: peg.color, shape: peg.shape,
-                                            radius: peg.radius, angle: peg.angleOfRotation)
-        
+        let imageToAdd =
+            createPegImageView(at: peg.location, color: peg.color, shape: peg.shape,
+                               radius: peg.radius, angle: peg.angleOfRotation)
         pegImageToAdjust = imageToAdd
         allPegImages.append(imageToAdd)
         self.view.addSubview(imageToAdd)
@@ -327,32 +291,18 @@ class LevelDesignerViewController: UIViewController {
                 return
             }
             
-            // make a slider for changing size
-            let sizeSlider = UISlider()
-            sizeSlider.frame = CGRect(x: 0, y: 0, width: 250, height: 35)
-            sizeSlider.center = CGPoint(x: self.view.center.x, y: self.view.center.y - 40)
-
-            sizeSlider.maximumValue = Float(Peg.maximumRadius)
-            sizeSlider.minimumValue = Float(Peg.defaultRadius)
-            sizeSlider.setValue(Float(peg.radius), animated: false)
-
+            let sizeSlider =
+                ViewControllerUtility.getSliderForChangingSize(center: self.view.center,
+                                                                            initialValue: Float(peg.radius))
             sizeSlider.addTarget(self, action: #selector(self.changePegSize), for: .valueChanged)
-            sizeSlider.maximumValueImage = UIImage(systemName: "arrow.up.left.and.arrow.down.right")
             self.sizeSlider = sizeSlider
             self.view.addSubview(sizeSlider)
             
             if peg.shape == .equilateralTriangle {
-                // make a slider for rotation
-                let rotationSlider = UISlider()
-                rotationSlider.frame = CGRect(x: 0, y: 0, width: 250, height: 35)
-                rotationSlider.center = self.view.center
-
-                rotationSlider.maximumValue = 2 * Float.pi
-                rotationSlider.minimumValue = 0
-                rotationSlider.setValue(Float(peg.angleOfRotation), animated: false)
-                
+                let rotationSlider =
+                    ViewControllerUtility.getSliderForRotation(center: self.view.center,
+                                                               initialValue: Float(peg.angleOfRotation))
                 rotationSlider.addTarget(self, action: #selector(self.changePegRotation), for: .valueChanged)
-                rotationSlider.maximumValueImage = UIImage(systemName: "arrow.clockwise")
                 self.rotationSlider = rotationSlider
                 self.view.addSubview(rotationSlider)
             }
@@ -406,125 +356,10 @@ class LevelDesignerViewController: UIViewController {
         recognizer.setTranslation(CGPoint.zero, in: self.view)
     }
     
-//    @IBAction private func handleResetButtonTap() {
-//        let alertTitle = "Reset game board"
-//        let alertMessage = "Would you like to clear all the pegs on this game board?"
-//        let alert = UIAlertController(title: alertTitle, message: alertMessage,
-//                                      preferredStyle: UIAlertController.Style.alert)
-//
-//        // add the actions (buttons)
-//        alert.addAction(UIAlertAction(title: "Reset", style: UIAlertAction.Style.default, handler: self.clearAllPegs))
-//        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
-//
-//        self.present(alert, animated: true, completion: nil)
-//    }
-    
-//    @IBAction private func handleBackButtonTap(_ sender: Any) {
-//        let alertTitle = "Return to Main Menu"
-//        let alertMessage = "Are you sure you want to exit? Any unsaved work will be lost."
-//        let alert = UIAlertController(title: alertTitle, message: alertMessage,
-//                                      preferredStyle: UIAlertController.Style.alert)
-//
-//        // add the actions (buttons)
-//        alert.addAction(UIAlertAction(title: "Yes", style: UIAlertAction.Style.default,
-//                                      handler: self.goBackToMainMenu))
-//        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel, handler: nil))
-//
-//        self.present(alert, animated: true, completion: nil)
-//    }
-    
     func goBackToMainMenu(_ sender: UIAlertAction) {
         performSegue(withIdentifier: "backToMainFromDesigner", sender: self)
     }
-    
-    func showNameLevelDialogue() {
-        let alertTitle = "Enter level name"
-        let alertMessage = "Or rename the current level"
-        let alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-        // "new level" action creates a new level
-        let newLevelAction = UIAlertAction(title: "New Level", style: .default) { _ in
-            //getting the input string from user
-            let name = alertController.textFields?[0].text
-            self.handlePopUpSaveAction(name: name, isNewGameBoard: true)
-        }
-
-        // "edit current" action modifies the current level
-        let editCurrentAction = UIAlertAction(title: "Edit Current Level", style: .default) { _ in
-            //getting the input string from user
-            let name = alertController.textFields?[0].text
-            self.handlePopUpSaveAction(name: name, isNewGameBoard: false)
-        }
-
-        //cancel action does nothing
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in }
-
-        alertController.addTextField { textField in
-            textField.placeholder = "Enter Level Name"
-            textField.text = self.logic.getCurrentGameBoardName()
-        }
-
-        alertController.addAction(newLevelAction)
-        let isNameEmpty = logic.getCurrentGameBoardName().trimmingCharacters(in: .whitespaces).isEmpty
-        if !logic.isFirstGameBoard() && !isNameEmpty {
-            alertController.addAction(editCurrentAction)
-        }
-        alertController.addAction(cancelAction)
-
-        self.present(alertController, animated: true, completion: nil)
-    }
-    
-    /// Saves user's game board and checks for validity of name.
-    private func handlePopUpSaveAction(name: String?, isNewGameBoard: Bool) {
-        let originalName = logic.getCurrentGameBoardName()
-        logic.nameCurrentGameBoard(name: name ?? "[unnamed]")
-        
-        var saveSuccessful: Bool
-        if isNewGameBoard {
-            saveSuccessful = logic.saveNewGameBoard()
-        } else {
-            saveSuccessful = logic.saveCurrentGameBoard()
-        }
-        if saveSuccessful {
-            levelNameLabel.text = name
-            showSaveSuccessPopUp()
-        } else {
-            logic.nameCurrentGameBoard(name: originalName)
-            showNameAlreadyExistsPopUp()
-        }
-    }
-    
-    private func showSaveSuccessPopUp() {
-        let alertTitle = "Save successful"
-        let alertMessage = "\"\(logic.getCurrentGameBoardName())\" is saved successfully!"
-        
-        let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-
-        // add the actions (buttons)
-        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    private func showNameAlreadyExistsPopUp() {
-        let alertTitle = "Choose another name"
-        let alertMessage = "The name \"\(logic.getCurrentGameBoardName())\""
-            + " is empty or already exists!"
-        
-        let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-
-        // add the actions (buttons)
-        let renameAction = UIAlertAction(title: "Rename", style: .default) { _ in
-            self.showNameLevelDialogue()
-        }
-        alert.addAction(renameAction)
-        
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    @IBAction private func startGame(_ sender: UIButton) {
-        // something
-    }
-    
+               
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showAllLevelNames" {
             if let levelTableViewController: LevelTableViewController =
@@ -542,43 +377,5 @@ class LevelDesignerViewController: UIViewController {
     
     override var prefersStatusBarHidden: Bool {
         return true
-    }
-}
-
-extension LevelDesignerViewController: GetGameBoardDelegate {
-    func getGameBoard() -> GameBoard {
-        return logic.getCurrentGameBoard()
-    }
-}
-
-extension LevelDesignerViewController: LoadGameBoardDelegate {
-    func loadGameBoard(name: String) {
-        self.dismiss(animated: true) {
-            // clear previous peg images
-            for pegImage in self.allPegImages {
-                pegImage.removeFromSuperview()
-            }
-            self.allPegImages = []
-            
-            // create all the new peg images
-            // let pegColorsAndLocations = self.logic.getColorsAndLocationsOfAllPegs(gameBoardName: name)
-            for peg in self.logic.getAllPegsInGameBoard(gameBoardName: name) {
-                let shape = peg.shape
-                let color = peg.color
-                let location = peg.location
-                let radius = peg.radius
-                let angle = CGFloat(peg.angleOfRotation)
-                let imageToAdd = self.createPegImageView(at: location, color: color, shape: shape,
-                                                         radius: radius, angle: angle)
-                
-//                print("vertices:")
-//                print(peg.physicsBody.getVertices())
-                
-                self.allPegImages.append(imageToAdd)
-                self.view.addSubview(imageToAdd)
-            }
-            
-            self.updateLevelName()
-        }
     }
 }

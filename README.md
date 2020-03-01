@@ -22,6 +22,63 @@ You may put your dev guide either in this section, or in a new file entirely.
 You are encouraged to include diagrams where appropriate in order to enhance
 your guide.
 
+FROM PS 2
+Overall architecture: this application can be separated into the following major components: Model, Storage, Logic, ViewController, and View (UI), according to the following diagram. (solid arrows indicate that the source component holds a reference to and utilises the functionalities provided by the destination component, whereas a dotted arrow indicate that the source component uses the destination component as a function argument)
+
+![image of architecture diagram](https://github.com/cs3217-1920/2020-ps2-LiuZechu/blob/master/Peggle%20architecture%20diagram.png)
+
+For simplicity, the implementation classes of Logic (LogicManager), Storage (StorageManager), and Model (ModelManager) are omitted in the diagram. I will now briefly go through these components from bottom up.
+
+Each level is represented by a `GameBoard` which has the name of the level and a set of `Peg`s. Each `Peg` records its colour and its location on the screen. `ModelManager` is the concrete class that conforms to the `Model` protocol. `ModelManager` holds a reference to the current game board displayed on the screen, and it has methods that get information from or manipulate this `GameBoard`. `Model` serves as the interface between other components and the Model component.
+
+The Storage component is in charge of persisting data to local storage. `StorageManager` is the implementation of `Storage` protocol. It has methods that take in a model and save it to memory, or fetch data to `Logic` for use by higher level components. Data persistence uses Core Data.
+
+The Logic component holds references to a `Model` object and a `Storage` object. It has methods that call functionalities of `Model` and `Storage`, or pass `Model` to `Storage` for persistence. `LogicManager` is the concrete class for `Logic` protocol. `Logic` serves as the interface between domain logic and presentation logic. It is the only entry point for `ViewController` to access the business logic of the application.
+
+`ViewController` holds a reference to `Logic`, through which `ViewController` gets information from and updates `Model`. `ViewController` is tightly linked to the View, and it controls what the user sees and also gets information from user actions. `ViewController` acts as an intermediary in the sense that when `ViewController` gets a user action, such as a touch or drag, it updates both View and Model (through Logic), such that neither View or Logic knows about the existence of each other.
+
+An example of what happens when the user drags a peg around, illustrated using a sequence diagram.
+
+![image of sequence diagram for dragging a peg](https://github.com/cs3217-1920/2020-ps2-LiuZechu/blob/master/Peggle%20sequence%20diagram.png)
+
+PS3
+Please refer to the following diagram for an overview of the architecture of this application.
+
+![image of architecture diagram](https://github.com/cs3217-1920/2020-ps3-LiuZechu/blob/master/architecture_diagram.png)
+
+### Physics Engine component
+
+- `PhysicsEngine`:
+This class is in charge of simulating the rules of physics governing interaction of physics bodies. It contains a set of movable `PhysicsBody` and a set of immovable `PhysicsBody`. `PhysicsEngine` has methods that detect and resolve collisions between two movable bodies or between a movable body and an immovable one. It also handles collisions with "walls" (boundaries of the screen). Its `update()` function updates the positions and velocities of all `PhysicsBody`s residing inside this simulation in the next moment in time. All launched movable bodies in this world is subject to a constant downward gravitational acceleration. 
+
+- `PhysicsBody` :
+This is the representation of a circular object interacting inside the world of `PhysicsEngine`.  Each body can either be movable or immovable, and it has other attributes such as mass, velocity, position, radius, elasticity (an elasticity of 1 means that the body doesn't lose kinetic energy upon collision; 0 means the object loses all kinatic energy upon collision) and so on. It also has an array of forces and a computed property of `resultantForce`. At each instant of time, the `update()` method of the body is called by the `update()` method of the governing physics engine. The former will update the position and velocity of the body based on the resultant force.
+
+### Game Engine component
+
+- `PeggleGameEngine`:
+This class holds references to a `PhysicsEngine`, a `GameBoard`, a `CannonBall` and a `Renderer`. `PeggleGameEngine` is the sole entry point for `ViewControl` to access the domain logic. The `GameBoard` and  `CannonBall` represent models of the game. The game loop resides in this game engine, where `CADisplayLink` is used to for the game loop. At every frame, the physics engine is updated, and the renderer renders the views in the next moment on the screen.
+
+- `GameBoard` has a set of `Peg`, same as in Problem Set 2.
+
+- `Peg` and `CannonBall`:
+Each of these objects holds a reference to a `PhysicsBody`, a representation of their physical self in the world of phyiscs. `Peg` also has an `isHit` boolean flag to indicate whether it has been collided by the ball. When an external client, say the `Renderer`, requests the location of one of these objects, it does so through `PeggleGameEngine`, which will then obtain this information by accessing the location of the corresponding `PhysicsBody`. When a `Peg` or a `CannonBall` is deleted, its corresponding `PhysicsBody` is deleted from the physics engine as well.
+
+### View and Renderer component
+- `Renderer`:
+This protocol only has one method, `render()`, which updates the view every time it is called by the game loop.
+
+- `ViewController`:
+This class conforms to `Renderer` protocol. It is also in charge of receiving user actions, such as a tap on the screen, and calling relevant functions from `PeggleGameEngine`. It also handles other user interaction things such as alert windows to tell the user how to start the game and restart the game after all the pegs are cleared.
+
+In summary, this application is divided into three components: physics engine, game engine and UI/renderer. The physics engine knows about no one other than its own world of physics. The game engine only knows about its models and the physics engine. The game loop also calls `renderer()` in the renderer through the `Renderer` protocol. The renderer only knows about the game engine but not the physics engine.
+
+### Sequence diagram
+
+Please refer to the following simplified sequence diagram for what happens at every frame of the game loop, when `update()` is called on `PeggleGameEngine`.
+
+![image of architecture diagram](https://github.com/cs3217-1920/2020-ps3-LiuZechu/blob/master/sequence_diagram.png)
+
 ## Rules of the Game
 Please write the rules of your game here. This section should include the
 following sub-sections. You can keep the heading format here, and you can add
@@ -32,16 +89,22 @@ write this section in a new file entirely, if you wish.
 ### Cannon Direction
 Please explain how the player moves the cannon.
 
+To launch the ball, drag your finger across the background to rotate the cannon. Upon releasing the finger, the ball will be launched in the direction of the cannon.
+
 ### Win and Lose Conditions
 Please explain how the player wins/loses the game.
+
+The player is provided with 10 balls in total. To win the game, the player has to clear all orange pegs on the screen before the 10 balls are used up. If the player does not manage to clear all the orange pegs within 10 balls, they lose the game. Note that when the ball enters the bucket, an extra ball will be awarded. This can be seen from the number of balls left at the top-right corner not decrementing after the ball falls out of bounds (normally the number will decrement by 1). 
 
 ## Level Designer Additional Features
 
 ### Peg Rotation
 Please explain how the player rotates the triangular pegs.
+To rotate a triangular peg, tap on the peg. Two sliders will appear in the middle of the screen. Slide the bar with a clockwise circular arrow icon to rotate the peg being tapped. To make the sliders disappear, tap the peg again.
 
 ### Peg Resizing
 Please explain how the player resizes the pegs.
+To resize a peg, tap on the peg. Two sliders will appear in the middle of the screen for triangular pegs. One slider will appear for a circular peg. Slide the bar with a double outward arrows icon to resize the peg being tapped. To make the sliders disappear, tap the peg again.
 
 ## Bells and Whistles
 Please write all of the additional features that you have implemented so that

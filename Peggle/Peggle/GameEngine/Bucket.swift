@@ -34,8 +34,7 @@ class Bucket {
         self.bottomCenterLocation = bottomCenterLocation
     }
     
-    // positive means moving to the right
-    // moves the bucket to the right by `speed`
+    // Define positive as moving to the right
     func move() {
         bottomCenterLocation.x += CGFloat(speed)
     }

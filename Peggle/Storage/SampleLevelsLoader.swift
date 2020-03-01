@@ -12,6 +12,7 @@ import struct CoreGraphics.CGFloat
 
 /// This class contains several preloaded levels of Peggle.
 class SampleLevelsLoader {
+    static let reservedNames = ["First Level", "Second Level", "Third Level"]
     var games: [GameBoard]
     var multiplier: Double
     

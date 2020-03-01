@@ -9,6 +9,7 @@
 import Foundation
 
 class CollisionChecker {
+    // Credits: This method is partially adapted from http://www.phatcode.net/articles.php?id=459.
     /// Returns whether the two bodies collide with each other.
     /// `firstBody` must be movable,
     /// `secondBody` can be movable or immovable
@@ -30,7 +31,7 @@ class CollisionChecker {
             let v3y = triangleVertices[2].yComponent
             let radius = firstBody.radius
             
-            //TEST 1: Vertex within circle
+            //Check whether any vertex is within circle
             var c1x = v1x - centerX
             var c1y = v1y - centerY
             if (c1x * c1x + c1y * c1y).squareRoot() <= radius {
@@ -51,32 +52,21 @@ class CollisionChecker {
                 print("vertex 3 within circle")
                 return true
             }
-            
-//            // TEST 2: Circle centre within triangle
-//            // NOTE: This works for clockwise ordered vertices!
-//            let isWithinFirstSide = ((v2y - v1y) * (centerX - v1x) - (v2x - v1x) * (centerY - v1y)) >= 0
-//            let isWithinSecondSide = ((v3y - v2y) * (centerX - v2x) - (v3x - v2x) * (centerY - v2y)) >= 0
-//            let isWithinThirdSide = ((v1y - v3y) * (centerX - v3x) - (v1x - v3x) * (centerX - v3x)) >= 0
-//            if isWithinFirstSide && isWithinSecondSide && isWithinThirdSide {
-//                print("circle center within triangle")
-//                return true
-//            }
-            
-            // TEST 3: Circle intersects edge
+                        
+            // Test whether circle intersects triangle
             // Get the dot product
             c1x = centerX - v1x
             c1y = centerY - v1y
             let e1x = v2x - v1x
             let e1y = v2y - v1y
 
-            var k = c1x * e1x + c1y * e1y
+            var k1 = c1x * e1x + c1y * e1y
 
-            if k > 0 {
+            if k1 > 0 {
                 let len = (e1x * e1x + e1y * e1y).squareRoot()
-                k /= len
+                k1 /= len
                 
-                if k < len && (c1x * c1x + c1y * c1y - k * k).squareRoot() <= radius {
-                    print("circle intersects with side 12")
+                if k1 < len && (c1x * c1x + c1y * c1y - k1 * k1).squareRoot() <= radius {
                     return true
                 }
             }
@@ -87,14 +77,13 @@ class CollisionChecker {
             let e2x = v3x - v2x
             let e2y = v3y - v2y
 
-            k = c2x * e2x + c2y * e2y
+            var k2 = c2x * e2x + c2y * e2y
 
-            if k > 0 {
+            if k2 > 0 {
                 let len = (e2x * e2x + e2y * e2y).squareRoot()
-                k /= len
+                k2 /= len
 
-                if k < len && (c2x * c2x + c2y * c2y - k * k).squareRoot() <= radius {
-                    print("circle intersects with side 23")
+                if k2 < len && (c2x * c2x + c2y * c2y - k2 * k2).squareRoot() <= radius {
                     return true
                 }
             }
@@ -105,14 +94,13 @@ class CollisionChecker {
             let e3x = v1x - v3x
             let e3y = v1y - v3y
 
-            k = c3x * e3x + c3y * e3y
+            var k3 = c3x * e3x + c3y * e3y
 
-            if k > 0 {
+            if k3 > 0 {
                 let len = (e3x * e3x + e3y * e3y).squareRoot()
-                k /= len
+                k3 /= len
 
-                if k < len && (c3x * c3x + c3y * c3y - k * k).squareRoot() <= radius {
-                    print("circle intersects with side 13")
+                if k3 < len && (c3x * c3x + c3y * c3y - k3 * k3).squareRoot() <= radius {
                     return true
                 }
             }
