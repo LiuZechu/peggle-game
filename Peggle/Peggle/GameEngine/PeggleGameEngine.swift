@@ -34,7 +34,7 @@ class PeggleGameEngine {
     var numberOfOrangePegsLeft: Int {
         return gameboard.getNumberOfPegsOfColor(color: .orange)
     }
-    private var score: Int = 0
+    var score: Int = 0
     
     private var hasBallEntered: Bool = false
     private var isGameLoopStopped: Bool = true
@@ -97,6 +97,9 @@ class PeggleGameEngine {
     // called after the ball is out of bounds, so that a new ball can be replenished
     func restartAnotherRound() {
         stopGameLoop()
+        // update score
+        score += cannonBall.hitCounter * gameboard.pegs.count
+        
         _ = physicsEngine.removePhysicsBody(cannonBall.physicsBody)
         cannonBall = CannonBall(xPosition: cannonBallInitialXPosition)
         cannonBall.physicsBody.position.yComponent = cannonBallInitialYPosition
@@ -332,12 +335,7 @@ class PeggleGameEngine {
         cannonBall.location = newLocation
         isSpookyBallTriggered = false
     }
-    
-    func getCurrentScore() -> Int {
-        score += cannonBall.hitCounter * gameboard.pegs.count
-        return score
-    }
-    
+        
     private func findPegFromLocation(at point: CGPoint) -> Peg? {
         let pegSet = gameboard.pegs.filter {
             let isXWithinRange = abs($0.location.x - point.x) < Peg.defaultRadius

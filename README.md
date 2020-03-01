@@ -129,6 +129,7 @@ your grader can award you credit.
     * When the game starts, a background music will start playing. This music continues throughout the game, and will stop once the user returns to the main menu (either through the BACK button or when the game ends)
     * When the ball hits a peg, a bouncing sound effect will play.
     * When the user wins or loses, a cheering sound effect will play. This sound is played even when the user loses so as to cheer them up :)
+    (The sound resources are royalty-free sound/music from [zapsplat](https://www.zapsplat.com/))
     
 2. Windy Mode:
     * When starting the game, the user will be prompted by a popup window to choose a powerup or a mode of the game. There are two extra modes, namely, `Windy Mode` and `CHAOS MODE` (which will be explained below). 
@@ -147,6 +148,12 @@ your grader can award you credit.
     
 4. Level Designer upper border:
     * In the Level Designer, a white line is drawn near the top of the screen. The user is not allowed to place pegs there. This is to prevent the user from placing pegs above the cannon.
+    
+5. Number of Balls left and Current Score
+    * At the top right-hand corner of the game, the number of balls left is displayed.
+    * Below the number of balls, the user's current score is displayed.
+    * The score is updated every time the ball exits the playing area.
+    * The score is the sum of the scores obtained in previous rounds. In a round (one round is defined as one ball launch), the score of that round is the total number of times the ball hits a peg (repeated hits are counted too), multiplied by the total number of pegs on the screen at the time.
     
 ## Tests
 If you decide to write how you are going to do your tests instead of writing
