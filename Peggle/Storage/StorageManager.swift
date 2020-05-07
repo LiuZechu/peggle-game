@@ -85,7 +85,8 @@ class StorageManager: Storage {
             return levelName
         }
     }
-    
+
+    // TA: Style [-1] SLAP
     func fetchGameBoardByName(name: String) -> GameBoard? {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return nil
