@@ -29,6 +29,8 @@ class CollisionChecker {
     }
     
     // Credits: This method is partially adapted from http://www.phatcode.net/articles.php?id=459.
+
+    // TA: Style [-1] SLAP
     private static func isCircleTriangleCollision(firstBody: PhysicsBody, secondBody: PhysicsBody) -> Bool {
         let triangleVertices = secondBody.getVertices()
         let centerX = firstBody.position.xComponent
