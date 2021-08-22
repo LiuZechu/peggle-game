@@ -4,6 +4,8 @@
 
 **Matric No:** A0188295L
 
+# Video Demo
+Please kindly visit [https://youtu.be/jyG5wt-QhDI](https://youtu.be/jyG5wt-QhDI) for a video demo of the app!
 
 # My Write-up
 
